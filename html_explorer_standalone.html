@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML Explorer for Kids</title>
+  <style>
+    :root{
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --text:#1e293b;
+      --muted:#64748b;
+      --line:#e2e8f0;
+      --dark:#0f172a;
+      --sky:#0284c7;
+      --sky-soft:#e0f2fe;
+      --violet-soft:#f5f3ff;
+      --green-soft:#ecfdf5;
+      --amber-soft:#fffbeb;
+      --rose-soft:#fff1f2;
+      --radius:24px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.5;
+    }
+    .app{
+      max-width:1200px;
+      margin:0 auto;
+      padding:20px;
+      display:grid;
+      grid-template-columns:280px 1fr;
+      gap:20px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:0 1px 2px rgba(15,23,42,.04);
+    }
+    .sidebar{padding:18px; position:sticky; top:16px; height:fit-content;}
+    .brand{display:flex; gap:12px; align-items:center; margin-bottom:16px;}
+    .brand .icon{font-size:34px}
+    .brand h1{font-size:20px; margin:0}
+    .brand p{margin:2px 0 0; color:var(--muted); font-size:14px}
+    .menu button, .btn{
+      border:none;
+      border-radius:18px;
+      padding:12px 16px;
+      cursor:pointer;
+      font:inherit;
+      transition:.2s ease;
+    }
+    .menu{display:grid; gap:8px; margin-bottom:18px}
+    .menu button{
+      text-align:left;
+      background:#f1f5f9;
+      color:var(--text);
+      width:100%;
+    }
+    .menu button.active{background:var(--dark); color:white}
+    .progress{
+      background:var(--sky-soft);
+      border:1px solid #bae6fd;
+      padding:14px;
+      border-radius:20px;
+    }
+    .bar{
+      height:12px;
+      background:white;
+      border:1px solid #dbeafe;
+      border-radius:999px;
+      overflow:hidden;
+      margin:8px 0;
+    }
+    .bar > div{
+      height:100%;
+      background:var(--sky);
+      width:0;
+      transition:width .3s ease;
+    }
+    .section{display:none}
+    .section.active{display:block}
+    .hero{
+      padding:24px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(90deg,#f0f9ff,#eef2ff);
+      border-radius:28px 28px 0 0;
+    }
+    .hero .emoji{font-size:48px; margin-bottom:8px}
+    .hero h2{font-size:34px; margin:0 0 8px}
+    .hero p{font-size:18px; margin:0; max-width:900px}
+    .body-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+      padding:24px;
+    }
+    .code{
+      background:#0f172a;
+      color:#e2e8f0;
+      border-radius:24px;
+      padding:18px;
+      overflow:auto;
+    }
+    .code .label, .mini-label{
+      color:#94a3b8;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:11px;
+      margin-bottom:12px;
+    }
+    pre{margin:0; white-space:pre-wrap}
+    .note{
+      border-radius:24px;
+      padding:18px;
+      margin-bottom:14px;
+    }
+    .note h3{margin:0 0 8px; font-size:19px}
+    .note p{margin:0}
+    .amber{background:var(--amber-soft); border:1px solid #fde68a}
+    .green{background:var(--green-soft); border:1px solid #bbf7d0}
+    .violet{background:var(--violet-soft); border:1px solid #ddd6fe}
+    .skybox{background:var(--sky-soft); border:1px solid #bae6fd}
+    .actions{padding:0 24px 24px; display:flex; flex-wrap:wrap; gap:10px}
+    .btn-dark{background:var(--dark); color:white}
+    .btn-light{background:#f1f5f9}
+    .btn-sky{background:#0369a1; color:white}
+    .btn-violet{background:#7c3aed; color:white}
+    .lesson-wrap,.practice-wrap,.quiz-wrap{padding:0}
+    .practice-head,.quiz-head{padding:24px}
+    .practice-grid, .live-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+      padding:0 24px;
+    }
+    textarea{
+      width:100%;
+      border-radius:18px;
+      border:1px solid #334155;
+      padding:14px;
+      font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      outline:none;
+      resize:vertical;
+      min-height:220px;
+    }
+    .editor-dark{
+      background:#0f172a;
+      color:white;
+      border-radius:24px;
+      padding:18px;
+    }
+    .editor-dark textarea{
+      background:#111827;
+      color:white;
+    }
+    .live-wrap{
+      margin:24px;
+      border:1px solid var(--line);
+      border-radius:28px;
+      overflow:hidden;
+      background:white;
+    }
+    .live-head{
+      padding:18px 20px;
+      background:linear-gradient(90deg,#ecfdf5,#e0f2fe);
+      border-bottom:1px solid var(--line);
+    }
+    .live-head h3{margin:0; font-size:28px}
+    .live-head p{margin:4px 0 0; color:var(--muted)}
+    iframe{
+      width:100%;
+      height:320px;
+      border:none;
+      background:white;
+      border-radius:18px;
+    }
+    .live-preview{padding:18px}
+    .hint{
+      margin-top:14px;
+      padding:14px;
+      border-radius:18px;
+      background:var(--amber-soft);
+      border:1px solid #fde68a;
+    }
+    .challenge-result{
+      margin:20px 24px 0;
+      padding:18px;
+      border-radius:24px;
+      display:none;
+    }
+    .challenge-result.show{display:block}
+    .ok{background:var(--green-soft); border:1px solid #bbf7d0}
+    .notok{background:var(--rose-soft); border:1px solid #fecdd3}
+    .quiz-list{padding:0 24px 24px; display:grid; gap:18px}
+    .q-card{
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:18px;
+      background:white;
+    }
+    .q-card h4{margin:0 0 14px; font-size:20px}
+    .options{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .option{
+      background:#f8fafc;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px 14px;
+      cursor:pointer;
+      text-align:left;
+      font:inherit;
+    }
+    .option.selected{background:#e0f2fe; border-color:#7dd3fc}
+    .option.correct{background:#ecfdf5; border-color:#86efac}
+    .option.wrong{background:#fff1f2; border-color:#fda4af}
+    .explain{
+      color:var(--muted);
+      margin-top:10px;
+      font-size:14px;
+      display:none;
+    }
+    .explain.show{display:block}
+    .score{
+      margin:0 24px 24px;
+      padding:20px;
+      border-radius:24px;
+      background:var(--sky-soft);
+      border:1px solid #bae6fd;
+      display:none;
+    }
+    .score.show{display:block}
+    .score h3{margin:0 0 8px; font-size:28px}
+    .score p{margin:0 0 12px}
+    .small-badge{
+      background:#ede9fe;
+      color:#5b21b6;
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+      font-weight:600;
+      display:inline-block;
+    }
+    @media (max-width: 900px){
+      .app{grid-template-columns:1fr}
+      .sidebar{position:static}
+      .body-grid,.practice-grid,.live-grid,.options{grid-template-columns:1fr}
+      .hero h2{font-size:28px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="card sidebar">
+      <div class="brand">
+        <div class="icon">🌐</div>
+        <div>
+          <h1>HTML Explorer</h1>
+          <p>Μάθημα + κουίζ + live tester</p>
+        </div>
+      </div>
+
+      <div class="menu">
+        <button class="tab-btn active" data-tab="lesson">📚 Μάθημα</button>
+        <button class="tab-btn" data-tab="practice">⌨️ Practice Lab</button>
+        <button class="tab-btn" data-tab="quiz">🧠 Κουίζ</button>
+      </div>
+
+      <div class="progress">
+        <div><strong>Πρόοδος μαθήματος</strong></div>
+        <div class="bar"><div id="progressBar"></div></div>
+        <div id="progressText" style="color:var(--muted); font-size:14px;"></div>
+      </div>
+    </aside>
+
+    <main>
+      <section id="lesson" class="section active">
+        <div class="card lesson-wrap">
+          <div class="hero">
+            <div class="emoji" id="lessonEmoji">🧱</div>
+            <h2 id="lessonTitle"></h2>
+            <p id="lessonBody"></p>
+          </div>
+          <div class="body-grid">
+            <div class="code">
+              <div class="label">Παράδειγμα κώδικα</div>
+              <pre id="lessonCode"></pre>
+            </div>
+            <div>
+              <div class="note amber">
+                <h3>Mini tip 💡</h3>
+                <p id="lessonTip"></p>
+              </div>
+              <div class="note green">
+                <h3>Τι να θυμάσαι</h3>
+                <p>Η HTML, η CSS και η JavaScript είναι η τριπλέτα του web. Η HTML φτιάχνει τον σκελετό, η CSS το ντύνει και η JavaScript του δίνει κίνηση. Σαν ομάδα υπερηρώων με laptop αντί για κάπες 🦸</p>
+              </div>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-light" id="prevLesson">⬅ Πίσω</button>
+            <button class="btn btn-dark" id="nextLesson">Επόμενο ➜</button>
+            <button class="btn btn-sky" data-go="practice">Πήγαινε στο Practice Lab</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="practice" class="section">
+        <div class="card practice-wrap">
+          <div class="practice-head">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center;">
+              <div>
+                <h2 style="margin:0;font-size:34px;">Practice Lab</h2>
+                <p style="margin:4px 0 0;color:var(--muted);">Μικρές αποστολές για εξάσκηση και live δοκιμές.</p>
+              </div>
+              <div class="small-badge" id="challengeBadge"></div>
+            </div>
+          </div>
+
+          <div class="practice-grid">
+            <div class="note violet" style="margin:0;">
+              <h3>Στόχος 🎯</h3>
+              <p id="challengePrompt" style="font-size:18px;"></p>
+            </div>
+
+            <div class="editor-dark">
+              <div class="mini-label">Γράψε εδώ</div>
+              <textarea id="challengeInput" placeholder='Π.χ. <h1>Μαθαίνω HTML</h1>'></textarea>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-dark" id="checkChallenge">Έλεγχος απάντησης</button>
+            <button class="btn btn-light" id="clearChallenge">Καθαρισμός</button>
+            <button class="btn btn-violet" id="nextChallenge">Νέα αποστολή</button>
+          </div>
+
+          <div id="challengeResult" class="challenge-result">
+            <h3 id="challengeResultTitle" style="margin:0 0 8px;"></h3>
+            <p id="challengeResultText" style="margin:0;"></p>
+          </div>
+
+          <div class="live-wrap">
+            <div class="live-head">
+              <h3>Live HTML Tester</h3>
+              <p>Γράψε HTML και δες αμέσως τι ζωγραφίζει ο browser. Μικρό εργαστήριο, μεγάλη μαγεία ✨</p>
+            </div>
+            <div class="live-grid">
+              <div class="editor-dark" style="border-radius:0; margin:0;">
+                <div class="mini-label">HTML Editor</div>
+                <textarea id="liveEditor" style="min-height:320px;"></textarea>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;">
+                  <button class="btn btn-light" id="loadExample">Φόρτωσε παράδειγμα</button>
+                  <button class="btn" id="clearLive" style="background:#7f1d1d;color:white;">Καθαρισμός editor</button>
+                </div>
+              </div>
+              <div class="live-preview">
+                <div class="mini-label" style="color:var(--muted)">Live Preview</div>
+                <div style="min-height:320px;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow: inset 0 1px 2px rgba(15,23,42,.05);">
+                  <iframe id="liveFrame" sandbox=""></iframe>
+                </div>
+                <div class="hint">
+                  <strong>Τι να δοκιμάσεις 🧪</strong>
+                  <div>Δοκίμασε <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;ul&gt;</code>, <code>&lt;li&gt;</code>, <code>&lt;button&gt;</code>, ή και ένα <code>&lt;img&gt;</code>.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="quiz" class="section">
+        <div class="card quiz-wrap">
+          <div class="quiz-head">
+            <h2 style="margin:0;font-size:34px;">Κουίζ HTML</h2>
+            <p style="margin:6px 0 0;color:var(--muted);">Διάλεξε την καλύτερη απάντηση και δες το σκορ σου.</p>
+          </div>
+          <div class="quiz-list" id="quizList"></div>
+          <div class="actions">
+            <button class="btn btn-dark" id="showResults">Δες αποτέλεσμα</button>
+            <button class="btn btn-light" id="resetQuiz">Ξανά από την αρχή</button>
+          </div>
+          <div class="score" id="scoreBox">
+            <h3 id="scoreTitle"></h3>
+            <p id="scoreText"></p>
+            <div class="note skybox" style="margin:0 0 12px;">
+              <h3>Τι να θυμάσαι για το μέλλον 🌍</h3>
+              <p>Η HTML δεν παλιώνει εύκολα. Αντίθετα, εξελίσσεται μαζί με το web. Στο μέλλον θα τη βλέπουμε σε πιο έξυπνες εφαρμογές, καλύτερα παιχνίδια στον browser και πιο προσβάσιμες σελίδες για όλους.</p>
+            </div>
+            <button class="btn btn-sky" data-go="lesson">Επιστροφή στο μάθημα</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const lessons = [
+      {
+        title: "Τι είναι η HTML;",
+        emoji: "🧱",
+        body: "Η HTML είναι η γλώσσα που χτίζει τον σκελετό μιας ιστοσελίδας. Λέει στον browser τι είναι τίτλος, παράγραφος, εικόνα ή κουμπί.",
+        code: `<h1>Γεια σου!</h1>\n<p>Αυτή είναι η πρώτη μου σελίδα.</p>`,
+        tip: "Οι περισσότερες εντολές γράφονται με tags, όπως <p>...</p>."
+      },
+      {
+        title: "Τι είναι η CSS;",
+        emoji: "🎨",
+        body: "Η CSS είναι η γλώσσα που ντύνει την ιστοσελίδα. Διαλέγει χρώματα, μεγέθη, αποστάσεις και κάνει τα πράγματα όμορφα και τακτοποιημένα.",
+        code: `h1 {\n  color: blue;\n}\np {\n  font-size: 20px;\n}`,
+        tip: "Αν η HTML είναι ο σκελετός, η CSS είναι τα ρούχα και τα χρώματα."
+      },
+      {
+        title: "Τι είναι η JavaScript;",
+        emoji: "⚡",
+        body: "Η JavaScript βάζει δράση στη σελίδα. Με αυτήν ένα κουμπί μπορεί να αντιδρά, ένα παιχνίδι να κινείται ή ένα μήνυμα να εμφανίζεται όταν κάνεις κλικ.",
+        code: `button.onclick = function() {\n  alert("Μπράβο!");\n};`,
+        tip: "Η JavaScript κάνει τη σελίδα πιο έξυπνη και διαδραστική."
+      },
+      {
+        title: "Τι είναι το HTML5;",
+        emoji: "🚀",
+        body: "Το HTML5 είναι μια πιο σύγχρονη έκδοση της HTML. Έφερε καλύτερα tags, όπως <header>, <nav>, <section>, <article>, αλλά και δυνατότητες για βίντεο και ήχο.",
+        code: `<header>Το πάνω μέρος</header>\n<nav>Μενού</nav>\n<section>Το κύριο περιεχόμενο</section>\n<footer>Το κάτω μέρος</footer>`,
+        tip: "Το HTML5 βοηθά να γράφουμε πιο καθαρό και πιο έξυπνο κώδικα."
+      },
+      {
+        title: "Το μέλλον της HTML και του web",
+        emoji: "🔮",
+        body: "Η HTML συνεχίζει να υπάρχει επειδή είναι η βάση του web. Στο μέλλον οι σελίδες θα γίνονται πιο γρήγορες, πιο έξυπνες, πιο προσβάσιμες και πιο φιλικές για κινητά, tablets και νέες συσκευές.",
+        code: `<main>\n  <h1>Το web του αύριο</h1>\n  <p>Πιο γρήγορο, πιο έξυπνο, πιο δημιουργικό!</p>\n</main>`,
+        tip: "Η HTML δεν δουλεύει μόνη της. Μαζί με CSS και JavaScript είναι η σούπερ ομάδα του web."
+      }
+    ];
+
+    const challenges = [
+      {
+        prompt: "Γράψε ένα h1 με το κείμενο: Μαθαίνω HTML",
+        expected: ["<h1>", "Μαθαίνω HTML", "</h1>"],
+        success: "Τέλειο! Έβαλες σωστά έναν τίτλο h1. 🚀"
+      },
+      {
+        prompt: "Γράψε μια παράγραφο που να λέει: Η HTML είναι διασκεδαστική",
+        expected: ["<p>", "Η HTML είναι διασκεδαστική", "</p>"],
+        success: "Μπράβο! Η παράγραφος σου είναι σωστή. ✨"
+      },
+      {
+        prompt: "Φτιάξε μια λίστα με ένα στοιχείο: Πίτσα",
+        expected: ["<ul>", "<li>", "Πίτσα", "</li>", "</ul>"],
+        success: "Ναι! Μόλις έχτισες μια μικρή λίστα. 🍕"
+      }
+    ];
+
+    const quiz = [
+      {
+        question: "Ποια γλώσσα φτιάχνει τον σκελετό μιας ιστοσελίδας;",
+        options: ["CSS", "JavaScript", "HTML", "Python"],
+        answer: 2,
+        explain: "Η HTML οργανώνει το περιεχόμενο της σελίδας."
+      },
+      {
+        question: "Ποια γλώσσα βάζει χρώματα και εμφάνιση;",
+        options: ["CSS", "HTML", "JavaScript", "SQL"],
+        answer: 0,
+        explain: "Η CSS φροντίζει το στυλ και την εμφάνιση."
+      },
+      {
+        question: "Ποια γλώσσα κάνει τη σελίδα διαδραστική;",
+        options: ["HTML", "CSS", "JavaScript", "XML"],
+        answer: 2,
+        explain: "Η JavaScript δίνει κίνηση και αλληλεπίδραση."
+      },
+      {
+        question: "Τι έφερε το HTML5;",
+        options: ["Μόνο χρώματα", "Πιο σύγχρονα tags και δυνατότητες", "Μόνο παιχνίδια", "Μόνο εικόνες"],
+        answer: 1,
+        explain: "Το HTML5 έφερε νέα tags και καλύτερες δυνατότητες για σύγχρονες ιστοσελίδες."
+      }
+    ];
+
+    let lessonIndex = 0;
+    let challengeIndex = 0;
+    let answers = Array(quiz.length).fill(null);
+
+    const lessonTitle = document.getElementById("lessonTitle");
+    const lessonEmoji = document.getElementById("lessonEmoji");
+    const lessonBody = document.getElementById("lessonBody");
+    const lessonCode = document.getElementById("lessonCode");
+    const lessonTip = document.getElementById("lessonTip");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+
+    function renderLesson() {
+      const item = lessons[lessonIndex];
+      lessonTitle.textContent = item.title;
+      lessonEmoji.textContent = item.emoji;
+      lessonBody.textContent = item.body;
+      lessonCode.textContent = item.code;
+      lessonTip.textContent = item.tip;
+      const progress = Math.round(((lessonIndex + 1) / lessons.length) * 100);
+      progressBar.style.width = progress + "%";
+      progressText.textContent = `Βήμα ${lessonIndex + 1} από ${lessons.length}`;
+    }
+
+    document.getElementById("prevLesson").addEventListener("click", () => {
+      lessonIndex = Math.max(0, lessonIndex - 1);
+      renderLesson();
+    });
+    document.getElementById("nextLesson").addEventListener("click", () => {
+      lessonIndex = Math.min(lessons.length - 1, lessonIndex + 1);
+      renderLesson();
+    });
+
+    const challengePrompt = document.getElementById("challengePrompt");
+    const challengeBadge = document.getElementById("challengeBadge");
+    const challengeInput = document.getElementById("challengeInput");
+    const challengeResult = document.getElementById("challengeResult");
+    const challengeResultTitle = document.getElementById("challengeResultTitle");
+    const challengeResultText = document.getElementById("challengeResultText");
+
+    function renderChallenge() {
+      const c = challenges[challengeIndex];
+      challengePrompt.textContent = c.prompt;
+      challengeBadge.textContent = `Αποστολή ${challengeIndex + 1} / ${challenges.length}`;
+      challengeInput.value = "";
+      challengeResult.className = "challenge-result";
+    }
+
+    document.getElementById("checkChallenge").addEventListener("click", () => {
+      const c = challenges[challengeIndex];
+      const value = challengeInput.value.toLowerCase();
+      const pass = c.expected.every(part => value.includes(part.toLowerCase()));
+      challengeResult.className = "challenge-result show " + (pass ? "ok" : "notok");
+      challengeResultTitle.textContent = pass ? "Σωστό! 🎉" : "Σχεδόν! 🛠️";
+      challengeResultText.textContent = pass
+        ? c.success
+        : "Δοκίμασε να βάλεις όλα τα σωστά tags. Κοίτα αν έχεις και άνοιγμα και κλείσιμο tag όπου χρειάζεται.";
+    });
+
+    document.getElementById("clearChallenge").addEventListener("click", () => {
+      challengeInput.value = "";
+      challengeResult.className = "challenge-result";
+    });
+
+    document.getElementById("nextChallenge").addEventListener("click", () => {
+      challengeIndex = (challengeIndex + 1) % challenges.length;
+      renderChallenge();
+    });
+
+    const starterHtml = `<h1>Γεια σου κόσμε!</h1>
+<p>Γράψε HTML εδώ και δες το αποτέλεσμα ζωντανά.</p>
+<ul>
+  <li>Τίτλος</li>
+  <li>Παράγραφος</li>
+  <li>Λίστα</li>
+</ul>`;
+
+    const liveEditor = document.getElementById("liveEditor");
+    const liveFrame = document.getElementById("liveFrame");
+
+    function renderLive() {
+      liveFrame.srcdoc = liveEditor.value;
+    }
+
+    liveEditor.value = starterHtml;
+    liveEditor.addEventListener("input", renderLive);
+    document.getElementById("loadExample").addEventListener("click", () => {
+      liveEditor.value = starterHtml;
+      renderLive();
+    });
+    document.getElementById("clearLive").addEventListener("click", () => {
+      liveEditor.value = "";
+      renderLive();
+    });
+
+    const quizList = document.getElementById("quizList");
+
+    function renderQuiz() {
+      quizList.innerHTML = "";
+      quiz.forEach((q, i) => {
+        const card = document.createElement("div");
+        card.className = "q-card";
+
+        const title = document.createElement("h4");
+        title.textContent = `${i + 1}. ${q.question}`;
+        card.appendChild(title);
+
+        const options = document.createElement("div");
+        options.className = "options";
+
+        q.options.forEach((optionText, idx) => {
+          const btn = document.createElement("button");
+          btn.className = "option" + (answers[i] === idx ? " selected" : "");
+          btn.innerHTML = `<span style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;">${optionText}</span>`;
+          btn.addEventListener("click", () => {
+            answers[i] = idx;
+            renderQuiz();
+          });
+          options.appendChild(btn);
+        });
+
+        const explain = document.createElement("div");
+        explain.className = "explain";
+        explain.textContent = q.explain;
+
+        card.appendChild(options);
+        card.appendChild(explain);
+        quizList.appendChild(card);
+      });
+    }
+
+    document.getElementById("showResults").addEventListener("click", () => {
+      const cards = document.querySelectorAll(".q-card");
+      cards.forEach((card, i) => {
+        const optionButtons = card.querySelectorAll(".option");
+        optionButtons.forEach((btn, idx) => {
+          btn.classList.remove("selected", "correct", "wrong");
+          if (idx === quiz[i].answer) btn.classList.add("correct");
+          if (answers[i] === idx && idx !== quiz[i].answer) btn.classList.add("wrong");
+        });
+        card.querySelector(".explain").classList.add("show");
+      });
+
+      const score = answers.reduce((sum, a, i) => sum + (a === quiz[i].answer ? 1 : 0), 0);
+      const scoreBox = document.getElementById("scoreBox");
+      document.getElementById("scoreTitle").textContent = `Σκορ: ${score} / ${quiz.length}`;
+      document.getElementById("scoreText").textContent =
+        score === quiz.length
+          ? "Είσαι web αστέρι! Έκανες τέλειο παιχνίδι. 🌟"
+          : score >= Math.ceil(quiz.length / 2)
+          ? "Πολύ καλή δουλειά! Καταλαβαίνεις ήδη πώς συνεργάζονται HTML, CSS και JavaScript."
+          : "Καλή αρχή! Ρίξε άλλη μια βόλτα στο μάθημα και θα τα δέσεις όλα μαζί.";
+      scoreBox.classList.add("show");
+    });
+
+    document.getElementById("resetQuiz").addEventListener("click", () => {
+      answers = Array(quiz.length).fill(null);
+      document.getElementById("scoreBox").classList.remove("show");
+      renderQuiz();
+    });
+
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => showTab(btn.dataset.tab));
+    });
+    document.querySelectorAll("[data-go]").forEach(btn => {
+      btn.addEventListener("click", () => showTab(btn.dataset.go));
+    });
+
+    function showTab(tab) {
+      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+      document.getElementById(tab).classList.add("active");
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      const activeBtn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
+      if (activeBtn) activeBtn.classList.add("active");
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+
+    renderLesson();
+    renderChallenge();
+    renderLive();
+    renderQuiz();
+  </script>
+</body>
+</html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>HTML Lab — Γράψε κώδικα!</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --border: #e8e4dc;
+    --text: #1a1a1a;
+    --muted: #6b6860;
+    --green: #1D9E75;
+    --blue: #185FA5;
+    --amber: #BA7517;
+    --red: #993C1D;
+    --purple: #534AB7;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .app { max-width: 740px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  /* Header */
+  .lab-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 20px; padding-bottom: 16px;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .lab-icon { font-size: 38px; }
+  .lab-header h1 { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+  .lab-header p { font-size: 14px; color: var(--muted); }
+
+  /* Progress summary */
+  .prog-summary {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  .prog-stat { text-align: center; }
+  .prog-num { font-size: 24px; font-weight: 800; color: var(--text); }
+  .prog-lbl { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .prog-bar-wrap { flex: 1; min-width: 120px; }
+  .prog-bar-lbl { font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+  .prog-track { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--green), #5DCAA5); border-radius: 5px; transition: width 0.4s; }
+
+  /* Level tabs */
+  .level-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .ltab {
+    padding: 7px 16px; border-radius: 20px; font-size: 13px; font-weight: 700;
+    border: 1.5px solid var(--border); background: var(--surface); color: var(--muted);
+    cursor: pointer; transition: all .15s; font-family: 'Nunito', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ltab.on { background: var(--green); color: white; border-color: var(--green); }
+
+  /* Challenge card */
+  .ch-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  }
+  .ch-card.done { border-color: #9FE1CB; }
+
+  .ch-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 8px; }
+  .ch-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 700; padding: 4px 12px;
+    border-radius: 12px; letter-spacing: 0.4px; text-transform: uppercase;
+  }
+  .ch-done-pill {
+    font-size: 12px; font-weight: 700; color: #0F6E56;
+    background: #e1f5ee; padding: 3px 10px; border-radius: 10px;
+  }
+  .stars { display: flex; gap: 3px; }
+  .star { font-size: 18px; filter: grayscale(1) opacity(0.3); }
+  .star.lit { filter: none; }
+
+  .ch-title { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+  .ch-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
+
+  .ch-hint {
+    font-size: 13px; background: #e6f1fb; color: #0C447C;
+    border-left: 3px solid #378ADD; padding: 9px 12px;
+    border-radius: 0 8px 8px 0; margin-bottom: 12px;
+    display: none; line-height: 1.6;
+  }
+  .ch-hint.show { display: block; }
+  .ch-hint code { font-family: 'Fira Code', monospace; font-size: 12px; background: #B5D4F4; color: #042C53; padding: 1px 5px; border-radius: 4px; }
+
+  /* Editor + preview */
+  .editor-wrap {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;
+  }
+  @media (max-width: 540px) { .editor-wrap { grid-template-columns: 1fr; } }
+
+  .pane-label {
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+  }
+
+  textarea {
+    width: 100%; height: 180px;
+    padding: 12px 14px;
+    background: #1e1e2e; color: #cdd6f4;
+    font-family: 'Fira Code', monospace; font-size: 13px; line-height: 1.8;
+    border: 1.5px solid #3c3c5c; border-radius: var(--radius-sm);
+    resize: vertical; outline: none; tab-size: 2;
+  }
+  textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(29,158,117,0.12); }
+
+  .preview-wrap { display: flex; flex-direction: column; }
+  .preview-frame {
+    flex: 1; min-height: 180px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: white; overflow: hidden;
+  }
+  .preview-frame iframe { width: 100%; height: 180px; border: none; display: block; }
+
+  /* Buttons */
+  .action-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+  .btn-run {
+    padding: 10px 20px; background: var(--green); color: white;
+    border: none; border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 700; font-family: 'Nunito', sans-serif;
+    cursor: pointer; transition: opacity .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-run:hover { opacity: .88; }
+  .btn-check {
+    padding: 10px 20px; background: var(--surface); color: var(--text);
+    border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 700; font-family: 'Nunito', sans-serif;
+    cursor: pointer; transition: all .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-check:hover { background: var(--bg); }
+  .btn-hint {
+    padding: 10px 14px; background: transparent; color: var(--muted);
+    border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 700; font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ch-counter { margin-left: auto; font-size: 12px; color: var(--muted); font-weight: 600; }
+
+  /* Feedback */
+  .feedback {
+    padding: 12px 14px; border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 600; line-height: 1.5;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .fb-ok { background: #eaf3de; color: #27500A; border: 1.5px solid #639922; }
+  .fb-no { background: #fcebeb; color: #501313; border: 1.5px solid #a32d2d; }
+
+  /* Tag pill */
+  .tp {
+    display: inline-block; background: #e1f5ee; color: #0F6E56;
+    font-family: 'Fira Code', monospace; font-size: 12px;
+    padding: 2px 8px; border-radius: 5px; margin: 2px;
+  }
+
+  /* Congrats */
+  .congrats {
+    text-align: center; padding: 2.5rem 1rem;
+    background: var(--surface); border: 1.5px solid #9FE1CB;
+    border-radius: var(--radius); margin-top: 8px;
+  }
+  .congrats .c-icon { font-size: 56px; margin-bottom: 12px; }
+  .congrats h2 { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+  .congrats p { font-size: 15px; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+  .btn-restart {
+    padding: 14px 32px; background: var(--green); color: white;
+    border: none; border-radius: var(--radius); font-size: 16px; font-weight: 800;
+    font-family: 'Nunito', sans-serif; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="lab-header">
+    <span class="lab-icon">🧪</span>
+    <div>
+      <h1>HTML Lab</h1>
+      <p>Γράψε κώδικα και δες live αποτέλεσμα!</p>
+    </div>
+  </div>
+
+  <div class="prog-summary">
+    <div class="prog-stat">
+      <div class="prog-num" id="pDone">0</div>
+      <div class="prog-lbl">Ολοκλ.</div>
+    </div>
+    <div class="prog-stat">
+      <div class="prog-num">8</div>
+      <div class="prog-lbl">Σύνολο</div>
+    </div>
+    <div class="prog-bar-wrap">
+      <div class="prog-bar-lbl">Πρόοδος</div>
+      <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    </div>
+    <div class="prog-stat">
+      <div class="prog-num" id="pStars">0</div>
+      <div class="prog-lbl">⭐ Αστέρια</div>
+    </div>
+  </div>
+
+  <div class="level-tabs" id="levelTabs"></div>
+  <div id="challengeArea"></div>
+
+</div>
+
+<script>
+const challenges = [
+  {
+    id: 0,
+    level: 'HTML Βασικά',
+    badge: '🏗️ HTML',
+    bcolor: '#faece7', btcolor: '#793B33',
+    title: 'Γράψε τον πρώτο σου τίτλο!',
+    desc: 'Χρησιμοποίησε το tag <span class="tp">&lt;h1&gt;</span> για να γράψεις ένα μεγάλο μήνυμα μέσα.',
+    hint: 'Θυμήσου: <code>&lt;h1&gt;</code> το κείμενό σου <code>&lt;/h1&gt;</code>',
+    starter: '',
+    checks: [c => /<h1[^>]*>.+<\/h1>/i.test(c)],
+    errMsg: 'Χρειάζεσαι ένα <code>&lt;h1&gt;...&lt;/h1&gt;</code> με κείμενο μέσα!',
+    stars: 1
+  },
+  {
+    id: 1,
+    level: 'HTML Βασικά',
+    badge: '🏗️ HTML',
+    bcolor: '#faece7', btcolor: '#793B33',
+    title: 'Τίτλος + παράγραφος',
+    desc: 'Βάλε έναν τίτλο <span class="tp">&lt;h2&gt;</span> και από κάτω μια παράγραφο <span class="tp">&lt;p&gt;</span> με περιγραφή.',
+    hint: '<code>&lt;h2&gt;</code>Ο σκύλος μου<code>&lt;/h2&gt;</code> <code>&lt;p&gt;</code>Λέγεται Rex!<code>&lt;/p&gt;</code>',
+    starter: '',
+    checks: [
+      c => /<h[1-6][^>]*>.+<\/h[1-6]>/i.test(c),
+      c => /<p[^>]*>.+<\/p>/i.test(c)
+    ],
+    errMsg: 'Χρειάζεσαι και <code>&lt;h2&gt;</code> και <code>&lt;p&gt;</code> με κείμενο μέσα!',
+    stars: 1
+  },
+  {
+    id: 2,
+    level: 'HTML Βασικά',
+    badge: '🏗️ HTML',
+    bcolor: '#faece7', btcolor: '#793B33',
+    title: 'Έντονο και πλάγιο κείμενο',
+    desc: 'Γράψε μια πρόταση που να έχει μία λέξη <span class="tp">&lt;b&gt;</span> (bold) και μία <span class="tp">&lt;i&gt;</span> (italic).',
+    hint: '<code>&lt;p&gt;</code>Η <code>&lt;b&gt;</code>HTML<code>&lt;/b&gt;</code> είναι <code>&lt;i&gt;</code>υπέροχη<code>&lt;/i&gt;</code>!<code>&lt;/p&gt;</code>',
+    starter: '<p>Η  είναι !</p>',
+    checks: [
+      c => /<b[^>]*>.+<\/b>/i.test(c),
+      c => /<i[^>]*>.+<\/i>/i.test(c)
+    ],
+    errMsg: 'Χρειάζεσαι και <code>&lt;b&gt;</code> και <code>&lt;i&gt;</code> με κείμενο!',
+    stars: 2
+  },
+  {
+    id: 3,
+    level: 'Λίστες & Links',
+    badge: '🔗 Links',
+    bcolor: '#e6f1fb', btcolor: '#0C447C',
+    title: 'Φτιάξε μια λίστα!',
+    desc: 'Φτιάξε μια λίστα <span class="tp">&lt;ul&gt;</span> με τουλάχιστον 3 <span class="tp">&lt;li&gt;</span> — τα αγαπημένα σου πράγματα!',
+    hint: '<code>&lt;ul&gt;</code><code>&lt;li&gt;</code>Ποδόσφαιρο<code>&lt;/li&gt;</code><code>&lt;li&gt;</code>Παιχνίδια<code>&lt;/li&gt;</code><code>&lt;/ul&gt;</code>',
+    starter: '<ul>\n  <li></li>\n  <li></li>\n  <li></li>\n</ul>',
+    checks: [
+      c => /<ul[^>]*>/i.test(c),
+      c => (c.match(/<li[^>]*>.+<\/li>/gi) || []).length >= 3
+    ],
+    errMsg: 'Χρειάζεσαι <code>&lt;ul&gt;</code> με τουλάχιστον 3 <code>&lt;li&gt;</code> που να έχουν κείμενο!',
+    stars: 2
+  },
+  {
+    id: 4,
+    level: 'Λίστες & Links',
+    badge: '🔗 Links',
+    bcolor: '#e6f1fb', btcolor: '#0C447C',
+    title: 'Φτιάξε σύνδεσμο!',
+    desc: 'Φτιάξε ένα link με <span class="tp">&lt;a href="..."&gt;</span> που να πηγαίνει κάπου. Βάλε κείμενο μέσα!',
+    hint: '<code>&lt;a href="https://google.com"&gt;</code>Πάμε Google!<code>&lt;/a&gt;</code>',
+    starter: '',
+    checks: [c => /<a\s+[^>]*href=["'][^"']+["'][^>]*>.+<\/a>/i.test(c)],
+    errMsg: 'Χρειάζεσαι <code>&lt;a href="..."&gt;</code>κείμενο<code>&lt;/a&gt;</code> — μην ξεχάσεις το href!',
+    stars: 2
+  },
+  {
+    id: 5,
+    level: 'CSS Στυλ',
+    badge: '🎨 CSS',
+    bcolor: '#eaf3de', btcolor: '#27500A',
+    title: 'Άλλαξε το χρώμα!',
+    desc: 'Χρησιμοποίησε το <span class="tp">&lt;style&gt;</span> για να κάνεις έναν τίτλο <span class="tp">&lt;h1&gt;</span> με χρώμα. Δοκίμασε: blue, red, green, purple!',
+    hint: '<code>&lt;style&gt;</code> h1 { color: blue; } <code>&lt;/style&gt;</code>\n<code>&lt;h1&gt;</code>Τίτλος!<code>&lt;/h1&gt;</code>',
+    starter: '<style>\n  h1 {\n    color: ;\n  }\n</style>\n<h1>Τίτλος μου!</h1>',
+    checks: [c => /<style[^>]*>[\s\S]*color\s*:\s*\w+[\s\S]*<\/style>/i.test(c)],
+    errMsg: 'Βάλε <code>&lt;style&gt;</code> με <code>color: (χρώμα);</code> μέσα!',
+    stars: 2
+  },
+  {
+    id: 6,
+    level: 'CSS Στυλ',
+    badge: '🎨 CSS',
+    bcolor: '#eaf3de', btcolor: '#27500A',
+    title: 'Φόντο + μέγεθος γραμμάτων',
+    desc: 'Κάνε ένα <span class="tp">&lt;p&gt;</span> με χρωματιστό φόντο (<span class="tp">background-color</span>) και μεγαλύτερα γράμματα (<span class="tp">font-size</span>).',
+    hint: 'p { background-color: yellow; font-size: 20px; }',
+    starter: '<style>\n  p {\n    background-color: ;\n    font-size: ;\n  }\n</style>\n<p>Κοίτα με!</p>',
+    checks: [
+      c => /background-color\s*:\s*\w+/i.test(c),
+      c => /font-size\s*:\s*[\d]+px/i.test(c)
+    ],
+    errMsg: 'Χρειάζεσαι <code>background-color: ...</code> και <code>font-size: ...px</code>!',
+    stars: 3
+  },
+  {
+    id: 7,
+    level: 'Συνδυασμός',
+    badge: '🚀 Pro',
+    bcolor: '#eeedfe', btcolor: '#3C3489',
+    title: 'Φτιάξε μια μικρή ιστοσελίδα!',
+    desc: 'Συνδύασε όλα όσα έμαθες: τίτλο, παράγραφο, λίστα, link, και CSS για χρώμα!',
+    hint: 'Βάλε <code>&lt;style&gt;</code> με χρώματα, μετά <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;ul&gt;&lt;li&gt;</code>, <code>&lt;a href&gt;</code>',
+    starter: '<style>\n\n</style>\n\n',
+    checks: [
+      c => /<h[1-6][^>]*>.+<\/h[1-6]>/i.test(c),
+      c => /<p[^>]*>.+<\/p>/i.test(c),
+      c => /<li[^>]*>.+<\/li>/i.test(c),
+      c => /<a\s[^>]*href/i.test(c),
+      c => /<style[^>]*>[\s\S]{5,}<\/style>/i.test(c)
+    ],
+    errMsg: 'Χρειάζεσαι: τίτλο, παράγραφο, λίστα, link, και CSS!',
+    stars: 3
+  }
+];
+
+const levels = [...new Set(challenges.map(c => c.level))];
+let currentLevel = levels[0];
+let completed = new Array(challenges.length).fill(false);
+let earnedStars = new Array(challenges.length).fill(0);
+let hintShown = new Array(challenges.length).fill(false);
+let userCode = challenges.map(c => c.starter);
+
+function totalStars() { return earnedStars.reduce((a, b) => a + b, 0); }
+function totalDone()  { return completed.filter(Boolean).length; }
+
+function updateProgress() {
+  document.getElementById('pDone').textContent = totalDone();
+  document.getElementById('pStars').textContent = totalStars();
+  document.getElementById('progFill').style.width = Math.round((totalDone() / challenges.length) * 100) + '%';
+}
+
+function buildTabs() {
+  document.getElementById('levelTabs').innerHTML = levels.map(l =>
+    `<button class="ltab${l === currentLevel ? ' on' : ''}" onclick="setLevel('${l}')">${l}</button>`
+  ).join('');
+}
+
+function setLevel(l) {
+  currentLevel = l;
+  buildTabs();
+  renderAll();
+}
+
+function iframeDoc(code) {
+  return `<!DOCTYPE html><html lang="el"><head><meta charset="UTF-8"><style>body{font-family:system-ui,Arial,sans-serif;padding:12px;margin:0;font-size:14px;line-height:1.6}*{box-sizing:border-box}</style></head><body>${code}</body></html>`;
+}
+
+function runCode(id) {
+  const ta = document.getElementById('ta' + id);
+  if (!ta) return;
+  userCode[id] = ta.value;
+  const iframe = document.getElementById('pv' + id);
+  if (iframe) iframe.srcdoc = iframeDoc(ta.value);
+}
+
+function checkCode(id) {
+  const ch = challenges[id];
+  const code = userCode[id];
+  const allOk = ch.checks.every(fn => fn(code));
+  const fb = document.getElementById('fb' + id);
+  if (allOk) {
+    if (!completed[id]) {
+      completed[id] = true;
+      earnedStars[id] = hintShown[id] ? Math.max(1, ch.stars - 1) : ch.stars;
+    }
+    fb.className = 'feedback show fb-ok';
+    fb.innerHTML = '✅ Μπράβο! Πέτυχε! ' + '⭐'.repeat(earnedStars[id]);
+    updateProgress();
+    updateCard(id);
+  } else {
+    fb.className = 'feedback show fb-no';
+    fb.innerHTML = '❌ ' + ch.errMsg;
+  }
+}
+
+function showHint(id) {
+  hintShown[id] = true;
+  const h = document.getElementById('hint' + id);
+  if (h) h.classList.add('show');
+}
+
+function updateCard(id) {
+  const card = document.getElementById('card' + id);
+  if (card && completed[id]) card.classList.add('done');
+  const toprow = document.getElementById('toprow' + id);
+  if (toprow && completed[id]) {
+    const existing = toprow.querySelector('.ch-done-pill');
+    if (!existing) {
+      const pill = document.createElement('span');
+      pill.className = 'ch-done-pill';
+      pill.textContent = 'Ολοκληρώθηκε!';
+      toprow.appendChild(pill);
+    }
+  }
+  const sw = document.getElementById('sw' + id);
+  if (sw) {
+    sw.innerHTML = Array.from({ length: challenges[id].stars }, (_, i) =>
+      `<span class="star${i < earnedStars[id] ? ' lit' : ''}">⭐</span>`
+    ).join('');
+  }
+}
+
+function renderAll() {
+  const area = document.getElementById('challengeArea');
+  const visible = challenges.filter(c => c.level === currentLevel);
+  let html = '';
+
+  visible.forEach(ch => {
+    const done = completed[ch.id];
+    const starsHtml = Array.from({ length: ch.stars }, (_, i) =>
+      `<span class="star${i < earnedStars[ch.id] ? ' lit' : ''}">⭐</span>`
+    ).join('');
+
+    html += `
+    <div class="ch-card${done ? ' done' : ''}" id="card${ch.id}">
+      <div class="ch-top" id="toprow${ch.id}">
+        <span class="ch-badge" style="background:${ch.bcolor};color:${ch.btcolor}">${ch.badge}</span>
+        ${done ? '<span class="ch-done-pill">Ολοκληρώθηκε!</span>' : ''}
+        <div class="stars" id="sw${ch.id}">${starsHtml}</div>
+      </div>
+      <div class="ch-title">${ch.title}</div>
+      <div class="ch-desc">${ch.desc}</div>
+      <div class="ch-hint${hintShown[ch.id] ? ' show' : ''}" id="hint${ch.id}">
+        💡 Βοήθεια: ${ch.hint}
+      </div>
+      <div class="editor-wrap">
+        <div>
+          <div class="pane-label">✏️ Κώδικάς σου</div>
+          <textarea id="ta${ch.id}" spellcheck="false"></textarea>
+        </div>
+        <div class="preview-wrap">
+          <div class="pane-label">👁️ Live αποτέλεσμα</div>
+          <div class="preview-frame">
+            <iframe id="pv${ch.id}" sandbox="allow-same-origin"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="btn-run"  onclick="runCode(${ch.id})">▶ Τρέξε</button>
+        <button class="btn-check" onclick="checkCode(${ch.id})">✓ Έλεγξε</button>
+        <button class="btn-hint"  onclick="showHint(${ch.id})">💡 Βοήθεια</button>
+        <span class="ch-counter">${done ? '✅' : '🔲'} ${ch.id + 1}/${challenges.length}</span>
+      </div>
+      <div class="feedback" id="fb${ch.id}"></div>
+    </div>`;
+  });
+
+  if (totalDone() === challenges.length) {
+    html += `
+    <div class="congrats">
+      <div class="c-icon">🏆</div>
+      <h2>Τα κατάφερες όλα!</h2>
+      <p>Ολοκλήρωσες και τις ${challenges.length} ασκήσεις!<br>
+      Κέρδισες ${totalStars()} αστέρια — είσαι αληθινός web developer!</p>
+      <button class="btn-restart" onclick="restartAll()">Ξανά από την αρχή 🔄</button>
+    </div>`;
+  }
+
+  area.innerHTML = html;
+
+  visible.forEach(ch => {
+    const ta = document.getElementById('ta' + ch.id);
+    if (ta) {
+      ta.value = userCode[ch.id];
+      ta.addEventListener('keydown', e => {
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const s = ta.selectionStart, en = ta.selectionEnd;
+          ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(en);
+          ta.selectionStart = ta.selectionEnd = s + 2;
+        }
+        if (e.key === 'Enter' || e.key === ' ') {
+          userCode[ch.id] = ta.value;
+        }
+      });
+      ta.addEventListener('input', () => {
+        userCode[ch.id] = ta.value;
+      });
+    }
+    const iframe = document.getElementById('pv' + ch.id);
+    if (iframe) iframe.srcdoc = iframeDoc(userCode[ch.id]);
+  });
+
+  updateProgress();
+}
+
+function restartAll() {
+  completed = new Array(challenges.length).fill(false);
+  earnedStars = new Array(challenges.length).fill(0);
+  hintShown = new Array(challenges.length).fill(false);
+  userCode = challenges.map(c => c.starter);
+  currentLevel = levels[0];
+  buildTabs();
+  renderAll();
+  updateProgress();
+}
+
+buildTabs();
+renderAll();
+</script>
+</body>
+</html>

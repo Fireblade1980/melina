@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μαθηματικά Ε΄ Δημοτικού</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f8f8f6;color:#1a1a1a;line-height:1.6}
+.app{max-width:860px;margin:0 auto;padding:1rem}
+.header{padding:1.25rem 0 1rem;border-bottom:1px solid #e0e0e0;margin-bottom:1rem}
+h1{font-size:22px;font-weight:500;margin-bottom:0.25rem}
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #e0e0e0}
+.nav-btn{padding:6px 14px;font-size:13px;border:1px solid #ccc;border-radius:20px;background:#fff;color:#555;cursor:pointer;transition:all 0.2s}
+.nav-btn:hover{background:#f0f0f0}
+.nav-btn.active{background:#534AB7;color:white;border-color:#534AB7}
+.nav-btn.final{background:#1D9E75;color:white;border-color:#1D9E75}
+.section{display:none}
+.section.active{display:block}
+h2{font-size:18px;font-weight:500;margin:1.5rem 0 0.75rem;color:#534AB7}
+h3{font-size:16px;font-weight:500;margin:1.2rem 0 0.5rem}
+.intro{background:#EEEDFE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:15px;color:#3C3489}
+.card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem}
+.highlight{background:#E1F5EE;border-left:3px solid #1D9E75;border-radius:0 8px 8px 0;padding:0.75rem 1rem;margin:0.75rem 0;font-size:15px;color:#085041}
+.rule-box{background:#EEEDFE;border-radius:8px;padding:0.75rem 1rem;margin:0.5rem 0;font-size:15px;color:#3C3489}
+.example{background:#f5f5f3;border-radius:8px;padding:0.75rem 1rem;margin:0.5rem 0;font-size:15px}
+.big-num{font-size:28px;font-weight:500;color:#534AB7}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0.75rem 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:0.75rem 0}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:0.75rem 0}
+th{background:#EEEDFE;color:#3C3489;padding:8px 12px;text-align:left;font-weight:500}
+td{padding:8px 12px;border-bottom:1px solid #eee}
+.quiz-section{background:#f5f5f3;border-radius:12px;padding:1.25rem;margin-top:1.5rem}
+.quiz-section h3{color:#1D9E75;margin-top:0}
+.q-block{background:#fff;border-radius:8px;padding:1rem;margin-bottom:0.75rem;border:1px solid #e0e0e0}
+.q-text{font-size:15px;font-weight:500;margin-bottom:0.75rem}
+.q-options{display:flex;flex-direction:column;gap:6px}
+.opt{padding:8px 12px;border:1px solid #ccc;border-radius:8px;cursor:pointer;font-size:14px;background:#fff;color:#1a1a1a;text-align:left;transition:all 0.15s}
+.opt:hover{background:#f5f5f3}
+.opt.correct{background:#E1F5EE;border-color:#1D9E75;color:#085041;font-weight:500}
+.opt.wrong{background:#FCEBEB;border-color:#E24B4A;color:#501313}
+.opt.disabled{pointer-events:none}
+.q-input{display:flex;gap:8px;margin-top:0.5rem}
+.q-input input{flex:1;padding:8px 12px;border:1px solid #ccc;border-radius:8px;font-size:15px;background:#fff;color:#1a1a1a;font-family:inherit}
+.feedback{margin-top:0.5rem;font-size:14px;padding:6px 10px;border-radius:6px;display:none}
+.feedback.ok{background:#E1F5EE;color:#085041;display:block}
+.feedback.err{background:#FCEBEB;color:#501313;display:block}
+.score-bar{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:1rem;margin-top:1rem;display:none}
+.score-bar.show{display:block}
+.score-num{font-size:24px;font-weight:500;color:#534AB7}
+.check-btn{padding:10px 20px;background:#534AB7;color:white;border:none;border-radius:8px;cursor:pointer;font-size:15px;margin-top:0.75rem;font-family:inherit}
+.check-btn:hover{background:#3C3489}
+.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:500}
+.badge-purple{background:#EEEDFE;color:#3C3489}
+.badge-green{background:#E1F5EE;color:#085041}
+.badge-amber{background:#FAEEDA;color:#633806}
+.shape-demo{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin:1rem 0}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr}.shape-demo{gap:1rem}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <h1>Μαθηματικά Ε΄ Δημοτικού</h1>
+  <p style="font-size:14px;color:#666">Επίλεξε ένα κεφάλαιο για να αρχίσεις!</p>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="show('div1')">1. Διαιρετότητα</button>
+  <button class="nav-btn" onclick="show('div2')">2. Μονάδες Μέτρησης</button>
+  <button class="nav-btn" onclick="show('div3')">3. Νόμισμα</button>
+  <button class="nav-btn" onclick="show('div4')">4. Γεωμετρικά Σχήματα</button>
+  <button class="nav-btn" onclick="show('div5')">5. Περίμετρος &amp; Εμβαδόν</button>
+  <button class="nav-btn" onclick="show('div6')">6. Κύκλος</button>
+  <button class="nav-btn" onclick="show('div7')">7. Στατιστική</button>
+  <button class="nav-btn" onclick="show('div8')">8. Πιθανότητες</button>
+  <button class="nav-btn final" onclick="show('divFinal')">★ Τελικό Κουίζ</button>
+</div>
+
+<!-- ===== SECTION 1 ===== -->
+<div class="section active" id="div1">
+  <div class="intro">Διαιρετότητα σημαίνει: ένας αριθμός χωρίζεται σε ίσα μέρη χωρίς να περισσεύει τίποτα!</div>
+
+  <h2>Κριτήρια Διαιρετότητας</h2>
+  <p style="font-size:15px;margin-bottom:0.75rem">Χωρίς να διαιρέσεις, μπορείς να ξέρεις αν ένας αριθμός διαιρείται ακριβώς!</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Διαίρεση με το 2</h3>
+      <div class="rule-box">Αν τελειώνει σε <strong>0,2,4,6,8</strong> (άρτιος)</div>
+      <div class="example">Το <strong>348</strong> διαιρείται με 2 ✓ (τελειώνει σε 8)<br>Το <strong>475</strong> δεν διαιρείται ✗</div>
+    </div>
+    <div class="card">
+      <h3>Διαίρεση με το 5</h3>
+      <div class="rule-box">Αν τελειώνει σε <strong>0 ή 5</strong></div>
+      <div class="example">Το <strong>430</strong> διαιρείται ✓<br>Το <strong>325</strong> διαιρείται ✓<br>Το <strong>123</strong> δεν διαιρείται ✗</div>
+    </div>
+    <div class="card">
+      <h3>Διαίρεση με το 10</h3>
+      <div class="rule-box">Αν τελειώνει σε <strong>0</strong></div>
+      <div class="example">Το <strong>560</strong> διαιρείται ✓<br>Το <strong>555</strong> δεν διαιρείται ✗</div>
+    </div>
+    <div class="card">
+      <h3>Διαίρεση με το 3</h3>
+      <div class="rule-box">Αν το <strong>άθροισμα ψηφίων</strong> διαιρείται με 3</div>
+      <div class="example">Το <strong>312</strong>: 3+1+2=<strong>6</strong>, 6÷3=2 ✓<br>Το <strong>145</strong>: 1+4+5=<strong>10</strong> ✗</div>
+    </div>
+    <div class="card">
+      <h3>Διαίρεση με το 9</h3>
+      <div class="rule-box">Αν το <strong>άθροισμα ψηφίων</strong> διαιρείται με 9</div>
+      <div class="example">Το <strong>531</strong>: 5+3+1=<strong>9</strong> ✓<br>Το <strong>412</strong>: 4+1+2=<strong>7</strong> ✗</div>
+    </div>
+  </div>
+
+  <h2>Πρώτοι και Σύνθετοι Αριθμοί</h2>
+  <div class="grid2">
+    <div class="card" style="border-left:3px solid #534AB7">
+      <h3 style="color:#534AB7">Πρώτος αριθμός</h3>
+      <p style="font-size:15px">Διαιρείται <strong>μόνο</strong> με τον εαυτό του και το 1</p>
+      <div style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:6px">
+        <span class="badge badge-purple">2</span><span class="badge badge-purple">3</span><span class="badge badge-purple">5</span><span class="badge badge-purple">7</span><span class="badge badge-purple">11</span><span class="badge badge-purple">13</span><span class="badge badge-purple">17</span><span class="badge badge-purple">19</span>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid #1D9E75">
+      <h3 style="color:#1D9E75">Σύνθετος αριθμός</h3>
+      <p style="font-size:15px">Διαιρείται και με <strong>άλλους</strong> αριθμούς</p>
+      <div style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:6px">
+        <span class="badge badge-green">4</span><span class="badge badge-green">6</span><span class="badge badge-green">8</span><span class="badge badge-green">9</span><span class="badge badge-green">10</span><span class="badge badge-green">12</span><span class="badge badge-green">15</span><span class="badge badge-green">18</span>
+      </div>
+    </div>
+  </div>
+  <div class="highlight">⚠️ Το 1 δεν είναι ούτε πρώτος ούτε σύνθετος — είναι ξεχωριστό!</div>
+
+  <h2>ΜΚΔ — Μέγιστος Κοινός Διαιρέτης</h2>
+  <div class="card">
+    <p style="font-size:15px">Ο <strong>μεγαλύτερος</strong> αριθμός που διαιρεί <strong>και τους δύο</strong> αριθμούς ακριβώς.</p>
+    <div class="example">
+      <strong>Παράδειγμα:</strong> ΜΚΔ(12, 18) = ?<br>
+      Διαιρέτες 12: 1, 2, 3, 4, <strong>6</strong>, 12<br>
+      Διαιρέτες 18: 1, 2, 3, <strong>6</strong>, 9, 18<br>
+      Μέγιστος κοινός = <span class="big-num">6</span>
+    </div>
+  </div>
+
+  <h2>ΕΚΠ — Ελάχιστο Κοινό Πολλαπλάσιο</h2>
+  <div class="card">
+    <p style="font-size:15px">Το <strong>μικρότερο</strong> πολλαπλάσιο που είναι κοινό και για τους δύο αριθμούς.</p>
+    <div class="example">
+      <strong>Παράδειγμα:</strong> ΕΚΠ(4, 6) = ?<br>
+      Πολλαπλάσια 4: 4, 8, <strong>12</strong>, 16...<br>
+      Πολλαπλάσια 6: 6, <strong>12</strong>, 18...<br>
+      Πρώτο κοινό = <span class="big-num">12</span>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h3>🎯 Κουίζ — Διαιρετότητα</h3>
+    <div id="q1_questions"></div>
+    <button class="check-btn" onclick="checkQuiz('q1')">Έλεγχος απαντήσεων</button>
+    <div class="score-bar" id="q1_score"></div>
+  </div>
+</div>
+
+<!-- ===== SECTION 2 ===== -->
+<div class="section" id="div2">
+  <div class="intro">📏 Μετράμε τα πάντα γύρω μας — μήκη, βάρη, χρόνο, χωρητικότητα!</div>
+
+  <h2>Μονάδες Μήκους</h2>
+  <div class="card">
+    <table>
+      <tr><th>Μονάδα</th><th>Σύμβολο</th><th>Ισοδύναμο</th></tr>
+      <tr><td>Χιλιόμετρο</td><td><strong>km</strong></td><td>= 1.000 m</td></tr>
+      <tr><td>Μέτρο</td><td><strong>m</strong></td><td>= 100 cm</td></tr>
+      <tr><td>Εκατοστό</td><td><strong>cm</strong></td><td>= 10 mm</td></tr>
+      <tr><td>Χιλιοστό</td><td><strong>mm</strong></td><td>βασική μονάδα</td></tr>
+    </table>
+    <div class="highlight">📌 Για μικρότερη μονάδα → <strong>×10, ×100, ×1000</strong><br>Για μεγαλύτερη → <strong>÷10, ÷100, ÷1000</strong></div>
+    <div class="example">3 km = 3 × 1000 = <strong>3.000 m</strong> &nbsp;|&nbsp; 450 cm = 450 ÷ 100 = <strong>4,5 m</strong></div>
+  </div>
+
+  <h2>Μονάδες Επιφάνειας</h2>
+  <div class="card">
+    <table>
+      <tr><th>Μονάδα</th><th>Σύμβολο</th><th>Ισοδύναμο</th></tr>
+      <tr><td>Τετρ. χιλιόμετρο</td><td><strong>km²</strong></td><td>= 1.000.000 m²</td></tr>
+      <tr><td>Εκτάριο</td><td><strong>ha</strong></td><td>= 10.000 m²</td></tr>
+      <tr><td>Τετρ. μέτρο</td><td><strong>m²</strong></td><td>= 10.000 cm²</td></tr>
+      <tr><td>Τετρ. εκατοστό</td><td><strong>cm²</strong></td><td>= 100 mm²</td></tr>
+    </table>
+  </div>
+
+  <h2>Μονάδες Βάρους</h2>
+  <div class="card">
+    <table>
+      <tr><th>Μονάδα</th><th>Σύμβολο</th><th>Ισοδύναμο</th></tr>
+      <tr><td>Τόνος</td><td><strong>t</strong></td><td>= 1.000 kg</td></tr>
+      <tr><td>Χιλιόγραμμο</td><td><strong>kg</strong></td><td>= 1.000 g</td></tr>
+      <tr><td>Γραμμάριο</td><td><strong>g</strong></td><td>= 1.000 mg</td></tr>
+    </table>
+    <div class="example">2,5 kg = 2.500 g &nbsp;|&nbsp; 3.000 g = 3 kg</div>
+  </div>
+
+  <h2>Μονάδες Χρόνου</h2>
+  <div class="card">
+    <div class="grid3">
+      <div class="rule-box" style="text-align:center">1 λεπτό<br><strong>= 60 δευτερόλεπτα</strong></div>
+      <div class="rule-box" style="text-align:center">1 ώρα<br><strong>= 60 λεπτά</strong></div>
+      <div class="rule-box" style="text-align:center">1 ημέρα<br><strong>= 24 ώρες</strong></div>
+      <div class="rule-box" style="text-align:center">1 εβδομάδα<br><strong>= 7 ημέρες</strong></div>
+      <div class="rule-box" style="text-align:center">1 μήνας<br><strong>≈ 30 ημέρες</strong></div>
+      <div class="rule-box" style="text-align:center">1 χρόνος<br><strong>= 12 μήνες</strong></div>
+    </div>
+    <div class="example">2 ώρες 30 λεπτά = 2×60+30 = <strong>150 λεπτά</strong><br>185 λεπτά = <strong>3 ώρες 5 λεπτά</strong></div>
+  </div>
+
+  <h2>Μονάδες Χωρητικότητας</h2>
+  <div class="card">
+    <table>
+      <tr><th>Μονάδα</th><th>Σύμβολο</th><th>Ισοδύναμο</th></tr>
+      <tr><td>Λίτρο</td><td><strong>L</strong></td><td>βασική μονάδα</td></tr>
+      <tr><td>Χιλιοστόλιτρο</td><td><strong>mL</strong></td><td>1 L = 1.000 mL</td></tr>
+    </table>
+    <div class="example">0,5 L = <strong>500 mL</strong> &nbsp;|&nbsp; 2.500 mL = <strong>2,5 L</strong></div>
+  </div>
+
+  <div class="quiz-section">
+    <h3>🎯 Κουίζ — Μονάδες Μέτρησης</h3>
+    <div id="q2_questions"></div>
+    <button class="check-btn" onclick="checkQuiz('q2')">Έλεγχος απαντήσεων</button>
+    <div class="score-bar" id="q2_score"></div>
+  </div>
+</div>
+
+<!-- ===== SECTION 3 ===== -->
+<div class="section" id="div3">
+  <div class="intro">💶 Το Ευρώ είναι το νόμισμα της Ελλάδας και πολλών χωρών της Ευρώπης.</div>
+
+  <h2>Κέρματα και Χαρτονομίσματα</h2>
+  <div class="card">
+    <p style="font-size:15px;margin-bottom:0.75rem">1 Ευρώ = <strong>100 λεπτά</strong></p>
+    <div class="grid2">
+      <div>
+        <h3 style="font-size:14px;color:#666;margin-bottom:0.5rem">Κέρματα</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span class="badge badge-amber">1 λεπτό</span><span class="badge badge-amber">2 λεπτά</span><span class="badge badge-amber">5 λεπτά</span><span class="badge badge-amber">10 λεπτά</span><span class="badge badge-amber">20 λεπτά</span><span class="badge badge-amber">50 λεπτά</span><span class="badge badge-amber">1 €</span><span class="badge badge-amber">2 €</span>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:14px;color:#666;margin-bottom:0.5rem">Χαρτονομίσματα</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span class="badge badge-green">5 €</span><span class="badge badge-green">10 €</span><span class="badge badge-green">20 €</span><span class="badge badge-green">50 €</span><span class="badge badge-green">100 €</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Προβλήματα με Ευρώ</h2>
+  <div class="card">
+    <h3>Πρόβλημα 1 — Αγορά</h3>
+    <p style="font-size:15px">Ο Γιάννης αγόρασε ένα βιβλίο 7,50€ και ένα στυλό 1,20€. Έδωσε 10€. Πόσα ρέστα πήρε;</p>
+    <div class="example">Σύνολο: 7,50 + 1,20 = <strong>8,70 €</strong><br>Ρέστα: 10 − 8,70 = <strong>1,30 €</strong></div>
+  </div>
+  <div class="card">
+    <h3>Πρόβλημα 2 — Εκπτώσεις</h3>
+    <p style="font-size:15px">Ένα παιχνίδι κοστίζει 24€. Γίνεται έκπτωση 6€. Ποια η νέα τιμή;</p>
+    <div class="example">24 − 6 = <strong>18 €</strong></div>
+  </div>
+  <div class="card">
+    <h3>Πρόβλημα 3 — Αποταμίευση</h3>
+    <p style="font-size:15px">Η Μαρία αποταμιεύει 5,50€ κάθε εβδομάδα. Πόσα θα έχει μετά από 4 εβδομάδες;</p>
+    <div class="example">5,50 × 4 = <strong>22 €</strong></div>
+  </div>
+
+  <div class="quiz-section">
+    <h3>🎯 Κουίζ — Νόμισμα</h3>
+    <div id="q3_questions"></div>
+    <button class="check-btn" onclick="checkQuiz('q3')">Έλεγχος απαντήσεων</button>
+    <div class="score-bar" id="q3_score"></div>
+  </div>
+</div>
+
+<!-- ===== SECTION 4 ===== -->
+<div class="section" id="div4">
+  <div class="intro">📐 Ας γνωρίσουμε τα γεωμετρικά σχήματα και τις ιδιότητές τους!</div>
+
+  <h2>Τρίγωνα</h2>
+  <div class="card">
+    <p style="font-size:15px;margin-bottom:1rem">Κάθε τρίγωνο έχει <strong>3 πλευρές</strong> και <strong>3 γωνίες</strong>. Άθροισμα γωνιών = <strong>180°</strong></p>
+    <div class="shape-demo">
+      <svg width="110" height="100" viewBox="0 0 110 100">
+        <polygon points="55,5 5,95 105,95" fill="#EEEDFE" stroke="#534AB7" stroke-width="2"/>
+        <text x="55" y="78" text-anchor="middle" font-size="11" fill="#3C3489">Ισόπλευρο</text>
+        <text x="55" y="92" text-anchor="middle" font-size="10" fill="#534AB7">3 ίσες πλευρές</text>
+      </svg>
+      <svg width="110" height="100" viewBox="0 0 110 100">
+        <polygon points="20,5 5,95 105,95" fill="#E1F5EE" stroke="#1D9E75" stroke-width="2"/>
+        <text x="45" y="78" text-anchor="middle" font-size="11" fill="#085041">Σκαληνό</text>
+        <text x="45" y="92" text-anchor="middle" font-size="10" fill="#1D9E75">3 διαφ. πλευρές</text>
+      </svg>
+      <svg width="110" height="100" viewBox="0 0 110 100">
+        <polygon points="55,5 5,95 105,95" fill="#FAEEDA" stroke="#BA7517" stroke-width="2"/>
+        <rect x="5" y="83" width="12" height="12" fill="none" stroke="#BA7517" stroke-width="1.5"/>
+        <text x="55" y="78" text-anchor="middle" font-size="11" fill="#633806">Ορθογώνιο</text>
+        <text x="55" y="92" text-anchor="middle" font-size="10" fill="#BA7517">1 γωνία 90°</text>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Παραλληλόγραμμα</h2>
+  <div class="card">
+    <div class="rule-box">Έχουν <strong>2 ζεύγη παράλληλων πλευρών</strong>. Οι απέναντι πλευρές είναι ίσες.</div>
+    <div class="shape-demo">
+      <svg width="120" height="100" viewBox="0 0 120 100">
+        <polygon points="10,80 110,80 110,20 10,20" fill="#E6F1FB" stroke="#185FA5" stroke-width="2"/>
+        <rect x="10" y="68" width="12" height="12" fill="none" stroke="#185FA5" stroke-width="1.5"/>
+        <text x="60" y="55" text-anchor="middle" font-size="11" fill="#0C447C">Ορθογώνιο</text>
+        <text x="60" y="93" text-anchor="middle" font-size="10" fill="#185FA5">4 ορθές γωνίες</text>
+      </svg>
+      <svg width="120" height="100" viewBox="0 0 120 100">
+        <polygon points="20,80 120,80 100,20 0,20" fill="#EEEDFE" stroke="#534AB7" stroke-width="2"/>
+        <text x="60" y="55" text-anchor="middle" font-size="11" fill="#3C3489">Παραλληλόγρ.</text>
+        <text x="60" y="93" text-anchor="middle" font-size="10" fill="#534AB7">απέν. πλευρές ίσες</text>
+      </svg>
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <polygon points="50,5 95,50 50,95 5,50" fill="#E1F5EE" stroke="#1D9E75" stroke-width="2"/>
+        <text x="50" y="54" text-anchor="middle" font-size="11" fill="#085041">Ρόμβος</text>
+        <text x="50" y="93" text-anchor="middle" font-size="10" fill="#1D9E75">4 ίσες πλευρές</text>
+      </svg>
+    </div>
+    <div class="highlight">Το <strong>τετράγωνο</strong> είναι ρόμβος ΚΑΙ ορθογώνιο μαζί!</div>
+  </div>
+
+  <h2>Τραπέζιο</h2>
+  <div class="card">
+    <div class="shape-demo">
+      <svg width="160" height="90" viewBox="0 0 160 90">
+        <polygon points="35,15 125,15 150,75 10,75" fill="#FAECE7" stroke="#D85A30" stroke-width="2"/>
+        <text x="80" y="50" text-anchor="middle" font-size="12" fill="#993C1D">Τραπέζιο</text>
+        <text x="80" y="85" text-anchor="middle" font-size="10" fill="#D85A30">1 ζεύγος παράλληλων πλευρών</text>
+      </svg>
+    </div>
+    <div class="rule-box">Το τραπέζιο έχει <strong>ακριβώς ένα ζεύγος</strong> παράλληλων πλευρών — τις <strong>βάσεις</strong>.</div>
+  </div>
+
+  <div class="quiz-section">
+    <h3>🎯 Κουίζ — Γεωμετρικά Σχήματα</h3>
+    <div id="q4_questions"></div>
+    <button class="check-btn" onclick="checkQuiz('q4')">Έλεγχος απαντήσεων</button>
+    <div class="score-bar" id="q4_score"></div>
+  </div>
+</div>
+
+<!-- ===== SECTION 5 ===== -->
+<div class="section" id="div5">
+  <div class="intro"><strong>Περίμετρος</strong> = άθροισμα πλευρών &nbsp;|&nbsp; <strong>Εμβαδόν</strong> = επιφάνεια σχήματος</div>
+
+  <h2>Τετράγωνο</h2>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <rect x="15" y="15" width="90" height="90" fill="#EEEDFE" stroke="#534AB7" stroke-width="2"/>
+          <text x="60" y="65" text-anchor="middle" font-size="14" fill="#3C3489">α</text>
+          <text x="60" y="11" text-anchor="middle" font-size="11" fill="#534AB7">α</text>
+          <text x="8" y="65" text-anchor="middle" font-size="11" fill="#534AB7">α</text>
+        </svg>
+      </div>
+      <div style="padding-top:1rem">
+        <div class="rule-box">Περίμετρος = α × 4</div>
+        <div class="rule-box">Εμβαδόν = α × α = α²</div>
+        <div class="example">Αν α = 5 cm:<br>Π = 5×4 = <strong>20 cm</strong><br>Ε = 5×5 = <strong>25 cm²</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Ορθογώνιο</h2>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <svg width="150" height="100" viewBox="0 0 150 100">
+          <rect x="10" y="15" width="130" height="70" fill="#E1F5EE" stroke="#1D9E75" stroke-width="2"/>
+          <text x="75" y="55" text-anchor="middle" font-size="13" fill="#085041">π</text>
+          <text x="75" y="11" text-anchor="middle" font-size="11" fill="#1D9E75">μήκος (μ)</text>
+          <text x="5" y="55" text-anchor="middle" font-size="11" fill="#1D9E75">π</text>
+        </svg>
+      </div>
+      <div style="padding-top:1rem">
+        <div class="rule-box">Περίμετρος = 2 × (μ + π)</div>
+        <div class="rule-box">Εμβαδόν = μ × π</div>
+        <div class="example">Αν μ=8, π=5:<br>Π = 2×(8+5) = <strong>26 cm</strong><br>Ε = 8×5 = <strong>40 cm²</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Τρίγωνο</h2>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <svg width="140" height="110" viewBox="0 0 140 110">
+          <polygon points="70,5 5,100 135,100" fill="#FAEEDA" stroke="#BA7517" stroke-width="2"/>
+          <line x1="70" y1="5" x2="70" y2="100" stroke="#BA7517" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="78" y="58" font-size="11" fill="#633806">ύψος (υ)</text>
+          <text x="70" y="76" text-anchor="middle" font-size="11" fill="#BA7517">βάση (β)</text>
+        </svg>
+      </div>
+      <div style="padding-top:1rem">
+        <div class="rule-box">Περίμετρος = α + β + γ</div>
+        <div class="rule-box">Εμβαδόν = (β × υ) ÷ 2</div>
+        <div class="example">β=10, υ=6, πλ. 7,8,10:<br>Π = 7+8+10 = <strong>25 cm</strong><br>Ε = (10×6)÷2 = <strong>30 cm²</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Διαδραστικός Υπολογιστής</h2>
+  <div class="card">
+    <p style="font-size:14px;color:#666;margin-bottom:0.75rem">Επίλεξε σχήμα και άλλαξε τις διαστάσεις:</p>
+    <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap">
+      <button class="opt" id="sb_rect" onclick="setShape('rect')" style="flex:1;min-width:80px">Ορθογώνιο</button>
+      <button class="opt" id="sb_sq" onclick="setShape('sq')" style="flex:1;min-width:80px">Τετράγωνο</button>
+      <button class="opt" id="sb_tri" onclick="setShape('tri')" style="flex:1;min-width:80px">Τρίγωνο</button>
+    </div>
+    <div id="calc_inputs" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:1rem"></div>
+    <div id="calc_result" style="font-size:18px;font-weight:500;color:#534AB7;min-height:2.5rem"></div>
+  </div>
+
+  <div class="quiz-section">
+    <h3>🎯 Κουίζ — Περίμετρος &amp; Εμβαδόν</h3>
+    <div id="q5_questions"></div>
+    <button class="check-btn" onclick="checkQuiz('q5')">Έλεγχος απαντήσεων</button>
+    <div class="score-bar" id="q5_score"></div>
+  </div>
+</div>
+
+<!-- ===== SECTION 6 ===== -->
+<div class="section" id="div6">
+  <div class="intro">⭕ Ο κύκλος είναι ένα από τα πιο τέλεια σχήματα στη φύση!</div>
+
+  <h2>Μέρη του Κύκλου</h2>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <svg width="200" height="200" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="80" fill="#EEEDFE" stroke="#534AB7" stroke-width="2"/>
+          <circle cx="100" cy="100" r="4" fill="#534AB7"/>
+          <line x1="100" y1="100" x2="180" y2="100" stroke="#1D9E75" stroke-width="2.5"/>
+          <text x="145" y="93" text-anchor="middle" font-size="12" fill="#085041" font-weight="500">ακτίνα (α)</text>
+          <line x1="20" y1="100" x2="180" y2="100" stroke="#D85A30" stroke-width="2" stroke-dasharray="5,4"/>
+          <text x="100" y="118" text-anchor="middle" font-size="11" fill="#993C1D">διάμετρος (δ)</text>
+          <text x="100" y="104" text-anchor="middle" font-size="11" fill="#534AB7">Κέντρο Ο</text>
+        </svg>
+      </div>
+      <div style="padding-top:0.5rem">
+        <div class="rule-box">Κέντρο (Ο): το μεσαίο σημείο</div>
+        <div class="rule-box" style="background:#E1F5EE;color:#085041">Ακτίνα (α): κέντρο → περιφέρεια</div>
+        <div class="rule-box" style="background:#FAECE7;color:#993C1D">Διάμετρος (δ) = 2 × α</div>
+        <div class="highlight">Περιφέρεια = 2 × π × α<br>όπου <strong>π ≈ 3,14</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Παραδείγματα</h2>
+  <div class="card">
+    <div class="example"><strong>Αν α = 5 cm:</strong><br>δ = 2×5 = <strong>10 cm</strong><br>Περιφέρεια = 2 × 3,14 × 5 = <strong>31,4 cm</strong></div>
+    <div class="example" style="margin-top:0.5rem"><strong>Αν δ = 12 cm:</strong><br>α = 12÷2 = <strong>6 cm</strong><br>Περιφέρεια = 2 × 3,14 × 6 = <strong>37,68 cm</strong></div>
+  </div>
+
+  <h2>Υπολογιστής Κύκλου</h2>
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem">
+      <label style="font-size:14px;color:#666">Ακτίνα (cm):</label>
+      <input type="range" min="1" max="20" value="5" step="1" id="radius_sl" oninput="updateCircle()" style="flex:1"/>
+      <span id="radius_val" style="font-size:16px;font-weight:500;min-width:30px">5</span>
+    </div>
+    <div id="circle_result" style="font-size:16px;color:#534AB7"></div>
+  </div>
+
+  <div class="quiz-section">
+    <h3>🎯 Κουίζ — Κύκλος</h3>
+    <div id="q6_questions"></div>
+    <button class="check-btn" onclick="checkQuiz('q6')">Έλεγχος απαντήσεων</button>
+    <div class="score-bar" id="q6_score"></div>
+  </div>
+</div>
+
+<!-- ===== SECTION 7 ===== -->
+<div class="section" id="div7">
+  <div class="intro">📊 Η Στατιστική μας βοηθά να <strong>μαζεύουμε</strong>, να <strong>οργανώνουμε</strong> και να <strong>παρουσιάζουμε</strong> δεδομένα!</div>
+
+  <h2>Συλλογή Δεδομένων</h2>
+  <div class="card">
+    <p style="font-size:15px">Οι μαθητές μιας τάξης ρωτήθηκαν για το αγαπημένο τους φρούτο:</p>
+    <table>
+      <tr><th>Φρούτο</th><th>Μετρήσεις</th><th>Σύνολο</th></tr>
+      <tr><td>Μήλο</td><td>|||| ||||</td><td>10</td></tr>
+      <tr><td>Μπανάνα</td><td>|||| |||</td><td>8</td></tr>
+      <tr><td>Πορτοκάλι</td><td>||||</td><td>5</td></tr>
+      <tr><td>Σταφύλι</td><td>|||| ||</td><td>7</td></tr>
+    </table>
+  </div>
+
+  <h2>Ραβδόγραμμα</h2>
+  <div class="card">
+    <svg width="100%" height="200" viewBox="0 0 400 200">
+      <line x1="50" y1="10" x2="50" y2="170" stroke="#ccc" stroke-width="1"/>
+      <line x1="50" y1="170" x2="390" y2="170" stroke="#ccc" stroke-width="1"/>
+      <rect x="70" y="70" width="50" height="100" fill="#534AB7" rx="3"/>
+      <rect x="150" y="90" width="50" height="80" fill="#1D9E75" rx="3"/>
+      <rect x="230" y="120" width="50" height="50" fill="#D85A30" rx="3"/>
+      <rect x="310" y="100" width="50" height="70" fill="#BA7517" rx="3"/>
+      <text x="95" y="185" text-anchor="middle" font-size="11" fill="#666">Μήλο</text>
+      <text x="175" y="185" text-anchor="middle" font-size="11" fill="#666">Μπανάνα</text>
+      <text x="255" y="185" text-anchor="middle" font-size="11" fill="#666">Πορτοκάλι</text>
+      <text x="335" y="185" text-anchor="middle" font-size="11" fill="#666">Σταφύλι</text>
+      <text x="95" y="65" text-anchor="middle" font-size="12" fill="#534AB7" font-weight="500">10</text>
+      <text x="175" y="85" text-anchor="middle" font-size="12" fill="#1D9E75" font-weight="500">8</text>
+      <text x="255" y="115" text-anchor="middle" font-size="12" fill="#D85A30" font-weight="500">5</text>
+      <text x="335" y="95" text-anchor="middle" font-size="12" fill="#BA7517" font-weight="500">7</text>
+      <text x="30" y="173" text-anchor="middle" font-size="10" fill="#666">0</text>
+      <text x="30" y="123" text-anchor="middle" font-size="10" fill="#666">5</text>
+      <text x="30" y="73" text-anchor="middle" font-size="10" fill="#666">10</text>
+    </svg>
+  </div>
+
+  <h2>Κυκλικό Διάγραμμα</h2>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <svg width="180" height="180" viewBox="0 0 180 180">
+          <path d="M90,90 L90,10 A80,80 0 0,1 168,130 Z" fill="#534AB7"/>
+          <path d="M90,90 L168,130 A80,80 0 0,1 50,165 Z" fill="#1D9E75"/>
+          <path d="M90,90 L50,165 A80,80 0 0,1 15,55 Z" fill="#D85A30"/>
+          <path d="M90,90 L15,55 A80,80 0 0,1 90,10 Z" fill="#BA7517"/>
+        </svg>
+      </div>
+      <div style="padding-top:1rem">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:14px;height:14px;background:#534AB7;border-radius:3px;flex-shrink:0"></div><span style="font-size:14px">Μήλο — 10 (33%)</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:14px;height:14px;background:#1D9E75;border-radius:3px;flex-shrink:0"></div><span style="font-size:14px">Μπανάνα — 8 (27%)</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:14px;height:14px;background:#D85A30;border-radius:3px;flex-shrink:0"></div><span style="font-size:14px">Πορτοκάλι — 5 (17%)</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:14px;height:14px;background:#BA7517;border-radius:3px;flex-shrink:0"></div><span style="font-size:14px">Σταφύλι — 7 (23%)</span></div>
+        </div>
+        <div class="highlight" style="margin-top:0.75rem">Σύνολο: 30 μαθητές</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h3>🎯 Κουίζ — Στατιστική</h3>
+    <div id="q7_questions"></div>
+    <button class="check-btn" onclick="checkQuiz('q7')">Έλεγχος απαντήσεων</button>
+    <div class="score-bar" id="q7_score"></div>
+  </div>
+</div>
+
+<!-- ===== SECTION 8 ===== -->
+<div class="section" id="div8">
+  <div class="intro">🎲 Η Πιθανότητα μας λέει πόσο <strong>πιθανό</strong> είναι κάτι να συμβεί!</div>
+
+  <h2>Βέβαιο, Αδύνατο, Πιθανό</h2>
+  <div class="grid3">
+    <div class="card" style="border-left:3px solid #E24B4A;text-align:center">
+      <div style="font-size:24px;margin-bottom:0.5rem;color:#E24B4A">✗</div>
+      <h3 style="color:#E24B4A">Αδύνατο</h3>
+      <p style="font-size:14px">Δεν μπορεί να γίνει ποτέ</p>
+      <div class="example" style="font-size:13px;margin-top:0.5rem">Ζάρι που δείχνει 7</div>
+    </div>
+    <div class="card" style="border-left:3px solid #BA7517;text-align:center">
+      <div style="font-size:24px;margin-bottom:0.5rem;color:#BA7517">?</div>
+      <h3 style="color:#BA7517">Πιθανό</h3>
+      <p style="font-size:14px">Μπορεί να γίνει, δεν είναι σίγουρο</p>
+      <div class="example" style="font-size:13px;margin-top:0.5rem">Ζάρι που δείχνει 3</div>
+    </div>
+    <div class="card" style="border-left:3px solid #1D9E75;text-align:center">
+      <div style="font-size:24px;margin-bottom:0.5rem;color:#1D9E75">✓</div>
+      <h3 style="color:#1D9E75">Βέβαιο</h3>
+      <p style="font-size:14px">Σίγουρα θα γίνει πάντα</p>
+      <div class="example" style="font-size:13px;margin-top:0.5rem">Ζάρι δείχνει αριθμό 1–6</div>
+    </div>
+  </div>
+
+  <h2>Κλίμακα Πιθανότητας</h2>
+  <div class="card">
+    <svg width="100%" height="70" viewBox="0 0 400 70">
+      <line x1="20" y1="35" x2="380" y2="35" stroke="#ccc" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="20" cy="35" r="8" fill="#E24B4A"/>
+      <circle cx="200" cy="35" r="8" fill="#BA7517"/>
+      <circle cx="380" cy="35" r="8" fill="#1D9E75"/>
+      <text x="20" y="60" text-anchor="middle" font-size="12" fill="#A32D2D">Αδύνατο</text>
+      <text x="20" y="18" text-anchor="middle" font-size="11" fill="#E24B4A">0</text>
+      <text x="200" y="60" text-anchor="middle" font-size="12" fill="#BA7517">Πιθανό</text>
+      <text x="200" y="18" text-anchor="middle" font-size="11" fill="#BA7517">1/2</text>
+      <text x="380" y="60" text-anchor="middle" font-size="12" fill="#1D9E75">Βέβαιο</text>
+      <text x="380" y="18" text-anchor="middle" font-size="11" fill="#1D9E75">1</text>
+    </svg>
+  </div>
+
+  <h2>Ζάρι &amp; Νόμισμα</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Ρίψη Ζαριού</h3>
+      <p style="font-size:14px;margin-bottom:0.5rem">Ένα ζάρι έχει 6 πλευρές (1–6)</p>
+      <div class="example">Πιθανότητα να βγει 4: <strong>1/6</strong></div>
+      <div class="example">Πιθανότητα άρτιου (2,4,6): <strong>3/6 = 1/2</strong></div>
+    </div>
+    <div class="card">
+      <h3>Ρίψη Νομίσματος</h3>
+      <p style="font-size:14px;margin-bottom:0.5rem">Νόμισμα: κορόνα ή γράμματα</p>
+      <div class="example">Πιθανότητα κορόνας: <strong>1/2</strong></div>
+      <div class="example">Πιθανότητα γραμμάτων: <strong>1/2</strong></div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h3>🎯 Κουίζ — Πιθανότητες</h3>
+    <div id="q8_questions"></div>
+    <button class="check-btn" onclick="checkQuiz('q8')">Έλεγχος απαντήσεων</button>
+    <div class="score-bar" id="q8_score"></div>
+  </div>
+</div>
+
+<!-- ===== FINAL QUIZ ===== -->
+<div class="section" id="divFinal">
+  <div class="intro" style="background:#E1F5EE;color:#085041">🏆 <strong>Τελικό Κουίζ</strong> — Ελέγξε αν θυμάσαι όλη την ύλη!</div>
+  <div class="quiz-section" style="background:#fff;padding:0">
+    <div id="qF_questions"></div>
+    <button class="check-btn" onclick="checkQuiz('qF')" style="background:#1D9E75">Έλεγχος Τελικού Κουίζ</button>
+    <div class="score-bar" id="qF_score"></div>
+  </div>
+</div>
+
+</div><!-- end .app -->
+
+<script>
+var currentShape='rect';
+var quizData={
+  q1:[
+    {type:'mc',q:'Ποιος αριθμός διαιρείται με το 3;',opts:['124','312','217','415'],ans:1},
+    {type:'mc',q:'Ο 135 διαιρείται με ποιους αριθμούς;',opts:['Μόνο 5','Μόνο 3','3 και 5 και 9','2 και 5'],ans:2},
+    {type:'inp',q:'Βρες τον ΜΚΔ(8, 12) =',ans:'4'},
+    {type:'inp',q:'Βρες το ΕΚΠ(3, 4) =',ans:'12'},
+    {type:'mc',q:'Ποιος είναι πρώτος αριθμός;',opts:['9','15','17','21'],ans:2},
+    {type:'mc',q:'Ο 72 διαιρείται με το 9; (7+2=9)',opts:['Ναι','Όχι'],ans:0}
+  ],
+  q2:[
+    {type:'inp',q:'3 km = _____ m',ans:'3000'},
+    {type:'inp',q:'500 cm = _____ m',ans:'5'},
+    {type:'inp',q:'2,5 kg = _____ g',ans:'2500'},
+    {type:'mc',q:'1 ώρα 45 λεπτά = πόσα λεπτά;',opts:['85','100','105','115'],ans:2},
+    {type:'inp',q:'1500 mL = _____ L',ans:'1.5'},
+    {type:'mc',q:'Ποια είναι η μεγαλύτερη μονάδα μήκους;',opts:['cm','mm','km','m'],ans:2}
+  ],
+  q3:[
+    {type:'inp',q:'Αγόρασα 3,50€ και 4,20€. Έδωσα 10€. Ρέστα = _____ €',ans:'2.30'},
+    {type:'mc',q:'Παιχνίδι 18€, έκπτωση 4€. Νέα τιμή;',opts:['22€','14€','12€','16€'],ans:1},
+    {type:'inp',q:'Αποταμιεύω 3,50€/εβδομάδα. Σε 6 εβδομάδες = _____ €',ans:'21'},
+    {type:'mc',q:'Πόσα λεπτά κάνουν 2 ευρώ;',opts:['20','100','200','150'],ans:2}
+  ],
+  q4:[
+    {type:'mc',q:'Τι είναι ο ρόμβος;',opts:['Τρίγωνο με ίσες πλευρές','Παραλληλόγραμμο με 4 ίσες πλευρές','Τραπέζιο','Κύκλος'],ans:1},
+    {type:'mc',q:'Πόσα ζεύγη παράλληλων έχει το τραπέζιο;',opts:['0','1 ζεύγος','2 ζεύγη','3 ζεύγη'],ans:1},
+    {type:'mc',q:'Το άθροισμα γωνιών τριγώνου είναι:',opts:['90°','180°','270°','360°'],ans:1},
+    {type:'mc',q:'Το τετράγωνο είναι:',opts:['Μόνο ρόμβος','Μόνο ορθογώνιο','Και ρόμβος και ορθογώνιο','Τραπέζιο'],ans:2}
+  ],
+  q5:[
+    {type:'inp',q:'Περίμετρος τετραγώνου πλευράς 7 cm = _____ cm',ans:'28'},
+    {type:'inp',q:'Εμβαδόν ορθογωνίου μ=9, π=4 cm = _____ cm²',ans:'36'},
+    {type:'inp',q:'Εμβαδόν τριγώνου β=10, υ=8 cm = _____ cm²',ans:'40'},
+    {type:'mc',q:'Περίμετρος ορθογωνίου μ=6, π=3 =',opts:['18 cm','18 cm²','9 cm','24 cm'],ans:0},
+    {type:'inp',q:'Περίμετρος τριγώνου πλευρές 5,7,9 cm = _____ cm',ans:'21'}
+  ],
+  q6:[
+    {type:'inp',q:'Αν ακτίνα = 6 cm, διάμετρος = _____ cm',ans:'12'},
+    {type:'inp',q:'Αν διάμετρος = 10 cm, ακτίνα = _____ cm',ans:'5'},
+    {type:'mc',q:'Περιφέρεια κύκλου α=5 cm (π=3,14) =',opts:['31,4 cm','15,7 cm','62,8 cm','10 cm'],ans:0},
+    {type:'mc',q:'Τι σχέση έχουν ακτίνα και διάμετρος;',opts:['δ = α/2','δ = α+2','δ = 2×α','δ = α²'],ans:2}
+  ],
+  q7:[
+    {type:'mc',q:'Μήλο=10, Μπανάνα=8, Πορτοκάλι=5, Σταφύλι=7. Σύνολο μαθητών;',opts:['25','28','30','32'],ans:2},
+    {type:'mc',q:'Ποιο φρούτο προτιμά ο μικρότερος αριθμός;',opts:['Μήλο','Μπανάνα','Πορτοκάλι','Σταφύλι'],ans:2},
+    {type:'mc',q:'Πόσοι περισσότεροι προτιμούν μήλο από μπανάνα;',opts:['1','2','3','4'],ans:1},
+    {type:'mc',q:'Πώς λέγεται το γράφημα με ράβδους;',opts:['Κυκλικό','Ραβδόγραμμα','Πίνακας','Ιστόγραμμα'],ans:1}
+  ],
+  q8:[
+    {type:'mc',q:'Ρίχνω ζάρι. Πιθανότητα να βγει 6:',opts:['1/3','1/4','1/6','1/2'],ans:2},
+    {type:'mc',q:'Ποιο είναι βέβαιο γεγονός;',opts:['Αύριο θα βρέξει','Ο ήλιος θα ανατείλει αύριο','Θα κερδίσω στη λοταρία','Ζάρι θα δείξει 7'],ans:1},
+    {type:'mc',q:'Ποιο είναι αδύνατο γεγονός;',opts:['Βγάλω κορόνα','Βγάλω 3 στο ζάρι','Βγάλω 0 στο ζάρι','Αύριο θα χιονίσει'],ans:2},
+    {type:'mc',q:'Ρίχνω νόμισμα. Πιθανότητα γραμμάτων:',opts:['1/6','1/4','1/3','1/2'],ans:3}
+  ],
+  qF:[
+    {type:'mc',q:'[Διαιρετότητα] Ο 144 διαιρείται με το 9; (1+4+4=9)',opts:['Ναι','Όχι (1+4+4=10)'],ans:0},
+    {type:'mc',q:'[Πρώτοι] Ποιος είναι πρώτος αριθμός;',opts:['25','29','27','21'],ans:1},
+    {type:'inp',q:'[ΜΚΔ] ΜΚΔ(15, 25) =',ans:'5'},
+    {type:'inp',q:'[ΕΚΠ] ΕΚΠ(6, 9) =',ans:'18'},
+    {type:'inp',q:'[Μήκος] 4,5 km = _____ m',ans:'4500'},
+    {type:'inp',q:'[Βάρος] 3.200 g = _____ kg',ans:'3.2'},
+    {type:'mc',q:'[Χρόνος] 2 ώρες 20 λεπτά = πόσα λεπτά;',opts:['120','140','160','180'],ans:1},
+    {type:'inp',q:'[Νόμισμα] 2 βιβλία × 5,50€ = _____ €',ans:'11'},
+    {type:'mc',q:'[Γεωμετρία] Το ορθογώνιο έχει:',opts:['4 ίσες πλευρές','2 ζεύγη ίσων πλευρών και 4 ορθές γωνίες','1 ζεύγος παράλληλων','3 πλευρές'],ans:1},
+    {type:'inp',q:'[Εμβαδόν] Τετράγωνο πλευράς 8 cm = _____ cm²',ans:'64'},
+    {type:'inp',q:'[Περίμετρος] Ορθογώνιο μ=12, π=5 cm = _____ cm',ans:'34'},
+    {type:'inp',q:'[Κύκλος] Ακτίνα 7 cm → διάμετρος = _____ cm',ans:'14'},
+    {type:'mc',q:'[Στατιστική] Τι χρησιμοποιούμε για οπτική παρουσίαση;',opts:['Αριθμομηχανή','Γραφήματα','Ζάρι','Νόμισμα'],ans:1},
+    {type:'mc',q:'[Πιθανότητες] Ρίψη ζαριού. Πιθανότητα άρτιου;',opts:['1/6','1/3','1/2','2/3'],ans:2},
+    {type:'mc',q:'[Πιθανότητες] Να βγει 7 σε ζάρι (1–6) είναι:',opts:['Βέβαιο','Πιθανό','Αδύνατο','Εύκολο'],ans:2}
+  ]
+};
+
+function show(id){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active')});
+  var map={div1:0,div2:1,div3:2,div4:3,div5:4,div6:5,div7:6,div8:7,divFinal:8};
+  var btns=document.querySelectorAll('.nav-btn');
+  if(map[id]!==undefined) btns[map[id]].classList.add('active');
+}
+
+function renderQuizzes(){
+  Object.keys(quizData).forEach(function(qid){
+    var container=document.getElementById(qid+'_questions');
+    if(!container) return;
+    var html='';
+    quizData[qid].forEach(function(q,i){
+      html+='<div class="q-block" id="'+qid+'_q'+i+'">';
+      html+='<div class="q-text">'+q.q+'</div>';
+      if(q.type==='mc'){
+        html+='<div class="q-options">';
+        q.opts.forEach(function(o,j){
+          html+='<button class="opt" onclick="pickOpt(\''+qid+'\','+i+','+j+',this)">'+o+'</button>';
+        });
+        html+='</div>';
+      } else {
+        html+='<div class="q-input"><input type="text" placeholder="Απάντηση..." id="'+qid+'_inp'+i+'"/></div>';
+      }
+      html+='<div class="feedback" id="'+qid+'_fb'+i+'"></div>';
+      html+='</div>';
+    });
+    container.innerHTML=html;
+  });
+}
+
+var selected={};
+function pickOpt(qid,qi,j,btn){
+  var key=qid+'_'+qi;
+  if(selected[key]!=null) return;
+  selected[key]=j;
+  btn.parentElement.querySelectorAll('.opt').forEach(function(b){b.classList.add('disabled')});
+}
+
+function checkQuiz(qid){
+  var qs=quizData[qid];
+  var correct=0;
+  qs.forEach(function(q,i){
+    var fb=document.getElementById(qid+'_fb'+i);
+    if(q.type==='mc'){
+      var key=qid+'_'+i;
+      var sel=selected[key];
+      var btns=document.getElementById(qid+'_q'+i).querySelectorAll('.opt');
+      btns.forEach(function(b){b.classList.add('disabled')});
+      if(sel===undefined||sel===null){
+        fb.textContent='Δεν επιλέξατε απάντηση!';
+        fb.className='feedback err';
+      } else if(sel===q.ans){
+        btns[sel].classList.add('correct');
+        fb.textContent='Σωστά! ✓';
+        fb.className='feedback ok';
+        correct++;
+      } else {
+        btns[sel].classList.add('wrong');
+        btns[q.ans].classList.add('correct');
+        fb.textContent='Λάθος. Σωστό: '+q.opts[q.ans];
+        fb.className='feedback err';
+      }
+    } else {
+      var inp=document.getElementById(qid+'_inp'+i);
+      var val=inp.value.trim().replace(',','.');
+      var ans=String(q.ans).replace(',','.');
+      if(val===ans){
+        inp.style.borderColor='#1D9E75';
+        fb.textContent='Σωστά! ✓';
+        fb.className='feedback ok';
+        correct++;
+      } else {
+        inp.style.borderColor='#E24B4A';
+        fb.textContent='Λάθος. Σωστό: '+q.ans;
+        fb.className='feedback err';
+      }
+      inp.disabled=true;
+    }
+  });
+  var scoreEl=document.getElementById(qid+'_score');
+  var pct=Math.round(correct/qs.length*100);
+  var emoji=pct===100?'🏆':pct>=70?'👍':'💪';
+  scoreEl.innerHTML='<span class="score-num">'+correct+'/'+qs.length+'</span> <span style="font-size:16px;color:#666"> ερωτήσεις σωστά ('+pct+'%) '+emoji+'</span>';
+  scoreEl.classList.add('show');
+}
+
+function setShape(s){
+  currentShape=s;
+  ['rect','sq','tri'].forEach(function(x){document.getElementById('sb_'+x).classList.remove('correct')});
+  document.getElementById('sb_'+s).classList.add('correct');
+  var inp=document.getElementById('calc_inputs');
+  if(s==='rect'){
+    inp.innerHTML='<div><label style="font-size:13px;color:#666">Μήκος (cm)</label><br><input type="number" id="ci1" value="8" min="1" style="width:80px;margin-top:4px;padding:6px;border:1px solid #ccc;border-radius:6px;font-family:inherit" oninput="calcShape()"/></div><div><label style="font-size:13px;color:#666">Πλάτος (cm)</label><br><input type="number" id="ci2" value="5" min="1" style="width:80px;margin-top:4px;padding:6px;border:1px solid #ccc;border-radius:6px;font-family:inherit" oninput="calcShape()"/></div>';
+  } else if(s==='sq'){
+    inp.innerHTML='<div><label style="font-size:13px;color:#666">Πλευρά (cm)</label><br><input type="number" id="ci1" value="6" min="1" style="width:80px;margin-top:4px;padding:6px;border:1px solid #ccc;border-radius:6px;font-family:inherit" oninput="calcShape()"/></div>';
+  } else {
+    inp.innerHTML='<div><label style="font-size:13px;color:#666">Βάση (cm)</label><br><input type="number" id="ci1" value="8" min="1" style="width:80px;margin-top:4px;padding:6px;border:1px solid #ccc;border-radius:6px;font-family:inherit" oninput="calcShape()"/></div><div><label style="font-size:13px;color:#666">Ύψος (cm)</label><br><input type="number" id="ci2" value="5" min="1" style="width:80px;margin-top:4px;padding:6px;border:1px solid #ccc;border-radius:6px;font-family:inherit" oninput="calcShape()"/></div><div><label style="font-size:13px;color:#666">Πλευρά α</label><br><input type="number" id="ci3" value="7" min="1" style="width:80px;margin-top:4px;padding:6px;border:1px solid #ccc;border-radius:6px;font-family:inherit" oninput="calcShape()"/></div><div><label style="font-size:13px;color:#666">Πλευρά β</label><br><input type="number" id="ci4" value="9" min="1" style="width:80px;margin-top:4px;padding:6px;border:1px solid #ccc;border-radius:6px;font-family:inherit" oninput="calcShape()"/></div>';
+  }
+  calcShape();
+}
+
+function calcShape(){
+  var res=document.getElementById('calc_result');
+  var get=function(id){var el=document.getElementById(id);return el?parseFloat(el.value)||0:0;};
+  if(currentShape==='rect'){
+    var m=get('ci1'),p=get('ci2');
+    res.innerHTML='Περίμετρος = 2×('+m+'+'+p+') = <strong>'+(2*(m+p))+' cm</strong> &nbsp;|&nbsp; Εμβαδόν = '+m+'×'+p+' = <strong>'+(m*p)+' cm²</strong>';
+  } else if(currentShape==='sq'){
+    var a=get('ci1');
+    res.innerHTML='Περίμετρος = '+a+'×4 = <strong>'+(a*4)+' cm</strong> &nbsp;|&nbsp; Εμβαδόν = '+a+'² = <strong>'+(a*a)+' cm²</strong>';
+  } else {
+    var b=get('ci1'),u=get('ci2'),a1=get('ci3'),a2=get('ci4');
+    res.innerHTML='Περίμετρος = '+b+'+'+a1+'+'+a2+' = <strong>'+(b+a1+a2)+' cm</strong> &nbsp;|&nbsp; Εμβαδόν = ('+b+'×'+u+')÷2 = <strong>'+((b*u)/2).toFixed(1)+' cm²</strong>';
+  }
+}
+
+function updateCircle(){
+  var r=parseFloat(document.getElementById('radius_sl').value);
+  document.getElementById('radius_val').textContent=r;
+  var d=2*r;
+  var perf=(2*3.14*r).toFixed(2);
+  document.getElementById('circle_result').innerHTML='Διάμετρος = 2×'+r+' = <strong>'+d+' cm</strong> &nbsp;|&nbsp; Περιφέρεια = 2×3,14×'+r+' = <strong>'+perf+' cm</strong>';
+}
+
+renderQuizzes();
+setShape('rect');
+updateCircle();
+</script>
+</body>
+</html>

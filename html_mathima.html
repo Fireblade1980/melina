@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Μάθε HTML, CSS & JavaScript!</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --border: #e8e4dc;
+    --text: #1a1a1a;
+    --muted: #6b6860;
+    --green: #1D9E75;
+    --green-light: #e1f5ee;
+    --blue: #185FA5;
+    --blue-light: #e6f1fb;
+    --amber: #BA7517;
+    --amber-light: #faeeda;
+    --red: #993C1D;
+    --red-light: #faece7;
+    --purple: #534AB7;
+    --purple-light: #eeedfe;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .app { max-width: 680px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  .progress-wrap { margin-bottom: 20px; }
+  .progress-bar { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), #5DCAA5); border-radius: 5px; transition: width 0.5s ease; }
+  .progress-label { font-size: 12px; color: var(--muted); margin-top: 6px; text-align: right; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .hero { text-align: center; padding: 2rem 1rem 1rem; }
+  .hero-emoji { font-size: 64px; margin-bottom: 12px; display: block; }
+  .hero h1 { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 8px; line-height: 1.2; }
+  .hero p { font-size: 16px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+
+  .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 28px; }
+  .trio-card { padding: 14px 10px; border-radius: var(--radius-sm); text-align: center; }
+  .trio-card .t-icon { font-size: 28px; margin-bottom: 6px; }
+  .trio-card .t-name { font-size: 13px; font-weight: 700; }
+  .trio-card .t-sub { font-size: 11px; margin-top: 2px; }
+
+  .card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .b-html   { background: var(--red-light);    color: var(--red);    }
+  .b-css    { background: var(--blue-light);   color: var(--blue);   }
+  .b-js     { background: var(--amber-light);  color: var(--amber);  }
+  .b-html5  { background: #FAECE7;             color: #993C1D;       }
+  .b-future { background: var(--purple-light); color: var(--purple); }
+
+  .card-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 19px; font-weight: 800; color: var(--text);
+    margin-bottom: 12px;
+  }
+  .card-title .ci { font-size: 22px; }
+
+  .card p { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 10px; }
+
+  .code-box {
+    background: #1e1e2e;
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.9;
+    white-space: pre;
+  }
+  .tag  { color: #89dceb; }
+  .attr { color: #f9e2af; }
+  .val  { color: #fab387; }
+  .txt  { color: #cdd6f4; }
+  .sel  { color: #cba6f7; }
+  .prop { color: #f9e2af; }
+  .cv   { color: #fab387; }
+  .kw   { color: #89dceb; }
+  .fn   { color: #f9e2af; }
+  .str  { color: #fab387; }
+  .cmt  { color: #6c7086; font-style: italic; }
+
+  .preview {
+    background: #fafafa;
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    margin-top: 10px;
+  }
+  .preview-label { font-size: 11px; color: var(--muted); margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .info-box {
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-top: 10px;
+  }
+
+  .tag-pill {
+    display: inline-block;
+    background: var(--green-light);
+    color: #0F6E56;
+    font-size: 12px;
+    font-family: 'Fira Code', monospace;
+    padding: 3px 9px;
+    border-radius: 6px;
+    margin: 2px;
+    font-weight: 500;
+  }
+
+  /* Heading scale demo */
+  .heading-scale { margin: 10px 0; }
+  .heading-scale .hs-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .heading-scale .hs-row:last-child { border-bottom: none; }
+  .hs-tag { font-family: 'Fira Code', monospace; font-size: 12px; color: #89dceb; background: #1e1e2e; padding: 2px 8px; border-radius: 5px; white-space: nowrap; }
+  .hs-text { font-weight: 800; color: var(--text); }
+
+  .mini-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin: 10px 0; }
+  .mini-card { padding: 12px 8px; border-radius: var(--radius-sm); text-align: center; }
+  .mini-card .m-icon { font-size: 24px; margin-bottom: 5px; }
+  .mini-card .m-title { font-size: 12px; font-weight: 700; }
+  .mini-card .m-sub { font-size: 11px; margin-top: 2px; }
+
+  .future-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+  .future-card { background: var(--bg); border-radius: var(--radius-sm); padding: 12px; }
+  .future-card .fc-t { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .future-card .fc-d { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .nav-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
+  .btn {
+    padding: 12px 22px;
+    border-radius: var(--radius-sm);
+    font-size: 15px; font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    background: var(--surface); color: var(--text);
+    transition: all 0.18s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:hover, .btn:active { background: var(--bg); }
+  .btn.primary { background: var(--green); color: white; border-color: var(--green); }
+  .btn.primary:hover, .btn.primary:active { opacity: 0.88; }
+
+  .btn-start {
+    background: var(--green); color: white; border: none;
+    padding: 16px 40px; border-radius: var(--radius);
+    font-size: 18px; font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer; transition: opacity 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-start:hover, .btn-start:active { opacity: 0.88; }
+
+  .step-dots { display: flex; gap: 5px; justify-content: center; margin-bottom: 16px; flex-wrap: wrap; }
+  .dot { width: 22px; height: 7px; border-radius: 4px; background: var(--border); transition: background 0.3s; }
+  .dot.done { background: var(--green); }
+  .dot.cur  { background: var(--blue); }
+
+  /* Quiz */
+  .quiz-counter { font-size: 13px; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .quiz-q { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 14px; line-height: 1.5; }
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .opt {
+    text-align: left; padding: 13px 16px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    font-size: 14px; font-weight: 600;
+    font-family: 'Nunito', sans-serif;
+    color: var(--text); cursor: pointer; transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .opt:hover:not(:disabled) { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+  .opt.correct { background: #eaf3de; border-color: #639922; color: #27500A; }
+  .opt.wrong   { background: #fcebeb; border-color: #a32d2d; color: #501313; }
+
+  .fill-inp {
+    width: 100%; padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 15px; font-family: 'Fira Code', monospace;
+    color: var(--text); background: var(--surface);
+    margin-bottom: 10px; outline: none;
+  }
+  .fill-inp:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(29,158,117,0.12); }
+
+  .feedback {
+    padding: 12px 14px; border-radius: var(--radius-sm);
+    font-size: 14px; line-height: 1.5;
+    display: none; margin-bottom: 12px; font-weight: 600;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: #eaf3de; color: #3B6D11; border: 1.5px solid #639922; }
+  .feedback.no { background: #fcebeb; color: #791F1F; border: 1.5px solid #a32d2d; }
+
+  /* Score */
+  .score-wrap { text-align: center; padding: 2rem 1rem; }
+  .score-circle {
+    width: 140px; height: 140px; border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-size: 40px;
+  }
+  .score-circle span { font-size: 19px; font-weight: 800; margin-top: 4px; }
+  .score-title  { font-size: 23px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+  .score-sub    { font-size: 15px; color: var(--muted); margin-bottom: 24px; }
+  .wrong-list   { text-align: left; margin-bottom: 24px; }
+  .wrong-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 12px; margin-bottom: 8px;
+    background: var(--surface); border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+  }
+  .wi-q { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .score-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+  .demo-btn {
+    padding: 10px 18px; border-radius: var(--radius-sm); border: none;
+    font-size: 14px; font-weight: 700;
+    font-family: 'Nunito', sans-serif; cursor: pointer; transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Structure diagram */
+  .struct-tree {
+    background: #1e1e2e;
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    margin: 10px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 2;
+  }
+  .st-line { display: block; }
+  .st-indent1 { padding-left: 20px; }
+  .st-indent2 { padding-left: 40px; }
+  .st-indent3 { padding-left: 60px; }
+  .st-tag   { color: #89dceb; }
+  .st-attr  { color: #f9e2af; }
+  .st-val   { color: #fab387; }
+  .st-txt   { color: #cdd6f4; }
+  .st-cmt   { color: #6c7086; font-style: italic; }
+
+  /* p variants */
+  .p-demo { background: white; padding: 10px; border-radius: 8px; }
+  .p-demo p { font-family: 'Nunito', sans-serif; font-size: 14px; color: #222; line-height: 1.6; margin-bottom: 8px; }
+  .p-demo p:last-child { margin-bottom: 0; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- S0: Welcome -->
+  <div class="screen active" id="s0">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="pf0" style="width:0%"></div></div>
+      <div class="progress-label" id="pl0">Πρόοδος: 0%</div>
+    </div>
+    <div class="hero">
+      <span class="hero-emoji">🌐</span>
+      <h1>Το Web από την αρχή!</h1>
+      <p>Θα μάθεις HTML, CSS, JavaScript, HTML5 και το μέλλον του web — βήμα βήμα!</p>
+      <div class="trio">
+        <div class="trio-card" style="background:#faece7">
+          <div class="t-icon">🏗️</div><div class="t-name" style="color:#793B33">HTML</div><div class="t-sub" style="color:#993C1D">Η δομή</div>
+        </div>
+        <div class="trio-card" style="background:#e6f1fb">
+          <div class="t-icon">🎨</div><div class="t-name" style="color:#0C447C">CSS</div><div class="t-sub" style="color:#185FA5">Τα χρώματα</div>
+        </div>
+        <div class="trio-card" style="background:#faeeda">
+          <div class="t-icon">⚡</div><div class="t-name" style="color:#633806">JavaScript</div><div class="t-sub" style="color:#854F0B">Η κίνηση</div>
+        </div>
+      </div>
+      <button class="btn-start" onclick="goto(1)">Ας ξεκινήσουμε →</button>
+    </div>
+  </div>
+
+  <!-- S1: Δομή HTML εγγράφου -->
+  <div class="screen" id="s1">
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf1"></div></div><div class="progress-label" id="pl1"></div></div>
+    <div class="step-dots" id="ld1"></div>
+    <div class="card">
+      <span class="badge b-html">HTML — Βασική Δομή</span>
+      <div class="card-title"><span class="ci">📄</span>Η δομή κάθε HTML σελίδας</div>
+      <p>Κάθε ιστοσελίδα έχει μια <strong>συγκεκριμένη δομή</strong>. Σαν να χτίζεις σπίτι — υπάρχει σκελετός που πάντα υπάρχει!</p>
+      <p>Ιδού τα 4 βασικά μέρη που βλέπεις σε <em>κάθε</em> HTML αρχείο. Παρατήρησε ότι τα περισσότερα tags έχουν <strong>άνοιγμα</strong> <span class="tag-pill">&lt;tag&gt;</span> και <strong>κλείσιμο</strong> <span class="tag-pill">&lt;/tag&gt;</span> — θα μάθεις σύντομα ποια ΔΕΝ κλείνουν!</p>
+
+      <div class="struct-tree">
+<span class="st-line"><span class="st-cmt">&lt;!-- 1. Δηλώνουμε ότι είναι HTML5 --&gt;</span></span>
+<span class="st-line"><span class="st-tag">&lt;!DOCTYPE html&gt;</span></span>
+<span class="st-line"></span>
+<span class="st-line"><span class="st-cmt">&lt;!-- 2. Το "περίβλημα" όλης της σελίδας --&gt;</span></span>
+<span class="st-line"><span class="st-tag">&lt;html </span><span class="st-attr">lang</span><span class="st-tag">=</span><span class="st-val">"el"</span><span class="st-tag">&gt;</span></span>
+<span class="st-line"></span>
+<span class="st-line st-indent1"><span class="st-cmt">&lt;!-- 3. Η "αόρατη" κεφαλίδα --&gt;</span></span>
+<span class="st-line st-indent1"><span class="st-tag">&lt;head&gt;</span></span>
+<span class="st-line st-indent2"><span class="st-tag">&lt;title&gt;</span><span class="st-txt">Η σελίδα μου</span><span class="st-tag">&lt;/title&gt;</span></span>
+<span class="st-line st-indent1"><span class="st-tag">&lt;/head&gt;</span></span>
+<span class="st-line"></span>
+<span class="st-line st-indent1"><span class="st-cmt">&lt;!-- 4. Εδώ μπαίνει ό,τι βλέπει ο χρήστης --&gt;</span></span>
+<span class="st-line st-indent1"><span class="st-tag">&lt;body&gt;</span></span>
+<span class="st-line st-indent2"><span class="st-tag">&lt;h1&gt;</span><span class="st-txt">Γεια σου κόσμε!</span><span class="st-tag">&lt;/h1&gt;</span></span>
+<span class="st-line st-indent2"><span class="st-tag">&lt;p&gt;</span><span class="st-txt">Αυτό είναι κείμενο.</span><span class="st-tag">&lt;/p&gt;</span></span>
+<span class="st-line st-indent1"><span class="st-tag">&lt;/body&gt;</span></span>
+<span class="st-line"></span>
+<span class="st-line"><span class="st-tag">&lt;/html&gt;</span></span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+        <div style="background:#faece7;border-radius:8px;padding:10px">
+          <div style="font-size:12px;font-weight:700;color:#793B33;margin-bottom:4px">1️⃣ &lt;!DOCTYPE html&gt;</div>
+          <div style="font-size:12px;color:#993C1D">Λέει στον browser "αυτό είναι HTML5". Πάντα πρώτο!</div>
+        </div>
+        <div style="background:#e6f1fb;border-radius:8px;padding:10px">
+          <div style="font-size:12px;font-weight:700;color:#0C447C;margin-bottom:4px">2️⃣ &lt;html&gt;</div>
+          <div style="font-size:12px;color:#185FA5">Το "κουτί" που περιέχει ολόκληρη τη σελίδα.</div>
+        </div>
+        <div style="background:#eeedfe;border-radius:8px;padding:10px">
+          <div style="font-size:12px;font-weight:700;color:#3C3489;margin-bottom:4px">3️⃣ &lt;head&gt;</div>
+          <div style="font-size:12px;color:#534AB7">Πληροφορίες για τη σελίδα — <em>δεν φαίνονται</em> στον χρήστη!</div>
+        </div>
+        <div style="background:#eaf3de;border-radius:8px;padding:10px">
+          <div style="font-size:12px;font-weight:700;color:#27500A;margin-bottom:4px">4️⃣ &lt;body&gt;</div>
+          <div style="font-size:12px;color:#3B6D11">Ό,τι υπάρχει εδώ <em>φαίνεται</em> στην οθόνη!</div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="goto(0)">← Πίσω</button>
+      <button class="btn primary" onclick="goto(3)">Επόμενο →</button>
+    </div>
+  </div>
+
+  <!-- S2: Tags που κλείνουν vs self-closing -->
+  <div class="screen" id="s2">
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf2"></div></div><div class="progress-label" id="pl2"></div></div>
+    <div class="step-dots" id="ld2"></div>
+    <div class="card">
+      <span class="badge b-html">HTML — Τύποι Tags</span>
+      <div class="card-title"><span class="ci">🔀</span>Tags που κλείνουν vs tags που ΔΕΝ κλείνουν</div>
+      <p>Στην HTML υπάρχουν <strong>δύο είδη tags</strong>. Πολύ σημαντικό να τα ξέρεις!</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0">
+        <div style="background:#e6f1fb;border-radius:10px;padding:14px">
+          <div style="font-size:13px;font-weight:700;color:#0C447C;margin-bottom:8px">✅ Tags που ΚΛΕΙΝΟΥΝ</div>
+          <div style="font-size:12px;color:#185FA5;margin-bottom:10px">Έχουν άνοιγμα <em>και</em> κλείσιμο. Το κλείσιμο έχει <strong>/</strong> μπροστά.</div>
+          <div style="background:#1e1e2e;border-radius:8px;padding:8px;font-family:'Fira Code',monospace;font-size:12px;line-height:1.9"><span style="color:#89dceb">&lt;h1&gt;</span><span style="color:#cdd6f4">Τίτλος</span><span style="color:#89dceb">&lt;/h1&gt;</span>
+<span style="color:#89dceb">&lt;p&gt;</span><span style="color:#cdd6f4">Κείμενο</span><span style="color:#89dceb">&lt;/p&gt;</span>
+<span style="color:#89dceb">&lt;b&gt;</span><span style="color:#cdd6f4">Έντονο</span><span style="color:#89dceb">&lt;/b&gt;</span>
+<span style="color:#89dceb">&lt;a&gt;</span><span style="color:#cdd6f4">Link</span><span style="color:#89dceb">&lt;/a&gt;</span></div>
+        </div>
+        <div style="background:#faece7;border-radius:10px;padding:14px">
+          <div style="font-size:13px;font-weight:700;color:#793B33;margin-bottom:8px">⚡ Tags που ΔΕΝ κλείνουν</div>
+          <div style="font-size:12px;color:#993C1D;margin-bottom:10px">Μπαίνουν μόνα τους — δεν έχουν περιεχόμενο μέσα.</div>
+          <div style="background:#1e1e2e;border-radius:8px;padding:8px;font-family:'Fira Code',monospace;font-size:12px;line-height:1.9"><span style="color:#89dceb">&lt;img </span><span style="color:#f9e2af">src</span><span style="color:#89dceb">=</span><span style="color:#fab387">"..."</span><span style="color:#89dceb">&gt;</span>
+<span style="color:#89dceb">&lt;br&gt;</span>
+<span style="color:#89dceb">&lt;hr&gt;</span>
+<span style="color:#89dceb">&lt;input </span><span style="color:#f9e2af">type</span><span style="color:#89dceb">=</span><span style="color:#fab387">"text"</span><span style="color:#89dceb">&gt;</span>
+<span style="color:#89dceb">&lt;meta </span><span style="color:#f9e2af">charset</span><span style="color:#89dceb">=</span><span style="color:#fab387">"UTF-8"</span><span style="color:#89dceb">&gt;</span></div>
+        </div>
+      </div>
+      <p>Σκέψου το έτσι: αν το tag <strong>περιέχει κάτι</strong> (κείμενο, άλλα tags...) χρειάζεται κλείσιμο. Αν είναι <strong>μόνο του</strong> (εικόνα, γραμμή) — δεν κλείνει!</p>
+      <div style="background:#1e1e2e;border-radius:10px;padding:14px;margin:10px 0;font-family:'Fira Code',monospace;font-size:13px;line-height:2.1;white-space:pre"><span style="color:#89dceb">&lt;p&gt;</span><span style="color:#cdd6f4">Ο σκύλος μου λέγεται Rex.</span><span style="color:#89dceb">&lt;/p&gt;</span>  <span style="color:#6c7086;font-style:italic">&lt;-- κλείνει ✅</span>
+<span style="color:#89dceb">&lt;br&gt;</span>                                    <span style="color:#6c7086;font-style:italic">&lt;-- ΔΕΝ κλείνει ⚡</span>
+<span style="color:#89dceb">&lt;img </span><span style="color:#f9e2af">src</span><span style="color:#89dceb">=</span><span style="color:#fab387">"rex.jpg"</span><span style="color:#89dceb"> </span><span style="color:#f9e2af">alt</span><span style="color:#89dceb">=</span><span style="color:#fab387">"Rex"</span><span style="color:#89dceb">&gt;</span>      <span style="color:#6c7086;font-style:italic">&lt;-- ΔΕΝ κλείνει ⚡</span>
+<span style="color:#89dceb">&lt;p&gt;</span><span style="color:#cdd6f4">Είναι πολύ χαρούμενος!</span><span style="color:#89dceb">&lt;/p&gt;</span>     <span style="color:#6c7086;font-style:italic">&lt;-- κλείνει ✅</span></div>
+      <div class="info-box" style="background:#eaf3de;color:#27500A">
+        💡 Το <span class="tag-pill" style="background:#C0DD97;color:#173404">&lt;br&gt;</span> κάνει αλλαγή γραμμής και το <span class="tag-pill" style="background:#C0DD97;color:#173404">&lt;hr&gt;</span> βάζει οριζόντια γραμμή — και τα δύο δεν κλείνουν!
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="goto(1)">← Πίσω</button>
+      <button class="btn primary" onclick="goto(3)">Επόμενο →</button>
+    </div>
+  </div>
+
+  <!-- S3 (was S2): title & head -->
+  <div class="screen" id="s3">
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf3"></div></div><div class="progress-label" id="pl3"></div></div>
+    <div class="step-dots" id="ld3"></div>
+    <div class="card">
+      <span class="badge b-html">HTML — &lt;head&gt; &amp; &lt;title&gt;</span>
+      <div class="card-title"><span class="ci">🏷️</span>Τι μπαίνει στο &lt;head&gt;;</div>
+      <p>Το <strong>&lt;head&gt;</strong> είναι σαν το "παρασκήνιο" — δεν φαίνεται στην οθόνη, αλλά ο browser το χρησιμοποιεί!</p>
+
+      <div class="code-box"><span class="tag">&lt;head&gt;</span>
+
+  <span class="cmt">  το όνομα στην καρτέλα του browser:</span>
+  <span class="tag">  &lt;title&gt;</span><span class="txt">Η σελίδα του Γιώργου</span><span class="tag">&lt;/title&gt;</span>
+
+  <span class="cmt">  η γλώσσα των χαρακτήρων (ελληνικά κ.τ.λ.):</span>
+  <span class="tag">  &lt;meta </span><span class="attr">charset</span><span class="tag">=</span><span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+
+  <span class="cmt">  σωστό μέγεθος στο κινητό:</span>
+  <span class="tag">  &lt;meta </span><span class="attr">name</span><span class="tag">=</span><span class="val">"viewport"</span><span class="tag"> </span><span class="attr">content</span><span class="tag">=</span><span class="val">"width=device-width"</span><span class="tag">&gt;</span>
+
+<span class="tag">&lt;/head&gt;</span></div>
+
+      <div class="preview">
+        <div class="preview-label">Το &lt;title&gt; φαίνεται εδώ ↓</div>
+        <div style="background:#e8e8e8;border-radius:8px 8px 0 0;padding:8px 14px;display:flex;align-items:center;gap:8px">
+          <div style="display:flex;gap:5px">
+            <div style="width:11px;height:11px;border-radius:50%;background:#ff5f56"></div>
+            <div style="width:11px;height:11px;border-radius:50%;background:#ffbd2e"></div>
+            <div style="width:11px;height:11px;border-radius:50%;background:#27c93f"></div>
+          </div>
+          <div style="background:white;border-radius:5px;padding:4px 12px;font-size:13px;color:#333;font-family:'Nunito',sans-serif;font-weight:600">🌐 Η σελίδα του Γιώργου</div>
+        </div>
+        <div style="background:white;border-radius:0 0 8px 8px;padding:14px;font-family:'Nunito',sans-serif;font-size:14px;color:#222">
+          Εδώ φαίνεται το περιεχόμενο του &lt;body&gt;...
+        </div>
+      </div>
+
+      <div class="info-box" style="background:#eeedfe;color:#3C3489;margin-top:10px">
+        💡 Το <code>&lt;title&gt;</code> φαίνεται στην <strong>καρτέλα του browser</strong> και στα αποτελέσματα του Google!
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="goto(1)">← Πίσω</button>
+      <button class="btn primary" onclick="goto(4)">Επόμενο →</button>
+    </div>
+  </div>
+
+  <!-- S3: Τίτλοι h1-h6 -->
+  <div class="screen" id="s4">
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf4"></div></div><div class="progress-label" id="pl4"></div></div>
+    <div class="step-dots" id="ld4"></div>
+    <div class="card">
+      <span class="badge b-html">HTML — Τίτλοι</span>
+      <div class="card-title"><span class="ci">🔤</span>Τίτλοι: h1 ως h6</div>
+      <p>Υπάρχουν <strong>6 επίπεδα τίτλων</strong>! Το h1 είναι ο μεγαλύτερος — σαν τον τίτλο βιβλίου. Το h6 είναι ο πιο μικρός — σαν υποσημείωση.</p>
+
+      <div class="heading-scale">
+        <div class="hs-row"><span class="hs-tag">&lt;h1&gt;</span> <span class="hs-text" style="font-size:24px">Κύριος τίτλος</span></div>
+        <div class="hs-row"><span class="hs-tag">&lt;h2&gt;</span> <span class="hs-text" style="font-size:20px">Ενότητα</span></div>
+        <div class="hs-row"><span class="hs-tag">&lt;h3&gt;</span> <span class="hs-text" style="font-size:17px">Υποενότητα</span></div>
+        <div class="hs-row"><span class="hs-tag">&lt;h4&gt;</span> <span class="hs-text" style="font-size:15px">Μικρότερος τίτλος</span></div>
+        <div class="hs-row"><span class="hs-tag">&lt;h5&gt;</span> <span class="hs-text" style="font-size:13px">Ακόμα μικρότερος</span></div>
+        <div class="hs-row"><span class="hs-tag">&lt;h6&gt;</span> <span class="hs-text" style="font-size:12px">Ο πιο μικρός</span></div>
+      </div>
+
+      <div class="code-box"><span class="tag">&lt;h1&gt;</span><span class="txt">Η σελίδα μου</span><span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;h2&gt;</span><span class="txt">Τα χόμπι μου</span><span class="tag">&lt;/h2&gt;</span>
+<span class="tag">&lt;h3&gt;</span><span class="txt">Ποδόσφαιρο</span><span class="tag">&lt;/h3&gt;</span>
+<span class="tag">&lt;h4&gt;</span><span class="txt">Η αγαπημένη μου ομάδα</span><span class="tag">&lt;/h4&gt;</span></div>
+
+      <div class="info-box" style="background:#faeeda;color:#633806">
+        💡 Χρησιμοποίησε <strong>μόνο ένα &lt;h1&gt;</strong> ανά σελίδα — είναι σαν το όνομα της σελίδας! Τα h2–h6 μπορείς να τα βάλεις όσα θέλεις.
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="goto(3)">← Πίσω</button>
+      <button class="btn primary" onclick="goto(5)">Επόμενο →</button>
+    </div>
+  </div>
+
+  <!-- S4: Παράγραφος p -->
+  <div class="screen" id="s5">
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf5"></div></div><div class="progress-label" id="pl5"></div></div>
+    <div class="step-dots" id="ld5"></div>
+    <div class="card">
+      <span class="badge b-html">HTML — Κείμενο</span>
+      <div class="card-title"><span class="ci">✍️</span>Παράγραφοι &amp; κείμενο</div>
+      <p>Το tag <span class="tag-pill">&lt;p&gt;</span> φτιάχνει <strong>παραγράφους</strong>. Κάθε &lt;p&gt; αρχίζει σε νέα γραμμή με κενό πάνω-κάτω.</p>
+      <p>Μέσα στο &lt;p&gt; μπορούμε να κάνουμε κείμενο <strong>έντονο</strong> ή <em>πλάγιο</em>:</p>
+
+      <div class="code-box"><span class="tag">&lt;p&gt;</span><span class="txt">Αυτή είναι η πρώτη παράγραφος.</span><span class="tag">&lt;/p&gt;</span>
+
+<span class="tag">&lt;p&gt;</span><span class="txt">Εδώ έχω </span><span class="tag">&lt;b&gt;</span><span class="txt">έντονο</span><span class="tag">&lt;/b&gt;</span><span class="txt"> και </span><span class="tag">&lt;i&gt;</span><span class="txt">πλάγιο</span><span class="tag">&lt;/i&gt;</span><span class="txt"> κείμενο.</span><span class="tag">&lt;/p&gt;</span>
+
+<span class="tag">&lt;p&gt;</span><span class="txt">Τρίτη παράγραφος — αυτόματο κενό πάνω!</span><span class="tag">&lt;/p&gt;</span></div>
+
+      <div class="preview">
+        <div class="preview-label">Αποτέλεσμα στον browser</div>
+        <div class="p-demo">
+          <p>Αυτή είναι η πρώτη παράγραφος.</p>
+          <p>Εδώ έχω <b>έντονο</b> και <i>πλάγιο</i> κείμενο.</p>
+          <p>Τρίτη παράγραφος — αυτόματο κενό πάνω!</p>
+        </div>
+      </div>
+
+      <div class="info-box" style="background:#faece7;color:#793B33;margin-top:10px">
+        ⚠️ Αν απλά πατήσεις Enter στον κώδικα, ο browser <strong>δεν</strong> κάνει νέα γραμμή! Πρέπει να χρησιμοποιήσεις <span class="tag-pill" style="background:#F5C4B3;color:#4A1B0C">&lt;p&gt;</span> ή <span class="tag-pill" style="background:#F5C4B3;color:#4A1B0C">&lt;br&gt;</span>.
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="goto(4)">← Πίσω</button>
+      <button class="btn primary" onclick="goto(6)">Επόμενο →</button>
+    </div>
+  </div>
+
+  <!-- S5: Άλλα tags (a, img, ul) -->
+  <div class="screen" id="s6">
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf6"></div></div><div class="progress-label" id="pl6"></div></div>
+    <div class="step-dots" id="ld6"></div>
+    <div class="card">
+      <span class="badge b-html">HTML — Links, Εικόνες, Λίστες</span>
+      <div class="card-title"><span class="ci">🔗</span>Links, εικόνες και λίστες</div>
+      <p>Τρία ακόμα χρήσιμα tags!</p>
+
+      <div class="code-box"><span class="cmt">-- Σύνδεσμος --</span>
+<span class="tag">&lt;a </span><span class="attr">href</span><span class="tag">=</span><span class="val">"https://google.com"</span><span class="tag">&gt;</span><span class="txt">Πάμε Google!</span><span class="tag">&lt;/a&gt;</span>
+
+<span class="cmt">-- Εικόνα (δεν κλείνει!) --</span>
+<span class="tag">&lt;img </span><span class="attr">src</span><span class="tag">=</span><span class="val">"εικόνα.jpg"</span><span class="tag"> </span><span class="attr">alt</span><span class="tag">=</span><span class="val">"Περιγραφή"</span><span class="tag">&gt;</span>
+
+<span class="cmt">-- Λίστα με τελείες --</span>
+<span class="tag">&lt;ul&gt;</span>
+  <span class="tag">  &lt;li&gt;</span><span class="txt">Πρώτο στοιχείο</span><span class="tag">&lt;/li&gt;</span>
+  <span class="tag">  &lt;li&gt;</span><span class="txt">Δεύτερο στοιχείο</span><span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span>
+
+<span class="cmt">-- Λίστα με αριθμούς --</span>
+<span class="tag">&lt;ol&gt;</span>
+  <span class="tag">  &lt;li&gt;</span><span class="txt">Πρώτο</span><span class="tag">&lt;/li&gt;</span>
+  <span class="tag">  &lt;li&gt;</span><span class="txt">Δεύτερο</span><span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ol&gt;</span></div>
+
+      <div class="preview">
+        <div class="preview-label">Αποτέλεσμα</div>
+        <div style="font-family:'Nunito',sans-serif;font-size:14px;color:#222">
+          <a style="color:#185FA5">Πάμε Google!</a>
+          <div style="display:flex;gap:2rem;margin-top:8px">
+            <ul style="margin-left:1.2rem"><li>Πρώτο στοιχείο</li><li>Δεύτερο στοιχείο</li></ul>
+            <ol style="margin-left:1.2rem"><li>Πρώτο</li><li>Δεύτερο</li></ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="goto(5)">← Πίσω</button>
+      <button class="btn primary" onclick="goto(7)">Επόμενο →</button>
+    </div>
+  </div>
+
+  <!-- S6: CSS -->
+  <div class="screen" id="s7">
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf7"></div></div><div class="progress-label" id="pl7"></div></div>
+    <div class="step-dots" id="ld7"></div>
+    <div class="card">
+      <span class="badge b-css">CSS</span>
+      <div class="card-title"><span class="ci">🎨</span>Τι είναι η CSS;</div>
+      <p>Η <strong>CSS</strong> (Cascading Style Sheets) δίνει <strong>ομορφιά</strong>! Αν η HTML είναι ο σκελετός, η CSS είναι τα <em>χρώματα και η διακόσμηση</em>.</p>
+      <div class="code-box"><span class="sel">h1</span> {
+  <span class="prop">color</span>: <span class="cv">blue</span>;
+  <span class="prop">font-size</span>: <span class="cv">32px</span>;
+  <span class="prop">text-align</span>: <span class="cv">center</span>;
+}
+
+<span class="sel">p</span> {
+  <span class="prop">background-color</span>: <span class="cv">yellow</span>;
+  <span class="prop">font-family</span>: <span class="cv">Arial</span>;
+  <span class="prop">padding</span>: <span class="cv">10px</span>;
+}</div>
+      <div class="preview">
+        <div class="preview-label">Αποτέλεσμα</div>
+        <h1 style="color:blue;font-size:24px;font-weight:800;text-align:center;margin:4px 0;font-family:'Nunito',sans-serif">Τίτλος σε μπλε!</h1>
+        <p style="background:yellow;font-family:Arial;font-size:13px;padding:8px;margin-top:8px;border-radius:4px;color:#222">Κείμενο με κίτρινο φόντο!</p>
+      </div>
+      <div class="info-box" style="background:#e6f1fb;color:#185FA5">
+        💡 Το CSS μπαίνει μέσα σε <span class="tag-pill" style="background:#B5D4F4;color:#042C53">&lt;style&gt;</span> στο &lt;head&gt;, ή σε ξεχωριστό αρχείο <code>.css</code>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="goto(6)">← Πίσω</button>
+      <button class="btn primary" onclick="goto(8)">Επόμενο →</button>
+    </div>
+  </div>
+
+  <!-- S7: JavaScript -->
+  <div class="screen" id="s8">
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf8"></div></div><div class="progress-label" id="pl8"></div></div>
+    <div class="step-dots" id="ld8"></div>
+    <div class="card">
+      <span class="badge b-js">JavaScript</span>
+      <div class="card-title"><span class="ci">⚡</span>Τι είναι η JavaScript;</div>
+      <p>Η <strong>JavaScript</strong> (JS) δίνει <strong>ζωή</strong>! Κάνει πράγματα να κινούνται, να αλλάζουν και να ανταποκρίνονται στον χρήστη.</p>
+      <p>HTML = σώμα, CSS = ρούχα, JS = <em>κινήσεις και λόγια</em>!</p>
+      <div class="code-box"><span class="cmt">// Εμφανίζει μήνυμα</span>
+<span class="fn">alert</span>(<span class="str">"Γεια σου, κόσμε!"</span>);
+
+<span class="cmt">// Αλλάζει χρώμα κειμένου</span>
+<span class="kw">function</span> <span class="fn">αλλαξέΧρώμα</span>() {
+  <span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"τίτλος"</span>)
+          .<span class="fn">style</span>.<span class="fn">color</span> = <span class="str">"red"</span>;
+}</div>
+      <div class="preview">
+        <div class="preview-label">Δοκίμασέ το!</div>
+        <p id="jsDemo" style="font-size:18px;font-weight:800;color:#1a1a1a;margin-bottom:10px;font-family:'Nunito',sans-serif;transition:color .3s">🌈 Γεια σου, κόσμε!</p>
+        <button class="demo-btn" onclick="jsChangeColor()" style="background:#BA7517;color:white">⚡ Άλλαξε χρώμα!</button>
+        <button class="demo-btn" onclick="jsReset()" style="background:#888;color:white;margin-left:8px">↩ Reset</button>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="goto(7)">← Πίσω</button>
+      <button class="btn primary" onclick="goto(9)">Επόμενο →</button>
+    </div>
+  </div>
+
+  <!-- S8: HTML5 -->
+  <div class="screen" id="s9">
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf9"></div></div><div class="progress-label" id="pl9"></div></div>
+    <div class="step-dots" id="ld9"></div>
+    <div class="card">
+      <span class="badge b-html5">HTML5</span>
+      <div class="card-title"><span class="ci">🚀</span>Τι είναι η HTML5;</div>
+      <p>Η <strong>HTML5</strong> είναι η νεότερη έκδοση (από το 2014). Έφερε πολλά νέα και χρήσιμα πράγματα!</p>
+      <div class="mini-grid">
+        <div class="mini-card" style="background:#faece7">
+          <div class="m-icon">🎬</div><div class="m-title" style="color:#793B33">Video &amp; Audio</div><div class="m-sub" style="color:#993C1D">Χωρίς Flash!</div>
+        </div>
+        <div class="mini-card" style="background:#eaf3de">
+          <div class="m-icon">🖼️</div><div class="m-title" style="color:#3B6D11">Canvas</div><div class="m-sub" style="color:#639922">Σχεδίαση!</div>
+        </div>
+        <div class="mini-card" style="background:#e6f1fb">
+          <div class="m-icon">📍</div><div class="m-title" style="color:#0C447C">Geolocation</div><div class="m-sub" style="color:#185FA5">Πού είσαι!</div>
+        </div>
+      </div>
+      <p style="margin-top:10px">Νέα tags στην HTML5:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+        <span class="tag-pill">&lt;video&gt;</span><span class="tag-pill">&lt;audio&gt;</span>
+        <span class="tag-pill">&lt;canvas&gt;</span><span class="tag-pill">&lt;nav&gt;</span>
+        <span class="tag-pill">&lt;header&gt;</span><span class="tag-pill">&lt;footer&gt;</span>
+        <span class="tag-pill">&lt;article&gt;</span><span class="tag-pill">&lt;section&gt;</span>
+      </div>
+      <div class="code-box"><span class="tag">&lt;video </span><span class="attr">src</span><span class="tag">=</span><span class="val">"ταινία.mp4"</span><span class="tag"> </span><span class="attr">controls</span><span class="tag">&gt;&lt;/video&gt;</span>
+<span class="tag">&lt;audio </span><span class="attr">src</span><span class="tag">=</span><span class="val">"μουσική.mp3"</span><span class="tag"> </span><span class="attr">controls</span><span class="tag">&gt;&lt;/audio&gt;</span></div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="goto(8)">← Πίσω</button>
+      <button class="btn primary" onclick="goto(10)">Επόμενο →</button>
+    </div>
+  </div>
+
+  <!-- S9: Μέλλον -->
+  <div class="screen" id="s10">
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="pf10"></div></div><div class="progress-label" id="pl10"></div></div>
+    <div class="step-dots" id="ld10"></div>
+    <div class="card">
+      <span class="badge b-future">Μέλλον</span>
+      <div class="card-title"><span class="ci">🔮</span>Το μέλλον της HTML</div>
+      <p>Η HTML δεν σταματά να εξελίσσεται! Ιδού τι μας επιφυλάσσει:</p>
+      <div class="future-grid">
+        <div class="future-card"><div class="fc-t">🤖 AI στον browser</div><div class="fc-d">Μοντέλα τεχνητής νοημοσύνης κατευθείαν στις σελίδες!</div></div>
+        <div class="future-card"><div class="fc-t">🥽 VR &amp; AR web</div><div class="fc-d">Το WebXR φέρνει εικονική πραγματικότητα στον browser!</div></div>
+        <div class="future-card"><div class="fc-t">🧩 Web Components</div><div class="fc-d">Δικά σου tags σαν LEGO — τα βάζεις παντού!</div></div>
+        <div class="future-card"><div class="fc-t">⚡ WebAssembly</div><div class="fc-d">Παιχνίδια και εφαρμογές με ταχύτητα rocket στον browser!</div></div>
+      </div>
+      <div class="info-box" style="background:#eeedfe;color:#534AB7;margin-top:4px">
+        🌟 Το web είναι παντού — κινητό, τηλεόραση, ρολόγια, αυτοκίνητα! Αν μάθεις HTML, CSS και JS έχεις <strong>υπερδύναμη</strong>!
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn" onclick="goto(9)">← Πίσω</button>
+      <button class="btn primary" onclick="goto(11)">Πάμε στο Κουίζ! 🎯</button>
+    </div>
+  </div>
+
+  <!-- Quiz S10–S23 (14 ερωτήσεις) -->
+  <div class="screen" id="s11"></div>
+  <div class="screen" id="s12"></div>
+  <div class="screen" id="s13"></div>
+  <div class="screen" id="s14"></div>
+  <div class="screen" id="s15"></div>
+  <div class="screen" id="s16"></div>
+  <div class="screen" id="s17"></div>
+  <div class="screen" id="s18"></div>
+  <div class="screen" id="s19"></div>
+  <div class="screen" id="s20"></div>
+  <div class="screen" id="s21"></div>
+  <div class="screen" id="s22"></div>
+  <div class="screen" id="s23"></div>
+  <div class="screen" id="s24"></div>
+  <div class="screen" id="s25"></div>
+  <div class="screen" id="s26"></div>
+
+  <!-- S27: Results -->
+  <div class="screen" id="s27">
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div><div class="progress-label">Πρόοδος: 100%</div></div>
+    <div class="score-wrap">
+      <div class="score-circle" id="scoreCircle"></div>
+      <div class="score-title" id="scoreMsg"></div>
+      <div class="score-sub" id="scoreDetail"></div>
+      <div class="wrong-list" id="wrongList"></div>
+      <div class="score-btns">
+        <button class="btn-start" onclick="restartQuiz()">Παίξε ξανά 🔄</button>
+        <button class="btn" style="font-size:15px;font-weight:700" onclick="goto(1)">Ξαναδές μαθήματα 📖</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const QUIZ_START = 11;
+const QUIZ_COUNT = 16;
+const RESULTS = 27;
+const LESSONS = 10;
+
+const questions = [
+  { type:'mc', topic:'Δομή', q:'Ποιο tag γράφουμε ΠΡΩΤΟ σε κάθε HTML αρχείο;', opts:['&lt;html&gt;','&lt;head&gt;','&lt;!DOCTYPE html&gt;','&lt;body&gt;'], ans:2, exp:'Το &lt;!DOCTYPE html&gt; λέει στον browser "αυτό είναι HTML5" και γράφεται πάντα πρώτο!' },
+  { type:'mc', topic:'Δομή', q:'Ποιο από αυτά τα tags ΔΕΝ χρειάζεται κλείσιμο (&lt;/tag&gt;);', opts:['&lt;p&gt;','&lt;h1&gt;','&lt;img&gt;','&lt;a&gt;'], ans:2, exp:'Το &lt;img&gt; είναι self-closing tag — δεν περιέχει κείμενο μέσα, οπότε δεν κλείνει!' },
+  { type:'mc', topic:'Δομή', q:'Ποιο tag κάνει αλλαγή γραμμής και ΔΕΝ κλείνει;', opts:['&lt;p&gt;','&lt;br&gt;','&lt;line&gt;','&lt;newline&gt;'], ans:1, exp:'Το &lt;br&gt; (break) κάνει αλλαγή γραμμής και δεν έχει κλείσιμο — είναι self-closing!' },
+  { type:'mc', topic:'Δομή', q:'Τι περιέχει το &lt;head&gt; tag;', opts:['Ό,τι βλέπει ο χρήστης','Πληροφορίες για τη σελίδα που δεν φαίνονται','Τους τίτλους της σελίδας','Τις εικόνες'], ans:1, exp:'Το &lt;head&gt; περιέχει πληροφορίες όπως τίτλο, charset — αλλά δεν φαίνονται στην οθόνη!' },
+  { type:'mc', topic:'Δομή', q:'Που μπαίνει ό,τι βλέπει ο χρήστης στην οθόνη;', opts:['&lt;head&gt;','&lt;title&gt;','&lt;body&gt;','&lt;html&gt;'], ans:2, exp:'Το &lt;body&gt; είναι το "ορατό" μέρος — εκεί μπαίνουν τίτλοι, κείμενα, εικόνες!' },
+  { type:'fill', topic:'Δομή', q:'Ποιο tag κάνει εμφανίζει το όνομα της σελίδας στην καρτέλα του browser;', placeholder:'π.χ. h1', ans:['title','<title>','<title></title>'], exp:'Το &lt;title&gt; εμφανίζεται στην καρτέλα του browser και στα αποτελέσματα Google!' },
+  { type:'mc', topic:'Τίτλοι', q:'Ποιο tag κάνει τον ΜΕΓΑΛΥΤΕΡΟ τίτλο;', opts:['&lt;h6&gt;','&lt;h3&gt;','&lt;h1&gt;','&lt;title&gt;'], ans:2, exp:'Το &lt;h1&gt; είναι ο μεγαλύτερος τίτλος! Μετά έρχεται h2, h3... μέχρι h6.' },
+  { type:'mc', topic:'Τίτλοι', q:'Πόσα επίπεδα τίτλων υπάρχουν στην HTML;', opts:['3 (h1–h3)','4 (h1–h4)','6 (h1–h6)','10 (h1–h10)'], ans:2, exp:'Υπάρχουν 6 επίπεδα: h1 (μεγαλύτερος) ως h6 (μικρότερος)!' },
+  { type:'mc', topic:'Τίτλοι', q:'Πόσα &lt;h1&gt; πρέπει να έχει μια σελίδα;', opts:['Όσα θέλω','Μόνο ένα','Τουλάχιστον 3','Κανένα'], ans:1, exp:'Μόνο ένα &lt;h1&gt; ανά σελίδα — είναι ο κύριος τίτλος, σαν το όνομα της σελίδας!' },
+  { type:'fill', topic:'Κείμενο', q:'Ποιο tag χρησιμοποιούμε για παράγραφο κειμένου;', placeholder:'π.χ. h1', ans:['p','<p>','<p></p>'], exp:'Το &lt;p&gt; (paragraph) φτιάχνει παράγραφο με αυτόματο κενό πάνω-κάτω!' },
+  { type:'mc', topic:'Κείμενο', q:'Αν πατήσω απλά Enter στον κώδικα, τι γίνεται στον browser;', opts:['Νέα γραμμή','Νέα παράγραφος','Τίποτα — ο browser το αγνοεί','Σφάλμα'], ans:2, exp:'Ο browser αγνοεί τα Enter! Χρειάζεσαι &lt;p&gt; ή &lt;br&gt; για νέα γραμμή.' },
+  { type:'mc', topic:'Κείμενο', q:'Τι κάνει το tag &lt;b&gt;;', opts:['Βάζει εικόνα','Κάνει κείμενο έντονο (bold)','Φτιάχνει λίστα','Βάζει σύνδεσμο'], ans:1, exp:'Το &lt;b&gt; κάνει το κείμενο bold (έντονο)! Και το &lt;i&gt; το κάνει πλάγιο.' },
+  { type:'mc', topic:'CSS', q:'Τι είναι η CSS;', opts:['Γλώσσα για βάσεις δεδομένων','Γλώσσα στυλ — χρώματα, μεγέθη, εμφάνιση','Γλώσσα για εφαρμογές','Τύπος browser'], ans:1, exp:'CSS = Cascading Style Sheets. Κάνει τις σελίδες όμορφες!' },
+  { type:'mc', topic:'JavaScript', q:'Τι κάνει η JavaScript;', opts:['Δίνει δομή','Βάζει χρώματα','Κάνει τη σελίδα διαδραστική','Αποθηκεύει αρχεία'], ans:2, exp:'Η JS ζωντανεύει τη σελίδα — κουμπιά, κινήσεις, αλλαγές!' },
+  { type:'mc', topic:'HTML5', q:'Ποιο tag της HTML5 βάζει βίντεο στη σελίδα;', opts:['&lt;movie&gt;','&lt;video&gt;','&lt;media&gt;','&lt;play&gt;'], ans:1, exp:'Το &lt;video&gt; είναι νέο στην HTML5 — δεν χρειαζόμαστε Flash!' },
+  { type:'mc', topic:'Μέλλον', q:'Τι είναι το WebAssembly;', opts:['Νέος browser','Τεχνολογία για γρήγορες εφαρμογές στον browser','Νέος τύπος CSS','Γλώσσα για κινητά'], ans:1, exp:'WebAssembly κάνει εφαρμογές και παιχνίδια να τρέχουν σαν rocket στον browser!' }
+];
+
+let score = 0;
+let answered = new Array(QUIZ_COUNT).fill(false);
+let wrongAnswers = [];
+let jsColorIdx = 0;
+const jsColors = ['#e74c3c','#2980b9','#27ae60','#8e44ad','#e67e22','#16a085'];
+
+function jsChangeColor(){
+  jsColorIdx = (jsColorIdx+1) % jsColors.length;
+  const el = document.getElementById('jsDemo');
+  if(el) el.style.color = jsColors[jsColorIdx];
+}
+function jsReset(){
+  const el = document.getElementById('jsDemo');
+  if(el){ el.style.color='#1a1a1a'; jsColorIdx=0; }
+}
+
+function updateProgress(sid){
+  const total = RESULTS;
+  const pct = Math.round((sid/total)*100);
+  const pf = document.getElementById('pf'+sid);
+  const pl = document.getElementById('pl'+sid);
+  if(pf) pf.style.width = pct+'%';
+  if(pl) pl.textContent = 'Πρόοδος: '+pct+'%';
+}
+
+function buildDots(sid){
+  const el = document.getElementById('ld'+sid);
+  if(!el) return;
+  let html='';
+  for(let i=1;i<=LESSONS;i++){
+    let cls='dot';
+    if(i<sid) cls+=' done';
+    else if(i===sid) cls+=' cur';
+    html+='<div class="'+cls+'"></div>';
+  }
+  el.innerHTML=html;
+}
+
+function goto(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+id).classList.add('active');
+  updateProgress(id);
+  buildDots(id);
+  if(id>=QUIZ_START && id<QUIZ_START+QUIZ_COUNT) renderQuiz(id);
+  if(id===RESULTS) renderResults();
+  window.scrollTo(0,0);
+}
+
+function topicBadge(topic){
+  const m={
+    'Δομή':'background:#FAECE7;color:#793B33',
+    'Τίτλοι':'background:#E6F1FB;color:#0C447C',
+    'Κείμενο':'background:#EAF3DE;color:#27500A',
+    'CSS':'background:#E6F1FB;color:#0C447C',
+    'JavaScript':'background:#FAEEDA;color:#633806',
+    'HTML5':'background:#FAECE7;color:#993C1D',
+    'Μέλλον':'background:#EEEDFE;color:#3C3489'
+  };
+  const st = m[topic]||'background:#F1EFE8;color:#444441';
+  return `<span style="display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;${st}">${topic}</span>`;
+}
+
+function renderQuiz(sid){
+  const qi = sid - QUIZ_START;
+  const q = questions[qi];
+  const el = document.getElementById('s'+sid);
+  const done = answered[qi];
+
+  let html = '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:'+Math.round((sid/RESULTS)*100)+'%"></div></div><div class="progress-label">Κουίζ: Ερώτηση '+(qi+1)+' από '+QUIZ_COUNT+'</div></div>';
+  html += '<div class="step-dots">';
+  for(let i=0;i<QUIZ_COUNT;i++){
+    let cls='dot';
+    if(i<qi) cls+=' done';
+    else if(i===qi) cls+=' cur';
+    html+='<div class="'+cls+'"></div>';
+  }
+  html += '</div>';
+  html += '<div class="quiz-counter">'+topicBadge(q.topic)+'</div>';
+  html += '<div class="card"><div class="quiz-q">'+q.q+'</div>';
+
+  if(q.type==='mc'){
+    html += '<div class="options">';
+    q.opts.forEach((opt,i)=>{
+      let cls='opt';
+      if(done) cls+=(i===q.ans?' correct':' wrong');
+      html+=`<button class="${cls}" ${done?'disabled':''} onclick="checkMC(${sid},${qi},${i})">${opt}</button>`;
+    });
+    html += '</div>';
+  } else {
+    html+=`<input class="fill-inp" id="fi${qi}" type="text" placeholder="${q.placeholder}" ${done?'disabled':''}>`;
+    html+=`<button class="btn primary" ${done?'disabled style="opacity:0.5"':''} onclick="checkFill(${sid},${qi})">Έλεγξε ✓</button>`;
+  }
+
+  html += `<div class="feedback" id="fb${qi}"></div></div>`;
+  html += '<div class="nav-buttons">';
+  if(sid>QUIZ_START) html+=`<button class="btn" onclick="goto(${sid-1})">← Πίσω</button>`;
+  else html+=`<button class="btn" onclick="goto(11)">← Μαθήματα</button>`;
+  if(sid<QUIZ_START+QUIZ_COUNT-1) html+=`<button class="btn primary" onclick="goto(${sid+1})">Επόμενο →</button>`;
+  else html+=`<button class="btn primary" onclick="goto(${RESULTS})">Αποτελέσματα 🏆</button>`;
+  html += '</div>';
+  el.innerHTML = html;
+
+  if(done){
+    const fb = document.getElementById('fb'+qi);
+    const wasRight = !wrongAnswers.find(w=>w.qi===qi);
+    fb.className='feedback show '+(wasRight?'ok':'no');
+    fb.innerHTML=(wasRight?'✅ ':'❌ ')+q.exp;
+  }
+}
+
+function checkMC(sid,qi,chosen){
+  if(answered[qi]) return;
+  answered[qi]=true;
+  if(chosen===questions[qi].ans) score++;
+  else wrongAnswers.push({qi,topic:questions[qi].topic,q:questions[qi].q});
+  renderQuiz(sid);
+}
+
+function checkFill(sid,qi){
+  if(answered[qi]) return;
+  const q=questions[qi];
+  const val=(document.getElementById('fi'+qi).value||'').trim().toLowerCase().replace(/\s/g,'');
+  const correct=q.ans.some(a=>val===a.toLowerCase().replace(/\s/g,''));
+  answered[qi]=true;
+  if(correct) score++;
+  else wrongAnswers.push({qi,topic:q.topic,q:q.q});
+  renderQuiz(sid);
+}
+
+function renderResults(){
+  const pct=Math.round((score/QUIZ_COUNT)*100);
+  let emoji,msg,detail,bg,color;
+  if(pct===100){emoji='🏆';msg='Τέλειο! Είσαι Web Developer!';detail=QUIZ_COUNT+'/'+QUIZ_COUNT+' σωστές! Απίστευτο!';bg='#eaf3de';color='#27500A';}
+  else if(pct>=75){emoji='🌟';msg='Εξαιρετικά! Τα πας πολύ καλά!';detail='Λίγη εξάσκηση και θα είσαι ειδικός!';bg='#e1f5ee';color='#0F6E56';}
+  else if(pct>=50){emoji='💪';msg='Καλή δουλειά! Συνέχισε!';detail='Ξαναδές τα μαθήματα και δοκίμασε ξανά!';bg='#faeeda';color='#633806';}
+  else{emoji='📚';msg='Χρειάζεσαι λίγη εξάσκηση!';detail='Μην απογοητεύεσαι — ξαναδές τα μαθήματα!';bg='#fcebeb';color='#791F1F';}
+
+  const c=document.getElementById('scoreCircle');
+  c.style.background=bg; c.style.color=color;
+  c.innerHTML=`<span style="font-size:42px">${emoji}</span><span>${score}/${QUIZ_COUNT}</span>`;
+  document.getElementById('scoreMsg').textContent=msg;
+  document.getElementById('scoreDetail').textContent=detail;
+
+  let wHtml='';
+  if(wrongAnswers.length>0){
+    wHtml='<p style="font-size:14px;font-weight:700;color:#6b6860;margin-bottom:10px">📌 Χρειάζονται επανάληψη:</p>';
+    wrongAnswers.forEach(w=>{
+      wHtml+=`<div class="wrong-item">${topicBadge(w.topic)}<div class="wi-q">${w.q}</div></div>`;
+    });
+  }
+  document.getElementById('wrongList').innerHTML=wHtml;
+}
+
+function restartQuiz(){
+  score=0;
+  answered=new Array(QUIZ_COUNT).fill(false);
+  wrongAnswers=[];
+  goto(QUIZ_START);
+}
+
+goto(0);
+</script>
+</body>
+</html>
