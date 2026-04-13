@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Junior Diver Academy — PADI Open Water Theory</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep: #04142B;
+  --ocean: #0A2A4A;
+  --mid: #0D3D6B;
+  --surface: #1A5C8C;
+  --light: #2E8BC0;
+  --foam: #A8D8EA;
+  --sand: #F5F0E8;
+  --gold: #E8A835;
+  --coral: #E85D3A;
+  --safe: #3CB371;
+  --warn: #E8A835;
+  --danger: #E85D3A;
+  --white: #FAFCFF;
+  --text-dim: rgba(168,216,234,0.6);
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(168,216,234,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--deep);
+  color: var(--white);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── WATER BACKGROUND ── */
+.water-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, #04142B 0%, #071D3A 25%, #0A2A4A 55%, #0D3D6B 100%);
+  overflow: hidden;
+}
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(168,216,234,0.06);
+  border: 1px solid rgba(168,216,234,0.1);
+  animation: rise linear infinite;
+}
+@keyframes rise {
+  from { transform: translateY(110vh) scale(1); opacity: 0.7; }
+  to   { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+}
+.caustic {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(ellipse 80px 40px at 20% 30%, rgba(46,139,192,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 60px 30px at 70% 20%, rgba(46,139,192,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 100px 50px at 50% 60%, rgba(10,42,74,0.08) 0%, transparent 70%);
+  animation: caustic 8s ease-in-out infinite alternate;
+}
+@keyframes caustic {
+  0%   { opacity: 0.4; transform: scale(1) skewX(0deg); }
+  100% { opacity: 0.8; transform: scale(1.05) skewX(1deg); }
+}
+
+/* ── LAYOUT ── */
+#app { position: relative; z-index: 1; }
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 2rem;
+  background: rgba(4,20,43,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  height: 60px;
+  gap: 0;
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  color: var(--foam);
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-logo span { color: var(--gold); }
+.nav-chapters {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+}
+.nav-chapters li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: all .2s;
+  border: 1px solid transparent;
+}
+.nav-chapters li a:hover {
+  background: var(--glass);
+  border-color: var(--glass-border);
+  color: var(--foam);
+}
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 2rem 4rem;
+  text-align: center;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  border: 1px solid rgba(168,216,234,0.25);
+  background: rgba(168,216,234,0.06);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  color: var(--foam);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+.hero-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--foam);
+}
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--text-dim);
+  max-width: 540px;
+  line-height: 1.7;
+  margin-bottom: 3rem;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-width: 600px;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+.hero-stat {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.2rem 1rem;
+}
+.hero-stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+}
+.hero-stat-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-dim);
+  font-size: 12px;
+  animation: float 3s ease-in-out infinite;
+}
+.scroll-arrow {
+  width: 24px; height: 24px;
+  border-right: 2px solid rgba(168,216,234,0.3);
+  border-bottom: 2px solid rgba(168,216,234,0.3);
+  transform: rotate(45deg);
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+/* ── CHAPTER SECTIONS ── */
+.chapter-section {
+  padding: 6rem 0;
+}
+.chapter-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.ch-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+.ch-num-big {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 4rem;
+  line-height: 1;
+  opacity: .12;
+  color: var(--foam);
+  flex-shrink: 0;
+}
+.ch-title-wrap {}
+.ch-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  margin-bottom: .5rem;
+}
+.ch-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  line-height: 1.1;
+  color: var(--white);
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
+.card-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 1rem; }
+.card-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: .5rem;
+}
+.card-body { font-size: 14px; line-height: 1.7; color: rgba(250,252,255,0.8); }
+.card-body strong { color: var(--white); font-weight: 500; }
+.card-body em { font-style: italic; color: var(--foam); font-size: 13px; }
+
+.alert {
+  border-radius: 14px;
+  padding: 1rem 1.2rem;
+  margin-bottom: .75rem;
+  font-size: 14px;
+  line-height: 1.65;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.alert-warn { background: rgba(232,168,53,0.1); border: 1px solid rgba(232,168,53,0.25); color: #F5D88A; }
+.alert-safe { background: rgba(60,179,113,0.1); border: 1px solid rgba(60,179,113,0.25); color: #80E5A0; }
+.alert-info { background: rgba(46,139,192,0.12); border: 1px solid rgba(46,139,192,0.25); color: var(--foam); }
+.alert-danger { background: rgba(232,93,58,0.1); border: 1px solid rgba(232,93,58,0.25); color: #F5A090; }
+
+.divider { height: 1px; background: var(--glass-border); margin: 1.5rem 0; }
+
+/* ── EQUIPMENT GRID ── */
+.equip-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.5rem; }
+.equip-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 1rem .8rem;
+  text-align: center;
+  transition: all .25s;
+  cursor: default;
+}
+.equip-card:hover { background: rgba(168,216,234,0.07); border-color: rgba(168,216,234,0.2); transform: translateY(-3px); }
+.equip-icon { font-size: 24px; margin-bottom: 8px; }
+.equip-name { font-size: 12px; font-weight: 500; color: var(--white); margin-bottom: 4px; }
+.equip-eng { font-size: 11px; color: var(--text-dim); font-style: italic; margin-bottom: 4px; }
+.equip-desc { font-size: 11px; color: rgba(168,216,234,0.55); line-height: 1.45; }
+
+/* ── INTERACTIVE PRESSURE ── */
+.pressure-viz {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.pressure-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+.pressure-slider-row label { font-size: 13px; color: var(--text-dim); white-space: nowrap; }
+.pressure-slider-row input { flex: 1; accent-color: var(--light); }
+.pressure-result {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 10px;
+}
+.p-stat {
+  background: rgba(10,42,74,0.5);
+  border-radius: 12px;
+  padding: .75rem;
+  text-align: center;
+}
+.p-stat-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--foam);
+  line-height: 1;
+}
+.p-stat-label { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+
+.depth-bar-wrap { margin-bottom: 1rem; }
+.depth-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.depth-bar-label { width: 52px; font-size: 12px; color: var(--text-dim); flex-shrink: 0; }
+.depth-bar-track { flex: 1; height: 22px; background: rgba(10,42,74,0.4); border-radius: 6px; overflow: hidden; }
+.depth-bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding: 0 8px; font-size: 11px; font-weight: 500; transition: width .4s ease; }
+.depth-bar-unit { font-size: 11px; color: var(--text-dim); width: 36px; }
+
+/* ── BUOYANCY INTERACTIVE ── */
+.buoy-scene {
+  background: linear-gradient(180deg, rgba(10,42,74,0.3) 0%, rgba(4,20,43,0.6) 100%);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.buoy-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.buoy-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--foam);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.buoy-btn:hover { background: rgba(168,216,234,0.1); }
+.buoy-btn.active { background: rgba(46,139,192,0.2); border-color: rgba(46,139,192,0.4); color: var(--white); }
+.buoy-diagram {
+  width: 100%;
+  overflow: visible;
+}
+.diver-body { transition: transform 1.2s cubic-bezier(.4,0,.2,1); }
+
+/* ── ASCENT DIAGRAM ── */
+.ascent-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 1rem; position: relative; }
+.ascent-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.2rem 1.2rem 1.2rem 0;
+  position: relative;
+}
+.ascent-step::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 52px;
+  bottom: -12px;
+  width: 2px;
+  background: var(--glass-border);
+}
+.ascent-step:last-child::before { display: none; }
+.ascent-dot {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.ascent-content { flex: 1; }
+.ascent-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--white);
+  margin-bottom: .3rem;
+}
+.ascent-detail { font-size: 13px; color: rgba(168,216,234,0.7); line-height: 1.6; }
+.ascent-tag { font-style: italic; font-size: 12px; color: var(--text-dim); }
+
+/* ── NDL TABLE ── */
+.ndl-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+.ndl-table th {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--glass-border);
+}
+.ndl-table td {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.ndl-table tr:last-child td { border-bottom: none; }
+.ndl-safe { color: #80E5A0; font-weight: 500; }
+.ndl-caution { color: #F5D88A; font-weight: 500; }
+.ndl-danger { color: #F5A090; font-weight: 500; }
+.ndl-limit { color: rgba(168,216,234,0.4); font-style: italic; }
+
+/* ── SIGNALS GRID ── */
+.signals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+.signal-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 1rem .8rem;
+  text-align: center;
+  transition: all .25s;
+}
+.signal-card:hover { transform: scale(1.04); background: rgba(168,216,234,0.07); }
+.signal-icon { font-size: 28px; margin-bottom: 6px; }
+.signal-name { font-size: 12px; font-weight: 500; color: var(--white); margin-bottom: 3px; }
+.signal-eng { font-size: 11px; color: var(--text-dim); font-style: italic; margin-bottom: 3px; }
+.signal-desc { font-size: 11px; color: rgba(168,216,234,0.5); line-height: 1.4; }
+
+/* ── WHEN NOT TO DIVE ── */
+.contraindication-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.contraindication-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: .75rem 1rem;
+  background: rgba(232,93,58,0.06);
+  border: 1px solid rgba(232,93,58,0.15);
+  border-radius: 12px;
+  font-size: 14px;
+  color: #F5A090;
+  line-height: 1.5;
+}
+.contraindication-list li::before {
+  content: '✕';
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: rgba(232,93,58,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--coral);
+  line-height: 20px;
+  text-align: center;
+}
+
+/* ── QUIZ ── */
+#quiz-section { padding: 6rem 0; }
+.quiz-inner { max-width: 700px; margin: 0 auto; padding: 0 2rem; }
+.quiz-header { text-align: center; margin-bottom: 3rem; }
+.quiz-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+}
+.quiz-q { font-size: 16px; font-weight: 500; color: var(--white); margin-bottom: 1.5rem; line-height: 1.5; }
+.quiz-q span { font-family: 'Syne', sans-serif; font-size: 12px; color: var(--text-dim); display: block; margin-bottom: .5rem; }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  padding: .75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: rgba(250,252,255,0.8);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: all .2s;
+  line-height: 1.4;
+}
+.quiz-opt:hover:not([disabled]) { border-color: rgba(168,216,234,0.3); background: rgba(168,216,234,0.07); color: var(--white); }
+.quiz-opt.correct { background: rgba(60,179,113,0.15); border-color: rgba(60,179,113,0.4); color: #80E5A0; }
+.quiz-opt.wrong { background: rgba(232,93,58,0.1); border-color: rgba(232,93,58,0.3); color: #F5A090; }
+.quiz-feedback { margin-top: 1rem; padding: .75rem 1rem; border-radius: 10px; font-size: 13px; display: none; line-height: 1.6; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: rgba(60,179,113,0.1); border: 1px solid rgba(60,179,113,0.2); color: #80E5A0; }
+.quiz-feedback.wrong { background: rgba(232,93,58,0.08); border: 1px solid rgba(232,93,58,0.2); color: #F5A090; }
+.quiz-progress { display: flex; gap: 6px; margin-bottom: 1.5rem; justify-content: center; }
+.quiz-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--glass-border);
+  transition: background .3s;
+}
+.quiz-dot.done { background: var(--safe); }
+.quiz-dot.active { background: var(--gold); }
+.quiz-score {
+  text-align: center;
+  display: none;
+  padding: 2rem;
+}
+.quiz-score.show { display: block; }
+.score-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+}
+.quiz-next-btn {
+  margin-top: 1rem;
+  padding: 10px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(168,216,234,0.25);
+  background: rgba(46,139,192,0.15);
+  color: var(--foam);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+  display: none;
+}
+.quiz-next-btn:hover { background: rgba(46,139,192,0.25); }
+.quiz-next-btn.show { display: inline-block; }
+.quiz-restart-btn {
+  margin-top: 1.5rem;
+  padding: 12px 28px;
+  border-radius: 14px;
+  border: 1px solid rgba(232,168,53,0.3);
+  background: rgba(232,168,53,0.12);
+  color: var(--gold);
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.quiz-restart-btn:hover { background: rgba(232,168,53,0.2); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 3rem 2rem;
+  text-align: center;
+  border-top: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  font-size: 13px;
+}
+footer strong { color: var(--foam); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .equip-grid { grid-template-columns: repeat(2,1fr); }
+  .hero-grid { grid-template-columns: repeat(2,1fr); }
+  .card-grid { grid-template-columns: 1fr; }
+  .card-grid-3 { grid-template-columns: 1fr; }
+  .nav-chapters { display: none; }
+  .pressure-result { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="water-bg">
+  <div class="caustic"></div>
+</div>
+
+<div id="app">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span>⬡</span> Junior Diver <span>Academy</span>
+  </div>
+  <ul class="nav-chapters">
+    <li><a href="#ch1">1</a></li>
+    <li><a href="#ch2">2</a></li>
+    <li><a href="#ch3">3</a></li>
+    <li><a href="#ch4">4</a></li>
+    <li><a href="#ch5">5</a></li>
+    <li><a href="#ch6">6</a></li>
+    <li><a href="#ch7">7</a></li>
+    <li><a href="#quiz-section" style="color:var(--gold)">Q</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge">PADI Junior Open Water Diver — Θεωρητικό Υλικό</div>
+  <h1 class="hero-title">Μάθε να<br><em>καταδύεσαι</em><br>με ασφάλεια</h1>
+  <p class="hero-sub">Πλήρης θεωρητικός οδηγός με διαδραστικές εικονογραφήσεις, φυσική κατάδυσης και quiz εξάσκησης για το επίπεδο PADI Junior Open Water.</p>
+  <div class="hero-grid">
+    <div class="hero-stat"><div class="hero-stat-num">7</div><div class="hero-stat-label">Κεφάλαια</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">18m</div><div class="hero-stat-label">Max βάθος</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">10</div><div class="hero-stat-label">Quiz ερωτήσεις</div></div>
+  </div>
+  <div class="scroll-hint">
+    <div>Κάνε scroll για να ξεκινήσεις</div>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ─── CH1: ΕΙΣΑΓΩΓΗ ─── -->
+<section class="chapter-section" id="ch1">
+  <div class="chapter-inner">
+    <div class="ch-header">
+      <div class="ch-num-big">01</div>
+      <div class="ch-title-wrap">
+        <div class="ch-tag">Εισαγωγή</div>
+        <h2 class="ch-title">Τι είναι η αυτόνομη κατάδυση</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Ορισμός</div>
+      <div class="card-body">
+        Η αυτόνομη κατάδυση <em>(SCUBA = Self-Contained Underwater Breathing Apparatus)</em> σου επιτρέπει να αναπνέεις κάτω από το νερό φέροντας μαζί σου πεπιεσμένο αέρα σε φιάλη <em>(tank / cylinder)</em>. Σε αντίθεση με την ελεύθερη κατάδυση <em>(freediving)</em>, δεν κρατάς ποτέ την αναπνοή — ανασαίνεις φυσικά σε κάθε βάθος.
+      </div>
+    </div>
+
+    <div class="alert alert-info">
+      <div class="alert-icon">💡</div>
+      <div><strong>Βασική αρχή:</strong> Ο ρυθμιστής <em>(regulator)</em> μετατρέπει τον αέρα υψηλής πίεσης της φιάλης στην «περιβαλλοντική πίεση» <em>(ambient pressure)</em> — την ακριβή πίεση που χρειάζεσαι για άνετη αναπνοή στο τρέχον βάθος σου.</div>
+    </div>
+
+    <div class="divider"></div>
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:1rem;text-transform:uppercase;letter-spacing:.06em;font-weight:500">Βασικός εξοπλισμός <em style="text-transform:none;font-size:12px">(basic scuba gear)</em></p>
+
+    <div class="equip-grid">
+      <div class="equip-card">
+        <div class="equip-icon">🫁</div>
+        <div class="equip-name">Ρυθμιστής Αναπνοής</div>
+        <div class="equip-eng">Regulator</div>
+        <div class="equip-desc">1η & 2η βαθμίδα. Το μαγικό εργαλείο που δίνει αέρα στη σωστή πίεση.</div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-icon">🏺</div>
+        <div class="equip-name">Φιάλη</div>
+        <div class="equip-eng">Tank / Cylinder</div>
+        <div class="equip-desc">200–300 bar πεπιεσμένος αέρας. Αλουμίνιο ή ατσάλι.</div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-icon">🦺</div>
+        <div class="equip-name">BCD</div>
+        <div class="equip-eng">Buoyancy Control Device</div>
+        <div class="equip-desc">Φουσκώνει/ξεφουσκώνει για πλευστότητα. Κρατά τη φιάλη.</div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-icon">⚖️</div>
+        <div class="equip-name">Ζώνη βαρών</div>
+        <div class="equip-eng">Weight belt / Lead weights</div>
+        <div class="equip-desc">Μολύβδινα βαράκια — αντισταθμίζουν άνωση στολής.</div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-icon">🤿</div>
+        <div class="equip-name">Μάσκα</div>
+        <div class="equip-eng">Mask + Snorkel</div>
+        <div class="equip-desc">Αέρινος χώρος μπροστά στα μάτια για ορατότητα.</div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-icon">🦶</div>
+        <div class="equip-name">Βατραχοπέδιλα</div>
+        <div class="equip-eng">Fins</div>
+        <div class="equip-desc">Μεγεθύνουν το πόδι — αποδοτική κίνηση με λίγη ενέργεια.</div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-icon">🩱</div>
+        <div class="equip-name">Στολή</div>
+        <div class="equip-eng">Wetsuit / Drysuit</div>
+        <div class="equip-desc">Νεοπρέν 3–7mm. Θερμομόνωση & προστασία.</div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-icon">⌚</div>
+        <div class="equip-name">Dive Computer</div>
+        <div class="equip-eng">PDC / Dive computer</div>
+        <div class="equip-desc">Βάθος, χρόνος, NDL, ρυθμός ανάδυσης.</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="card-grid">
+      <div class="alert alert-info" style="border-radius:14px">
+        <div class="alert-icon">🎓</div>
+        <div>
+          <strong>Junior Open Water Diver</strong><br>
+          Ηλικία 10–14 ετών. Ίδια εκπαίδευση με ενήλικα <em>(Open Water Diver)</em>, με περιορισμό βάθους <strong>12 μ.</strong> χωρίς ενήλικα buddy <em>(dive buddy)</em> και <strong>18 μ.</strong> μαζί του.
+        </div>
+      </div>
+      <div class="alert alert-safe" style="border-radius:14px">
+        <div class="alert-icon">✅</div>
+        <div>
+          <strong>Pre-dive check: BWRAF</strong><br>
+          <em>BCD · Weights · Releases · Air · Final OK</em><br>
+          Πάντα πριν κατεβείς — ελέγχεις τον εξοπλισμό σου και του buddy σου!
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CH2: ΠΙΕΣΗ ─── -->
+<section class="chapter-section" id="ch2">
+  <div class="chapter-inner">
+    <div class="ch-header">
+      <div class="ch-num-big">02</div>
+      <div class="ch-title-wrap">
+        <div class="ch-tag">Φυσική</div>
+        <h2 class="ch-title">Πίεση & εξίσωση</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Νόμος Boyle <em style="font-size:12px">(Boyle's Law)</em></div>
+      <div class="card-body">
+        Κάθε 10 μέτρα νερού <em>(10 m seawater)</em> προσθέτουν <strong>1 bar</strong> πίεσης. Στην επιφάνεια = 1 bar, στα 10 μ. = 2 bar, στα 20 μ. = 3 bar. Ο νόμος Boyle λέει: <strong>διπλάσια πίεση = μισός όγκος αέρα</strong>. Γι' αυτό τα αυτιά σου «τραβιούνται» στο κατέβασμα.
+      </div>
+    </div>
+
+    <!-- Interactive pressure -->
+    <div class="pressure-viz">
+      <div class="card-label">Διαδραστικό — Εξερεύνησε την πίεση <em style="font-size:11px">(interactive pressure explorer)</em></div>
+      <div class="pressure-slider-row">
+        <label>Βάθος:</label>
+        <input type="range" id="depth-slider" min="0" max="40" value="10" step="1">
+        <span id="depth-val" style="font-family:'Syne',sans-serif;font-weight:700;color:var(--foam);min-width:48px">10 μ.</span>
+      </div>
+      <div class="pressure-result">
+        <div class="p-stat"><div class="p-stat-val" id="pres-bar">2.0</div><div class="p-stat-label">Bar (πίεση)</div></div>
+        <div class="p-stat"><div class="p-stat-val" id="pres-atm">2.0</div><div class="p-stat-label">ATM</div></div>
+        <div class="p-stat"><div class="p-stat-val" id="pres-vol">50%</div><div class="p-stat-label">Όγκος αέρα</div></div>
+        <div class="p-stat"><div class="p-stat-val" id="pres-zone" style="font-size:1rem">🟡</div><div class="p-stat-label">Ζώνη Junior</div></div>
+      </div>
+    </div>
+
+    <div class="depth-bar-wrap card">
+      <div class="card-label">Σχετικός όγκος αέρα ανά βάθος <em style="font-size:11px">(air volume by depth)</em></div>
+      <div class="depth-bar-row"><div class="depth-bar-label">0 μ.</div><div class="depth-bar-track"><div class="depth-bar-fill" style="width:100%;background:#B5D4F4;color:#042C53">100%</div></div><div class="depth-bar-unit">1 bar</div></div>
+      <div class="depth-bar-row"><div class="depth-bar-label">10 μ.</div><div class="depth-bar-track"><div class="depth-bar-fill" style="width:50%;background:#378ADD;color:#E6F1FB">50%</div></div><div class="depth-bar-unit">2 bar</div></div>
+      <div class="depth-bar-row"><div class="depth-bar-label">20 μ.</div><div class="depth-bar-track"><div class="depth-bar-fill" style="width:33%;background:#185FA5;color:#E6F1FB">33%</div></div><div class="depth-bar-unit">3 bar</div></div>
+      <div class="depth-bar-row"><div class="depth-bar-label">30 μ.</div><div class="depth-bar-track"><div class="depth-bar-fill" style="width:25%;background:#0C447C;color:#B5D4F4">25%</div></div><div class="depth-bar-unit">4 bar</div></div>
+    </div>
+
+    <div class="divider"></div>
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.06em;font-weight:500">Τεχνικές εξίσωσης <em style="text-transform:none">(equalization techniques)</em></p>
+
+    <div class="card-grid-3">
+      <div class="card">
+        <div class="card-label">Valsalva</div>
+        <div class="card-body">Κλείνεις τη μύτη <em>(pinch nose)</em> και φυσάς ελαφρά. Αέρας ωθείται μέσω της σάλπιγγας Ευσταχίου <em>(Eustachian tube)</em>.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Toynbee — Ιδανική για Junior</div>
+        <div class="card-body">Κλείνεις τη μύτη και καταπίνεις ταυτόχρονα. Πιο ήπια και φυσική κίνηση.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Frenzel — Προχωρημένη</div>
+        <div class="card-body">Κλείνεις μύτη και γλωττίδα, σπρώχνεις γλώσσα πάνω. Πολύ αποτελεσματική.</div>
+      </div>
+    </div>
+
+    <div class="alert alert-warn">
+      <div class="alert-icon">⚠️</div>
+      <div><strong>Χρυσός κανόνας:</strong> Εξίσωσε <em>νωρίς</em> (ξεκίνα πριν νιώσεις κάτι) και <em>συχνά</em> (κάθε 0,5–1 μ.). Πόνος <em>(ear squeeze / barotrauma)</em> = ανεβαίνω 1–2 μ. και ξαναπροσπαθώ. Αν συνεχίζει → <strong>ακύρωση κατάδυσης</strong>. Ποτέ δεν αγνοούμε πόνο στα αυτιά!</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CH3: ΠΝΕΥΜΟΝΕΣ ─── -->
+<section class="chapter-section" id="ch3">
+  <div class="chapter-inner">
+    <div class="ch-header">
+      <div class="ch-num-big">03</div>
+      <div class="ch-title-wrap">
+        <div class="ch-tag">Κανόνας #1</div>
+        <h2 class="ch-title">Πνεύμονες & αναπνοή</h2>
+      </div>
+    </div>
+
+    <div class="alert alert-danger" style="border-radius:18px;padding:1.2rem 1.4rem;margin-bottom:1.5rem">
+      <div class="alert-icon" style="font-size:20px">🚨</div>
+      <div style="font-size:15px"><strong>Ο πιο σημαντικός κανόνας στην κατάδυση:</strong><br>
+      <em>Ανέπνεε ΠΑΝΤΑ συνεχώς. Μην κρατάς ποτέ την αναπνοή ενώ ανεβαίνεις.</em><br>
+      <span style="font-size:13px;opacity:.8">"Never hold your breath while ascending"</span></div>
+    </div>
+
+    <!-- Lung expansion interactive SVG -->
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-label">Διαδραστική εικονογράφηση — τι συμβαίνει στους πνεύμονες</div>
+      <div style="display:flex;gap:10px;margin-bottom:1rem">
+        <button class="buoy-btn active" id="lung-ok-btn" onclick="lungState('ok')">✓ Αναπνέω κανονικά</button>
+        <button class="buoy-btn" id="lung-hold-btn" onclick="lungState('hold')">✕ Κρατάω αναπνοή</button>
+      </div>
+      <svg width="100%" viewBox="0 0 680 220" id="lung-svg">
+        <!-- 20m scene -->
+        <rect x="10" y="10" width="200" height="200" rx="14" fill="rgba(10,42,74,0.4)" stroke="rgba(168,216,234,0.1)" stroke-width="1"/>
+        <text font-family="'Syne',sans-serif" font-size="11" fill="rgba(168,216,234,0.5)" x="110" y="30" text-anchor="middle">20 μ. — 3 bar</text>
+        <!-- lungs at depth (small) -->
+        <ellipse cx="85" cy="120" rx="25" ry="35" fill="#85B7EB" opacity="0.7"/>
+        <ellipse cx="135" cy="120" rx="25" ry="35" fill="#85B7EB" opacity="0.7"/>
+        <text font-family="'DM Sans',sans-serif" font-size="10" fill="#042C53" x="110" y="165" text-anchor="middle">όγκος × 1</text>
+
+        <!-- arrow up -->
+        <text font-family="'DM Sans',sans-serif" font-size="12" fill="rgba(168,216,234,0.5)" x="250" y="110" text-anchor="middle">ανάδυση</text>
+        <text font-family="'DM Sans',sans-serif" font-size="20" fill="rgba(168,216,234,0.3)" x="250" y="135" text-anchor="middle">↑</text>
+
+        <!-- surface OK -->
+        <rect id="lung-ok-box" x="300" y="10" width="175" height="200" rx="14" fill="rgba(60,179,113,0.08)" stroke="rgba(60,179,113,0.2)" stroke-width="1"/>
+        <text font-family="'Syne',sans-serif" font-size="11" fill="rgba(60,179,113,0.6)" x="387" y="30" text-anchor="middle">Επιφάνεια — ΟΚ</text>
+        <ellipse id="lok1" cx="360" cy="115" rx="38" ry="52" fill="#3CB371" opacity="0.6"/>
+        <ellipse id="lok2" cx="415" cy="115" rx="38" ry="52" fill="#3CB371" opacity="0.6"/>
+        <text font-family="'DM Sans',sans-serif" font-size="10" fill="#EAF3DE" x="387" y="180" text-anchor="middle">αέρας εξέρχεται φυσικά ✓</text>
+
+        <!-- surface DANGER -->
+        <rect id="lung-danger-box" x="490" y="10" width="185" height="200" rx="14" fill="rgba(232,93,58,0.08)" stroke="rgba(232,93,58,0.15)" stroke-width="1" opacity="0.2"/>
+        <text font-family="'Syne',sans-serif" font-size="11" id="danger-label" fill="rgba(232,93,58,0.4)" x="583" y="30" text-anchor="middle">Επιφάνεια — ΚΙΝΔΥΝΟΣ</text>
+        <ellipse id="ldng1" cx="553" cy="110" rx="46" ry="62" fill="#E24B4A" opacity="0.15"/>
+        <ellipse id="ldng2" cx="613" cy="110" rx="46" ry="62" fill="#E24B4A" opacity="0.15"/>
+        <text id="danger-txt" font-family="'DM Sans',sans-serif" font-size="10" fill="rgba(232,93,58,0.4)" x="583" y="185" text-anchor="middle">αέρας κλειδωμένος → τραυματισμός</text>
+      </svg>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">Γιατί διαστέλλεται ο αέρας;</div>
+        <div class="card-body">Ο αέρας που ανέπνευσες στα 20 μ. (πίεση 3 bar) <strong>τριπλασιάζεται σε όγκο</strong> στην επιφάνεια (1 bar). Αν αναπνέεις κανονικά, ο αέρας φεύγει από τον ανοιχτό σου λαιμό — <em>κανένα πρόβλημα</em>!</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Pulmonary Barotrauma <em>(lung overexpansion injury)</em></div>
+        <div class="card-body">Αν κρατήσεις αναπνοή ανεβαίνοντας, ο αέρας δεν έχει πού να πάει. Μπορεί να τραυματίσει τον πνευμονικό ιστό. <strong>Αποφεύγεται 100%</strong> αν απλά δεν κρατάς ποτέ την αναπνοή.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CH4: ΠΛΕΥΣΤΟΤΗΤΑ ─── -->
+<section class="chapter-section" id="ch4">
+  <div class="chapter-inner">
+    <div class="ch-header">
+      <div class="ch-num-big">04</div>
+      <div class="ch-title-wrap">
+        <div class="ch-tag">Φυσική</div>
+        <h2 class="ch-title">Πλευστότητα & βάρος</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Αρχή Αρχιμήδη <em>(Archimedes' principle)</em></div>
+      <div class="card-body">
+        Κάθε αντικείμενο στο νερό δέχεται ώθηση προς τα πάνω <em>(upward force / buoyant force)</em> ίση με το βάρος του νερού που εκτοπίζει. Αν το αντικείμενο ζυγίζει <strong>λιγότερο</strong> → επιπλέει <em>(positive buoyancy)</em>. Αν ζυγίζει <strong>περισσότερο</strong> → βυθίζεται <em>(negative buoyancy)</em>. Αν ζυγίζει <strong>ίσα</strong> → αιωρείται <em>(neutral buoyancy)</em> — ο στόχος κάθε καταδύτη!
+      </div>
+    </div>
+
+    <!-- Buoyancy interactive -->
+    <div class="buoy-scene">
+      <div class="card-label" style="margin-bottom:1rem">Διαδραστική εικονογράφηση πλευστότητας — επίλεξε κατάσταση</div>
+      <div class="buoy-controls">
+        <button class="buoy-btn active" onclick="setBuoy('positive',this)">+ Θετική (positive)</button>
+        <button class="buoy-btn" onclick="setBuoy('neutral',this)">○ Ουδέτερη (neutral)</button>
+        <button class="buoy-btn" onclick="setBuoy('negative',this)">− Αρνητική (negative)</button>
+      </div>
+      <svg class="buoy-diagram" viewBox="0 0 680 280" id="buoy-svg">
+        <!-- water layers -->
+        <rect x="0" y="0" width="680" height="280" rx="12" fill="none"/>
+        <text font-family="'DM Sans',sans-serif" font-size="11" fill="rgba(168,216,234,0.3)" x="20" y="24">Επιφάνεια νερού</text>
+        <line x1="0" y1="30" x2="680" y2="30" stroke="rgba(168,216,234,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+        <!-- depth markers -->
+        <text font-family="'DM Sans',sans-serif" font-size="10" fill="rgba(168,216,234,0.25)" x="640" y="100">5 μ.</text>
+        <text font-family="'DM Sans',sans-serif" font-size="10" fill="rgba(168,216,234,0.25)" x="634" y="165">12 μ.</text>
+        <text font-family="'DM Sans',sans-serif" font-size="10" fill="rgba(168,216,234,0.25)" x="634" y="230">18 μ.</text>
+        <line x1="620" y1="95" x2="630" y2="95" stroke="rgba(168,216,234,0.15)" stroke-width="1"/>
+        <line x1="620" y1="160" x2="630" y2="160" stroke="rgba(168,216,234,0.15)" stroke-width="1"/>
+        <line x1="620" y1="225" x2="630" y2="225" stroke="rgba(168,216,234,0.15)" stroke-width="1"/>
+
+        <!-- diver -->
+        <g class="diver-body" id="diver-g">
+          <!-- body -->
+          <ellipse cx="340" cy="130" rx="28" ry="40" fill="#2E8BC0" opacity="0.9"/>
+          <!-- head -->
+          <circle cx="340" cy="82" r="18" fill="#1A5C8C"/>
+          <!-- mask -->
+          <ellipse cx="340" cy="82" rx="13" ry="10" fill="#A8D8EA" opacity="0.6"/>
+          <!-- fins -->
+          <ellipse cx="325" cy="172" rx="8" ry="18" fill="#1A5C8C" transform="rotate(-20,325,172)"/>
+          <ellipse cx="355" cy="172" rx="8" ry="18" fill="#1A5C8C" transform="rotate(20,355,172)"/>
+          <!-- tank -->
+          <rect x="360" y="100" width="16" height="50" rx="6" fill="#888"/>
+          <!-- BCD -->
+          <rect x="316" y="100" width="12" height="36" rx="4" fill="#1A5C8C"/>
+          <!-- bubbles -->
+          <circle class="bub" cx="330" cy="70" r="3" fill="none" stroke="rgba(168,216,234,0.5)" stroke-width="1"/>
+          <circle class="bub" cx="340" cy="60" r="2" fill="none" stroke="rgba(168,216,234,0.4)" stroke-width="1"/>
+          <circle class="bub" cx="352" cy="65" r="2.5" fill="none" stroke="rgba(168,216,234,0.35)" stroke-width="1"/>
+        </g>
+
+        <!-- arrow indicator -->
+        <text font-family="'Syne',sans-serif" font-size="26" id="buoy-arrow" fill="rgba(60,179,113,0.8)" x="440" y="145" text-anchor="middle">↑</text>
+        <text font-family="'DM Sans',sans-serif" font-size="13" id="buoy-label" fill="rgba(60,179,113,0.7)" x="440" y="168" text-anchor="middle">Θετική</text>
+        <text font-family="'DM Sans',sans-serif" font-size="11" id="buoy-label2" fill="rgba(168,216,234,0.5)" x="440" y="186" text-anchor="middle">positive buoyancy</text>
+      </svg>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">Τι ελέγχει την πλευστότητά σου</div>
+        <div class="card-body">
+          <strong>BCD</strong> <em>(inflate/deflate)</em> — κύρια ρύθμιση<br>
+          <strong>Πνεύμονες</strong> <em>(lungs)</em> — λεπτή ρύθμιση<br>
+          <strong>Στολή</strong> <em>(wetsuit)</em> — σταθερή άνωση που μειώνεται στο βάθος<br>
+          <strong>Βαράκια</strong> <em>(lead weights)</em> — αντισταθμίζουν
+        </div>
+      </div>
+      <div class="alert alert-safe" style="border-radius:14px">
+        <div class="alert-icon">🎯</div>
+        <div><strong>Στόχος: Ουδέτερη πλευστότητα <em>(neutral buoyancy)</em></strong><br>
+        Καλός έλεγχος = ασφάλεια + λιγότερη κατανάλωση αέρα + προστασία βυθού. Η πιο σημαντική δεξιότητα του καταδύτη!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CH5: ΘΕΡΜΟΚΡΑΣΙΑ ─── -->
+<section class="chapter-section" id="ch5">
+  <div class="chapter-inner">
+    <div class="ch-header">
+      <div class="ch-num-big">05</div>
+      <div class="ch-title-wrap">
+        <div class="ch-tag">Φυσιολογία</div>
+        <h2 class="ch-title">Θερμοκρασία & υποθερμία</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Γιατί κρυώνουμε γρήγορα στο νερό <em>(heat loss in water)</em></div>
+      <div class="card-body">Το νερό αποβάλλει θερμότητα από το σώμα μας <strong>25 φορές πιο γρήγορα</strong> από τον αέρα. Ακόμα και στους 28°C, μετά από αρκετή ώρα το σώμα χάνει θερμοκρασία. Υποθερμία <em>(hypothermia)</em> = θερμοκρασία σώματος κάτω από 35°C.</div>
+    </div>
+
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-label">Επιλογή στολής ανά θερμοκρασία νερού <em>(wetsuit selection)</em></div>
+      <table style="width:100%;border-collapse:collapse">
+        <tr>
+          <td style="padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;color:rgba(168,216,234,0.7)">Άνω 27°C</td>
+          <td style="padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;font-weight:500;color:#80E5A0">Wetsuit 3mm</td>
+          <td style="padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12px;color:rgba(168,216,234,0.5)">Τυπικές συνθήκες Ελλάδας καλοκαίρι</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;color:rgba(168,216,234,0.7)">22–27°C</td>
+          <td style="padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;font-weight:500;color:#F5D88A">Wetsuit 5mm</td>
+          <td style="padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12px;color:rgba(168,216,234,0.5)">Άνοιξη / φθινόπωρο Ελλάδας</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;color:rgba(168,216,234,0.7)">Κάτω 22°C</td>
+          <td style="padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;font-weight:500;color:#F5A090">Wetsuit 7mm</td>
+          <td style="padding:10px 8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12px;color:rgba(168,216,234,0.5)">Κρύα νερά, χειμερινές καταδύσεις</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 8px;font-size:13px;color:rgba(168,216,234,0.7)">Κάτω 15°C</td>
+          <td style="padding:10px 8px;font-size:14px;font-weight:500;color:#F5A090">Drysuit</td>
+          <td style="padding:10px 8px;font-size:12px;color:rgba(168,216,234,0.5)">Στεγανή στολή — για προχωρημένους</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card-grid">
+      <div class="alert alert-warn" style="border-radius:14px">
+        <div class="alert-icon">🌡️</div>
+        <div><strong>Σημεία υποθερμίας:</strong> Έντονο τρέμουλο <em>(shivering)</em>, μούδιασμα χεριών, δυσκολία σκέψης. Αν νιώσεις αυτά → <strong>ανάδυση αμέσως</strong> <em>(abort dive)</em>!</div>
+      </div>
+      <div class="alert alert-safe" style="border-radius:14px">
+        <div class="alert-icon">♨️</div>
+        <div><strong>Μετά την κατάδυση:</strong> Αλλαγή σε στεγνά ρούχα αμέσως. Ζεστό ρόφημα (όχι αλκοόλ!). Μέγιστος χρόνος σε κρύο νερό (κάτω 20°C): 30–40 λεπτά για Junior.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CH6: ΚΑΡΔΙΑΓΓΕΙΑΚΟ ─── -->
+<section class="chapter-section" id="ch6">
+  <div class="chapter-inner">
+    <div class="ch-header">
+      <div class="ch-num-big">06</div>
+      <div class="ch-title-wrap">
+        <div class="ch-tag">Φυσιολογία</div>
+        <h2 class="ch-title">Καρδιαγγειακό & αντενδείξεις</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Γιατί χρειάζεται καλή φυσική κατάσταση <em>(fitness to dive)</em></div>
+      <div class="card-body">Η κατάδυση δεν είναι πάντα χαλαρή — ρεύματα <em>(currents)</em>, βάρος εξοπλισμού, απρόσμενες καταστάσεις <em>(emergencies)</em> απαιτούν αντοχή. Υψηλός καρδιακός ρυθμός = περισσότερο CO₂ = αίσθηση πανικού <em>(panic)</em> → λανθασμένες αποφάσεις. Η ηρεμία <em>(stress management)</em> σώζει ζωές.</div>
+    </div>
+
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.06em;font-weight:500">Πότε ΔΕΝ βουτάμε <em style="text-transform:none">(contraindications)</em></p>
+    <ul class="contraindication-list">
+      <li>Πυρετός ή αίσθημα αρρώστιας <em style="font-size:12px">(fever / illness)</em> — το σώμα είναι ήδη υπό πίεση. Κατάδυση επιβαρύνει.</li>
+      <li>Κρυολόγημα ή ρινική συμφόρηση <em style="font-size:12px">(cold / nasal congestion)</em> — αδύνατη εξίσωση → κίνδυνος τραύματος αυτιών.</li>
+      <li>Έντονη κούραση ή έλλειψη ύπνου <em style="font-size:12px">(fatigue / sleep deprivation)</em> — αργές αντιδράσεις, κακή κρίση.</li>
+      <li>Αλκοόλ <em style="font-size:12px">(alcohol)</em> ή ηρεμιστικά / αντιισταμινικά — επηρεάζουν ισορροπία και αντανακλαστικά.</li>
+      <li>Πρόσφατη χειρουργική επέμβαση ή τραύμα — πάντα ζητάς ιατρική άδεια <em style="font-size:12px">(diving medical clearance)</em>.</li>
+    </ul>
+    <div class="alert alert-safe" style="margin-top:1rem">
+      <div class="alert-icon">✅</div>
+      <div><strong>Ο κανόνας:</strong> «Αν αμφιβάλλεις → μην βουτάς» <em>("when in doubt, don't dive")</em>. Πάντα λες την αλήθεια στον εκπαιδευτή σου <em>(dive instructor)</em>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CH7: ΑΣΦΑΛΗΣ ΑΝΑΔΥΣΗ ─── -->
+<section class="chapter-section" id="ch7">
+  <div class="chapter-inner">
+    <div class="ch-header">
+      <div class="ch-num-big">07</div>
+      <div class="ch-title-wrap">
+        <div class="ch-tag">Ασφάλεια</div>
+        <h2 class="ch-title">Ασφαλής ανάδυση & NDL</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Άζωτο & νόσος αποσυμπίεσης <em>(Nitrogen / Decompression Sickness / DCS)</em></div>
+      <div class="card-body">
+        Ο αέρας που αναπνέουμε είναι 78% άζωτο <em>(nitrogen / N₂)</em>. Καθώς καταδυόμαστε, το N₂ διαλύεται στους ιστούς — σαν ανθρακικό σε μπουκάλι υπό πίεση <em>(Henry's Law)</em>. Αν ανεβούμε πολύ γρήγορα, το άζωτο βγαίνει ξαφνικά σαν φυσαλίδες και τραυματίζει ιστούς → νόσος αποσυμπίεσης <em>(Decompression Sickness / DCS / "the bends")</em>. Η λύση: <strong>ανεβαίνουμε αργά και κάνουμε safety stop</strong>.
+      </div>
+    </div>
+
+    <!-- Ascent steps -->
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-label">Πρωτόκολλο ασφαλής ανάδυσης <em>(safe ascent protocol)</em></div>
+      <div class="ascent-steps">
+        <div class="ascent-step">
+          <div class="ascent-dot" style="background:rgba(46,139,192,0.2);border:1px solid rgba(46,139,192,0.3)">1</div>
+          <div class="ascent-content">
+            <div class="ascent-title">Σηματοδοτώ στον buddy <em style="font-size:12px">(signal buddy)</em></div>
+            <div class="ascent-detail">Σήμα «ανεβαίνουμε» — αντίχειρας πάνω <em>(thumb up = ascend)</em>. Ανεβαίνουμε πάντα μαζί.</div>
+          </div>
+        </div>
+        <div class="ascent-step">
+          <div class="ascent-dot" style="background:rgba(168,216,234,0.1);border:1px solid rgba(168,216,234,0.15)">2</div>
+          <div class="ascent-content">
+            <div class="ascent-title">Ανεβαίνω αργά — max 18 μ./λεπτό <em style="font-size:12px">(ascent rate 18 m/min max — PADI)</em></div>
+            <div class="ascent-detail">Δεν πρέπει να ξεπερνάω τις φυσαλίδες μου ενώ ανεβαίνω. Ο dive computer <em>(PDC)</em> ειδοποιεί αν ανεβαίνω γρήγορα.</div>
+          </div>
+        </div>
+        <div class="ascent-step">
+          <div class="ascent-dot" style="background:rgba(60,179,113,0.2);border:1px solid rgba(60,179,113,0.3)">3</div>
+          <div class="ascent-content">
+            <div class="ascent-title">Safety stop — 3 λεπτά στα 5 μ. <em style="font-size:12px">(safety stop)</em></div>
+            <div class="ascent-detail">Σταματώ στα 5 μ. για 3 λεπτά. Δίνω χρόνο στο άζωτο να φύγει αθόρυβα. Εκτελείται <strong>ΠΑΝΤΑ</strong>, ακόμα κι αν δεν έχω φτάσει τα όρια NDL.</div>
+          </div>
+        </div>
+        <div class="ascent-step">
+          <div class="ascent-dot" style="background:rgba(232,168,53,0.2);border:1px solid rgba(232,168,53,0.3)">4</div>
+          <div class="ascent-content">
+            <div class="ascent-title">Επιφάνεια — ξεφουσκώνω BCD <em style="font-size:12px">(surface — deflate BCD)</em></div>
+            <div class="ascent-detail">Στην επιφάνεια ξεφουσκώνω το BCD, βάζω τον αναπνευστήρα <em>(snorkel)</em> και κολυμπώ πλάτη προς το σκάφος.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NDL Table -->
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-label">Πίνακας NDL <em>(No-Decompression Limits — PADI RDP)</em></div>
+      <table class="ndl-table">
+        <thead><tr><th>Βάθος</th><th>NDL</th><th>Junior status</th><th>Σημείωση</th></tr></thead>
+        <tbody>
+          <tr><td>10 μ.</td><td class="ndl-safe">219 λεπτά</td><td class="ndl-safe">✓ Junior μόνος</td><td style="font-size:12px;color:rgba(168,216,234,0.5)">Πρακτικά απεριόριστο</td></tr>
+          <tr><td>12 μ.</td><td class="ndl-safe">140 λεπτά</td><td class="ndl-safe">✓ Junior μόνος</td><td style="font-size:12px;color:rgba(168,216,234,0.5)">Max βάθος solo Junior</td></tr>
+          <tr><td>18 μ.</td><td class="ndl-safe">56 λεπτά</td><td class="ndl-caution">⚠ Με ενήλικα buddy</td><td style="font-size:12px;color:rgba(168,216,234,0.5)">Max βάθος Junior με buddy</td></tr>
+          <tr><td>20 μ.</td><td class="ndl-caution">45 λεπτά</td><td class="ndl-danger">✕ Εκτός Junior limit</td><td style="font-size:12px;color:rgba(168,216,234,0.5)">Μόνο από 15+ ετών</td></tr>
+          <tr><td>30 μ.</td><td class="ndl-limit">20 λεπτά</td><td class="ndl-danger">✕ Εκτός Junior limit</td><td style="font-size:12px;color:rgba(168,216,234,0.5)">Open Water Diver μόνο</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="divider"></div>
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.06em;font-weight:500">Σήματα χεριών <em style="text-transform:none">(hand signals / underwater communication)</em></p>
+    <div class="signals-grid">
+      <div class="signal-card"><div class="signal-icon">👌</div><div class="signal-name">OK</div><div class="signal-eng">OK signal</div><div class="signal-desc">Αντίχειρας + δάχτυλα σε κύκλο</div></div>
+      <div class="signal-card"><div class="signal-icon">🤚</div><div class="signal-name">Πρόβλημα</div><div class="signal-eng">Problem / Not OK</div><div class="signal-desc">Ανοιχτή παλάμη κουνιέται δεξιά-αριστερά</div></div>
+      <div class="signal-card"><div class="signal-icon">👍</div><div class="signal-name">Ανεβαίνω</div><div class="signal-eng">Ascend / Go up</div><div class="signal-desc">Αντίχειρας πάνω</div></div>
+      <div class="signal-card"><div class="signal-icon">👎</div><div class="signal-name">Κατεβαίνω</div><div class="signal-eng">Descend / Go down</div><div class="signal-desc">Αντίχειρας κάτω</div></div>
+      <div class="signal-card"><div class="signal-icon">🤏</div><div class="signal-name">Λίγος αέρας</div><div class="signal-eng">Low air / 50 bar</div><div class="signal-desc">Γροθιά στο στήθος</div></div>
+      <div class="signal-card"><div class="signal-icon">✋</div><div class="signal-name">Στάσου!</div><div class="signal-eng">Stop</div><div class="signal-desc">Ανοιχτή παλάμη μπρος στο πρόσωπο</div></div>
+      <div class="signal-card"><div class="signal-icon">🤙</div><div class="signal-name">Έλα κοντά</div><div class="signal-eng">Come here / Buddy up</div><div class="signal-desc">Κουνώ δάχτυλα προς τον εαυτό μου</div></div>
+      <div class="signal-card"><div class="signal-icon">🖐️</div><div class="signal-name">Επείγον</div><div class="signal-eng">Emergency / No air</div><div class="signal-desc">Χαράζω λαιμό με παλάμη</div></div>
+    </div>
+
+    <div class="alert alert-info">
+      <div class="alert-icon">💡</div>
+      <div><strong>Κανόνας αέρα — Rule of thirds:</strong> 1/3 για κατάδυση, 1/3 για ανάδυση, 1/3 αποθεματικό <em>(reserve)</em>. Για Junior: ανεβαίνω όταν το μανόμετρο <em>(SPG = Submersible Pressure Gauge)</em> δείχνει <strong>50 bar</strong>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── QUIZ ─── -->
+<section id="quiz-section">
+  <div class="quiz-inner">
+    <div class="quiz-header">
+      <div class="ch-tag" style="margin-bottom:1rem;display:inline-block">Εξάσκηση</div>
+      <h2 class="ch-title" style="font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800">Quiz θεωρίας</h2>
+      <p style="color:var(--text-dim);font-size:14px;margin-top:.75rem">Δοκίμασε τις γνώσεις σου — τύπος PADI exam</p>
+    </div>
+    <div class="quiz-progress" id="quiz-progress"></div>
+    <div class="quiz-card" id="quiz-card">
+      <div class="quiz-q" id="quiz-q"><span id="quiz-num"></span></div>
+      <div class="quiz-options" id="quiz-opts"></div>
+      <div class="quiz-feedback" id="quiz-fb"></div>
+      <div style="text-align:right;margin-top:1rem">
+        <button class="quiz-next-btn" id="quiz-next" onclick="nextQ()">Επόμενη ερώτηση →</button>
+      </div>
+    </div>
+    <div class="quiz-score" id="quiz-score">
+      <div style="font-size:14px;color:var(--text-dim);margin-bottom:1rem">Αποτέλεσμα</div>
+      <div class="score-num" id="score-num"></div>
+      <div style="font-size:15px;color:var(--text-dim);margin-top:.5rem" id="score-msg"></div>
+      <br>
+      <button class="quiz-restart-btn" onclick="restartQuiz()">Ξαναπαίξε</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Junior Diver Academy &nbsp;·&nbsp; Βασισμένο στο πρόγραμμα <strong>PADI Junior Open Water Diver</strong></p>
+  <p style="margin-top:.5rem;font-size:12px">Το υλικό αυτό είναι εκπαιδευτικό. Η κατάδυση απαιτεί πάντα πιστοποιημένο εκπαιδευτή <em>(certified instructor)</em>.</p>
+</footer>
+
+</div><!-- /app -->
+
+<script>
+// ── BUBBLES ──
+(function(){
+  const bg = document.querySelector('.water-bg');
+  for(let i=0;i<18;i++){
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const s = 8+Math.random()*40;
+    b.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${10+Math.random()*20}s;animation-delay:${Math.random()*15}s`;
+    bg.appendChild(b);
+  }
+})();
+
+// ── PRESSURE SLIDER ──
+const depthSl = document.getElementById('depth-slider');
+if(depthSl){
+  depthSl.addEventListener('input',function(){
+    const d = parseInt(this.value);
+    document.getElementById('depth-val').textContent = d+' μ.';
+    const bar = (1 + d/10).toFixed(1);
+    const vol = Math.round(100/(1+d/10));
+    document.getElementById('pres-bar').textContent = bar;
+    document.getElementById('pres-atm').textContent = bar;
+    document.getElementById('pres-vol').textContent = vol+'%';
+    const z = document.getElementById('pres-zone');
+    if(d<=12){ z.textContent='✅'; }
+    else if(d<=18){ z.textContent='⚠️'; }
+    else { z.textContent='🚫'; }
+  });
+}
+
+// ── LUNG STATE ──
+function lungState(state){
+  const okBtn = document.getElementById('lung-ok-btn');
+  const holdBtn = document.getElementById('lung-hold-btn');
+  const svg = document.getElementById('lung-svg');
+  if(state==='ok'){
+    okBtn.classList.add('active'); holdBtn.classList.remove('active');
+    document.getElementById('lung-ok-box').setAttribute('fill','rgba(60,179,113,0.08)');
+    document.getElementById('lung-ok-box').setAttribute('stroke','rgba(60,179,113,0.2)');
+    document.getElementById('lok1').setAttribute('fill','#3CB371'); document.getElementById('lok1').setAttribute('opacity','0.6');
+    document.getElementById('lok2').setAttribute('fill','#3CB371'); document.getElementById('lok2').setAttribute('opacity','0.6');
+    document.getElementById('lung-danger-box').setAttribute('opacity','0.2');
+    document.getElementById('ldng1').setAttribute('opacity','0.15');
+    document.getElementById('ldng2').setAttribute('opacity','0.15');
+    document.getElementById('danger-label').setAttribute('fill','rgba(232,93,58,0.4)');
+    document.getElementById('danger-txt').setAttribute('fill','rgba(232,93,58,0.4)');
+  } else {
+    holdBtn.classList.add('active'); okBtn.classList.remove('active');
+    document.getElementById('lung-ok-box').setAttribute('fill','rgba(168,216,234,0.03)');
+    document.getElementById('lung-ok-box').setAttribute('stroke','rgba(168,216,234,0.08)');
+    document.getElementById('lok1').setAttribute('fill','#85B7EB'); document.getElementById('lok1').setAttribute('opacity','0.3');
+    document.getElementById('lok2').setAttribute('fill','#85B7EB'); document.getElementById('lok2').setAttribute('opacity','0.3');
+    document.getElementById('lung-danger-box').setAttribute('opacity','1');
+    document.getElementById('ldng1').setAttribute('opacity','0.65');
+    document.getElementById('ldng2').setAttribute('opacity','0.65');
+    document.getElementById('danger-label').setAttribute('fill','#F5A090');
+    document.getElementById('danger-txt').setAttribute('fill','#F5A090');
+  }
+}
+
+// ── BUOYANCY ──
+const buoyPositions = { positive:40, neutral:120, negative:210 };
+const buoyColors = {
+  positive: { fill:'rgba(60,179,113,0.2)', arrow:'↑', label:'Θετική', label2:'positive buoyancy', color:'rgba(60,179,113,0.8)' },
+  neutral:  { fill:'rgba(46,139,192,0.15)', arrow:'↔', label:'Ουδέτερη', label2:'neutral buoyancy', color:'rgba(46,139,192,0.8)' },
+  negative: { fill:'rgba(232,93,58,0.12)', arrow:'↓', label:'Αρνητική', label2:'negative buoyancy', color:'rgba(232,93,58,0.7)' }
+};
+function setBuoy(state, btn){
+  document.querySelectorAll('.buoy-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const diver = document.getElementById('diver-g');
+  const yOff = buoyPositions[state] - 120;
+  diver.style.transform = `translateY(${yOff}px)`;
+  const c = buoyColors[state];
+  document.getElementById('buoy-arrow').textContent = c.arrow;
+  document.getElementById('buoy-arrow').setAttribute('fill',c.color);
+  document.getElementById('buoy-label').textContent = c.label;
+  document.getElementById('buoy-label').setAttribute('fill',c.color);
+  document.getElementById('buoy-label2').textContent = c.label2;
+}
+
+// ── QUIZ ──
+const questions = [
+  { q:'Τι σημαίνει το ακρωνύμιο SCUBA;', opts:['Self-Contained Underwater Breathing Apparatus','Scuba Control Underwater Breathing Apparatus','Self-Contained Universal Breathing Apparatus','Safe Control Underwater Breathing Aid'], ans:0, exp:'SCUBA = Self-Contained Underwater Breathing Apparatus — αυτόνομη συσκευή υποβρύχιας αναπνοής.' },
+  { q:'Ποιος είναι ο πιο σημαντικός κανόνας στην κατάδυση;', opts:['Να κολυμπάς γρήγορα','Να μην κρατάς ποτέ την αναπνοή ενώ ανεβαίνεις','Να κρατάς πάντα αναπνοή στην ανάδυση','Να ανεβαίνεις γρήγορα'], ans:1, exp:'Never hold your breath while ascending! Ο αέρας διαστέλλεται στην ανάδυση και αν δεν φύγει, μπορεί να τραυματίσει τους πνεύμονες (pulmonary barotrauma).' },
+  { q:'Ποια είναι η πίεση στα 20 μέτρα βάθος;', opts:['1 bar','2 bar','3 bar','4 bar'], ans:2, exp:'Κάθε 10 μ. προσθέτουν 1 bar. 0 μ. = 1 bar, 10 μ. = 2 bar, 20 μ. = 3 bar.' },
+  { q:'Ποιο είναι το μέγιστο βάθος για Junior Open Water Diver χωρίς ενήλικα buddy;', opts:['10 μέτρα','12 μέτρα','18 μέτρα','20 μέτρα'], ans:1, exp:'Junior Open Water: max 12 μ. χωρίς ενήλικα, max 18 μ. με ενήλικα certified buddy.' },
+  { q:'Τι σημαίνει NDL στην κατάδυση;', opts:['No Dive Level','No-Decompression Limit','Nitrogen Dive Limit','Normal Depth Line'], ans:1, exp:'NDL = No-Decompression Limit — ο μέγιστος χρόνος παραμονής σε ένα βάθος χωρίς να χρειαστείς στάσεις αποσυμπίεσης.' },
+  { q:'Τι κάνεις αν νιώσεις πόνο στα αυτιά κατά την κατάδυση;', opts:['Συνεχίζεις γρήγορα κατεβαίνοντας','Αγνοείς τον πόνο','Ανεβαίνεις 1–2 μ. και ξαναπροσπαθείς εξίσωση','Βγάζεις τη μάσκα'], ans:2, exp:'Πόνος στα αυτιά = αδυναμία εξίσωσης. Ανεβαίνεις 1–2 μ. και ξαναπροσπαθείς. Αν συνεχίζει → ακύρωση κατάδυσης!' },
+  { q:'Πόσο χρόνο πρέπει να κάνεις safety stop στα 5 μέτρα;', opts:['1 λεπτό','3 λεπτά','5 λεπτά','10 λεπτά'], ans:1, exp:'Safety stop: 3 λεπτά (3 minutes) στα 5 μ. Εκτελείται ΠΑΝΤΑ — βοηθά στην αποβολή αζώτου ασφαλώς.' },
+  { q:'Τι είναι η νόσος αποσυμπίεσης (DCS / "the bends");', opts:['Κράμπα από κρύο νερό','Φυσαλίδες αζώτου στους ιστούς λόγω γρήγορης ανόδου','Πόνος στα αυτιά από πίεση','Υπνηλία από βαθιά κατάδυση'], ans:1, exp:'DCS (Decompression Sickness) = φυσαλίδες N₂ που σχηματίζονται στους ιστούς αν ανεβείς πολύ γρήγορα. Αποφεύγεται με αργό ρυθμό ανόδου και safety stop.' },
+  { q:'Ποια από τις παρακάτω καταστάσεις είναι αντένδειξη κατάδυσης;', opts:['Ήπιος πονοκέφαλος','Ρινική συμφόρηση από κρυολόγημα','Ελαφριά κούραση','Ήπια βαρηκοΐα'], ans:1, exp:'Ρινική συμφόρηση = αδυναμία εξίσωσης παραρρίνιων → κίνδυνος sinus barotrauma. Ποτέ δεν καταδυόμαστε με κρυολόγημα!' },
+  { q:'Τι σημαίνει το σήμα "αντίχειρας πάνω" κάτω από το νερό;', opts:['Είμαι ΟΚ','Κάτι πάει λάθος','Ανεβαίνουμε','Κατεβαίνουμε'], ans:2, exp:'Αντίχειρας πάνω (thumb up) = "ανεβαίνουμε" (ascend). Δεν σημαίνει "είμαι ΟΚ" — για το ΟΚ χρησιμοποιούμε τον κύκλο (αντίχειρας + δάχτυλα).' }
+];
+
+let current=0, score=0, answered=false;
+const shuffled = [...questions].sort(()=>Math.random()-.5);
+
+function renderQuiz(){
+  const q = shuffled[current];
+  document.getElementById('quiz-num').textContent = `Ερώτηση ${current+1} από ${shuffled.length}`;
+  document.getElementById('quiz-q').innerHTML = `<span>Ερώτηση ${current+1} από ${shuffled.length}</span>${q.q}`;
+  const opts = document.getElementById('quiz-opts');
+  opts.innerHTML = '';
+  q.opts.forEach((o,i)=>{
+    const btn = document.createElement('button');
+    btn.className='quiz-opt';
+    btn.textContent=o;
+    btn.onclick=()=>answer(i);
+    opts.appendChild(btn);
+  });
+  document.getElementById('quiz-fb').className='quiz-feedback';
+  document.getElementById('quiz-fb').textContent='';
+  document.getElementById('quiz-next').className='quiz-next-btn';
+  document.getElementById('quiz-score').className='quiz-score';
+  document.getElementById('quiz-card').style.display='block';
+  answered=false;
+  renderDots();
+}
+
+function renderDots(){
+  const prog = document.getElementById('quiz-progress');
+  prog.innerHTML='';
+  shuffled.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='quiz-dot'+(i<current?' done':i===current?' active':'');
+    prog.appendChild(d);
+  });
+}
+
+function answer(i){
+  if(answered)return;
+  answered=true;
+  const q=shuffled[current];
+  const btns=document.querySelectorAll('.quiz-opt');
+  btns.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('quiz-fb');
+  if(i===q.ans){
+    score++;
+    btns[i].classList.add('correct');
+    fb.className='quiz-feedback correct show';
+    fb.textContent='✓ Σωστά! '+q.exp;
+  } else {
+    btns[i].classList.add('wrong');
+    btns[q.ans].classList.add('correct');
+    fb.className='quiz-feedback wrong show';
+    fb.textContent='✗ Λάθος. Η σωστή: '+q.opts[q.ans]+'. '+q.exp;
+  }
+  document.getElementById('quiz-next').className='quiz-next-btn show';
+}
+
+function nextQ(){
+  current++;
+  if(current>=shuffled.length){
+    document.getElementById('quiz-card').style.display='none';
+    const sc=document.getElementById('quiz-score');
+    sc.className='quiz-score show';
+    document.getElementById('score-num').textContent=score+'/'+shuffled.length;
+    const pct=score/shuffled.length;
+    let msg='';
+    if(pct===1) msg='Τέλειο! Είσαι έτοιμος για το PADI exam! 🎓';
+    else if(pct>=.8) msg='Πολύ καλά! Λίγη ακόμα εξάσκηση και έτοιμος!';
+    else if(pct>=.6) msg='Καλή αρχή — επανέλαβε τα κεφάλαια που έχεις αδυναμία.';
+    else msg='Ξαναδιάβασε τη θεωρία και δοκίμασε ξανά!';
+    document.getElementById('score-msg').textContent=msg;
+  } else {
+    renderQuiz();
+  }
+}
+
+function restartQuiz(){
+  current=0; score=0; answered=false;
+  shuffled.sort(()=>Math.random()-.5);
+  document.getElementById('quiz-card').style.display='block';
+  renderQuiz();
+}
+
+renderQuiz();
+</script>
+</body>
+</html>
