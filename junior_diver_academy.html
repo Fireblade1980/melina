@@ -671,7 +671,7 @@ footer strong { color: var(--foam); }
     <div class="card">
       <div class="card-label">Ορισμός</div>
       <div class="card-body">
-        Η αυτόνομη κατάδυση <em>(SCUBA = Self-Contained Underwater Breathing Apparatus)</em> σου επιτρέπει να αναπνέεις κάτω από το νερό φέροντας μαζί σου πεπιεσμένο αέρα σε φιάλη <em>(tank / cylinder)</em>. Σε αντίθεση με την ελεύθερη κατάδυση <em>(freediving)</em>, δεν κρατάς ποτέ την αναπνοή — ανασαίνεις φυσικά σε κάθε βάθος.
+        Η αυτόνομη κατάδυση <em>(SCUBA = Self-Contained Underwater Breathing Apparatus)</em> σε επιτρέπει να αναπνέεις κάτω από το νερό φέροντας μαζί σου πεπιεσμένο αέρα σε φιάλη <em>(tank / cylinder)</em>. Σε αντίθεση με την ελεύθερη κατάδυση <em>(freediving)</em>, δεν κρατάς ποτέ την αναπνοή — ανασαίνεις φυσικά σε κάθε βάθος.
       </div>
     </div>
 
@@ -686,9 +686,9 @@ footer strong { color: var(--foam); }
     <div class="equip-grid">
       <div class="equip-card">
         <div class="equip-icon">🫁</div>
-        <div class="equip-name">Ρυθμιστής Αναπνοής</div>
+        <div class="equip-name">Ρυθμιστής</div>
         <div class="equip-eng">Regulator</div>
-        <div class="equip-desc">1η & 2η βαθμίδα. Το μαγικό εργαλείο που δίνει αέρα στη σωστή πίεση.</div>
+        <div class="equip-desc">1η & 2η βαθμίδα. Η «καρδιά» — δίνει αέρα στη σωστή πίεση.</div>
       </div>
       <div class="equip-card">
         <div class="equip-icon">🏺</div>
@@ -716,7 +716,7 @@ footer strong { color: var(--foam); }
       </div>
       <div class="equip-card">
         <div class="equip-icon">🦶</div>
-        <div class="equip-name">Βατραχοπέδιλα</div>
+        <div class="equip-name">Πτερύγια</div>
         <div class="equip-eng">Fins</div>
         <div class="equip-desc">Μεγεθύνουν το πόδι — αποδοτική κίνηση με λίγη ενέργεια.</div>
       </div>
@@ -730,7 +730,7 @@ footer strong { color: var(--foam); }
         <div class="equip-icon">⌚</div>
         <div class="equip-name">Dive Computer</div>
         <div class="equip-eng">PDC / Dive computer</div>
-        <div class="equip-desc">Βάθος, χρόνος, NDL, ρυθμός ανάδυσης.</div>
+        <div class="equip-desc">Βάθος, χρόνος, NDL, ρυθμός ανάδυσης. Υποχρεωτικό!</div>
       </div>
     </div>
 
@@ -741,7 +741,7 @@ footer strong { color: var(--foam); }
         <div class="alert-icon">🎓</div>
         <div>
           <strong>Junior Open Water Diver</strong><br>
-          Ηλικία 10–14 ετών. Ίδια εκπαίδευση με ενήλικα <em>(Open Water Diver)</em>, με περιορισμό βάθους <strong>12 μ.</strong> χωρίς ενήλικα buddy <em>(dive buddy)</em> και <strong>18 μ.</strong> μαζί του.
+          Ηλικία 10–14 ετών. Ίδια εκπαίδευση με ενήλικο <em>(Open Water Diver)</em>, με περιορισμό βάθους <strong>12 μ.</strong> χωρίς ενήλικα buddy <em>(dive buddy)</em> και <strong>18 μ.</strong> μαζί του.
         </div>
       </div>
       <div class="alert alert-safe" style="border-radius:14px">
@@ -1160,11 +1160,12 @@ footer strong { color: var(--foam); }
     </div>
     <div class="quiz-progress" id="quiz-progress"></div>
     <div class="quiz-card" id="quiz-card">
-      <div class="quiz-q" id="quiz-q"><span id="quiz-num"></span></div>
+      <div style="font-family:'Syne',sans-serif;font-size:12px;color:var(--text-dim);margin-bottom:.5rem" id="quiz-num"></div>
+      <div class="quiz-q" id="quiz-q"></div>
       <div class="quiz-options" id="quiz-opts"></div>
       <div class="quiz-feedback" id="quiz-fb"></div>
       <div style="text-align:right;margin-top:1rem">
-        <button class="quiz-next-btn" id="quiz-next" onclick="nextQ()">Επόμενη ερώτηση →</button>
+        <button class="quiz-next-btn" id="quiz-next">Επόμενη ερώτηση →</button>
       </div>
     </div>
     <div class="quiz-score" id="quiz-score">
@@ -1280,85 +1281,97 @@ const questions = [
   { q:'Τι σημαίνει το σήμα "αντίχειρας πάνω" κάτω από το νερό;', opts:['Είμαι ΟΚ','Κάτι πάει λάθος','Ανεβαίνουμε','Κατεβαίνουμε'], ans:2, exp:'Αντίχειρας πάνω (thumb up) = "ανεβαίνουμε" (ascend). Δεν σημαίνει "είμαι ΟΚ" — για το ΟΚ χρησιμοποιούμε τον κύκλο (αντίχειρας + δάχτυλα).' }
 ];
 
-let current=0, score=0, answered=false;
-const shuffled = [...questions].sort(()=>Math.random()-.5);
+let current = 0, score = 0, answered = false;
+const shuffled = [...questions].sort(() => Math.random() - .5);
 
-function renderQuiz(){
+function renderQuiz() {
   const q = shuffled[current];
-  document.getElementById('quiz-num').textContent = `Ερώτηση ${current+1} από ${shuffled.length}`;
-  document.getElementById('quiz-q').innerHTML = `<span>Ερώτηση ${current+1} από ${shuffled.length}</span>${q.q}`;
+  // update counter and question text in their own separate elements
+  document.getElementById('quiz-num').textContent = 'Ερώτηση ' + (current + 1) + ' από ' + shuffled.length;
+  document.getElementById('quiz-q').textContent = q.q;
+
+  // rebuild options
   const opts = document.getElementById('quiz-opts');
   opts.innerHTML = '';
-  q.opts.forEach((o,i)=>{
+  q.opts.forEach(function(o, i) {
     const btn = document.createElement('button');
-    btn.className='quiz-opt';
-    btn.textContent=o;
-    btn.onclick=()=>answer(i);
+    btn.className = 'quiz-opt';
+    btn.textContent = o;
+    btn.addEventListener('click', function() { answer(i); });
     opts.appendChild(btn);
   });
-  document.getElementById('quiz-fb').className='quiz-feedback';
-  document.getElementById('quiz-fb').textContent='';
-  document.getElementById('quiz-next').className='quiz-next-btn';
-  document.getElementById('quiz-score').className='quiz-score';
-  document.getElementById('quiz-card').style.display='block';
-  answered=false;
+
+  // reset feedback and next button
+  const fb = document.getElementById('quiz-fb');
+  fb.className = 'quiz-feedback';
+  fb.textContent = '';
+
+  const nextBtn = document.getElementById('quiz-next');
+  nextBtn.className = 'quiz-next-btn';
+  nextBtn.onclick = nextQ;
+
+  // ensure card visible, score hidden
+  document.getElementById('quiz-card').style.display = 'block';
+  document.getElementById('quiz-score').className = 'quiz-score';
+
+  answered = false;
   renderDots();
 }
 
-function renderDots(){
+function renderDots() {
   const prog = document.getElementById('quiz-progress');
-  prog.innerHTML='';
-  shuffled.forEach((_,i)=>{
-    const d=document.createElement('div');
-    d.className='quiz-dot'+(i<current?' done':i===current?' active':'');
+  prog.innerHTML = '';
+  shuffled.forEach(function(_, i) {
+    const d = document.createElement('div');
+    d.className = 'quiz-dot' + (i < current ? ' done' : i === current ? ' active' : '');
     prog.appendChild(d);
   });
 }
 
-function answer(i){
-  if(answered)return;
-  answered=true;
-  const q=shuffled[current];
-  const btns=document.querySelectorAll('.quiz-opt');
-  btns.forEach(b=>b.disabled=true);
-  const fb=document.getElementById('quiz-fb');
-  if(i===q.ans){
+function answer(i) {
+  if (answered) return;
+  answered = true;
+  const q = shuffled[current];
+  const btns = document.querySelectorAll('.quiz-opt');
+  btns.forEach(function(b) { b.disabled = true; });
+  const fb = document.getElementById('quiz-fb');
+  if (i === q.ans) {
     score++;
     btns[i].classList.add('correct');
-    fb.className='quiz-feedback correct show';
-    fb.textContent='✓ Σωστά! '+q.exp;
+    fb.className = 'quiz-feedback correct show';
+    fb.textContent = '✓ Σωστά! ' + q.exp;
   } else {
     btns[i].classList.add('wrong');
     btns[q.ans].classList.add('correct');
-    fb.className='quiz-feedback wrong show';
-    fb.textContent='✗ Λάθος. Η σωστή: '+q.opts[q.ans]+'. '+q.exp;
+    fb.className = 'quiz-feedback wrong show';
+    fb.textContent = '✗ Λάθος. Σωστή απάντηση: «' + q.opts[q.ans] + '». ' + q.exp;
   }
-  document.getElementById('quiz-next').className='quiz-next-btn show';
+  const nextBtn = document.getElementById('quiz-next');
+  nextBtn.className = 'quiz-next-btn show';
+  nextBtn.onclick = nextQ;
 }
 
-function nextQ(){
+function nextQ() {
   current++;
-  if(current>=shuffled.length){
-    document.getElementById('quiz-card').style.display='none';
-    const sc=document.getElementById('quiz-score');
-    sc.className='quiz-score show';
-    document.getElementById('score-num').textContent=score+'/'+shuffled.length;
-    const pct=score/shuffled.length;
-    let msg='';
-    if(pct===1) msg='Τέλειο! Είσαι έτοιμος για το PADI exam! 🎓';
-    else if(pct>=.8) msg='Πολύ καλά! Λίγη ακόμα εξάσκηση και έτοιμος!';
-    else if(pct>=.6) msg='Καλή αρχή — επανέλαβε τα κεφάλαια που έχεις αδυναμία.';
-    else msg='Ξαναδιάβασε τη θεωρία και δοκίμασε ξανά!';
-    document.getElementById('score-msg').textContent=msg;
+  if (current >= shuffled.length) {
+    document.getElementById('quiz-card').style.display = 'none';
+    document.getElementById('quiz-score').className = 'quiz-score show';
+    document.getElementById('score-num').textContent = score + '/' + shuffled.length;
+    const pct = score / shuffled.length;
+    let msg = '';
+    if (pct === 1)       msg = 'Τέλειο! Είσαι έτοιμος για το PADI exam! 🎓';
+    else if (pct >= .8)  msg = 'Πολύ καλά! Λίγη ακόμα εξάσκηση και έτοιμος!';
+    else if (pct >= .6)  msg = 'Καλή αρχή — επανέλαβε τα κεφάλαια που έχεις αδυναμία.';
+    else                 msg = 'Ξαναδιάβασε τη θεωρία και δοκίμασε ξανά!';
+    document.getElementById('score-msg').textContent = msg;
   } else {
     renderQuiz();
   }
 }
 
-function restartQuiz(){
-  current=0; score=0; answered=false;
-  shuffled.sort(()=>Math.random()-.5);
-  document.getElementById('quiz-card').style.display='block';
+function restartQuiz() {
+  current = 0; score = 0; answered = false;
+  shuffled.sort(() => Math.random() - .5);
   renderQuiz();
 }
 
