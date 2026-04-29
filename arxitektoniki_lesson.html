@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ανακάλυψε τον Χώρο! — Αρχιτεκτονική για Παιδιά</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* === RESET & BASE === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', 'Segoe UI', Tahoma, Arial, sans-serif;
+  background: #f0f4f8;
+  color: #1e293b;
+  min-height: 100vh;
+  padding: 1rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === CONTAINER === */
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+/* === HERO === */
+.hero {
+  background: #1a1a2e;
+  border-radius: 22px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  margin-bottom: 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.star-dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #fff;
+  border-radius: 50%;
+  animation: twk 2s infinite alternate;
+}
+@keyframes twk { from { opacity: 0.15; } to { opacity: 0.9; } }
+
+.hero-icon { font-size: 3rem; margin-bottom: 0.4rem; position: relative; z-index: 1; }
+.hero h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.5px;
+}
+.hero p {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.92rem;
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin: 0 auto 1rem;
+  line-height: 1.5;
+}
+.pbar-wrap {
+  background: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  height: 9px;
+  max-width: 380px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.pbar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #14b8a6);
+  border-radius: 20px;
+  transition: width 0.5s ease;
+  width: 0%;
+}
+.pbar-label {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.76rem;
+  margin-top: 0.4rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* === TABS === */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.tab {
+  flex: 1;
+  min-width: 95px;
+  padding: 0.6rem 0.35rem;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  background: #fff;
+  cursor: pointer;
+  font-family: 'Nunito', 'Segoe UI', Arial, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #64748b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  transition: all 0.18s;
+  line-height: 1.3;
+  text-align: center;
+}
+.tab:hover { border-color: #6366f1; color: #3730a3; background: #eef2ff; }
+.tab.active { background: #6366f1; color: #fff; border-color: #6366f1; }
+.tab.done { border-color: #14b8a6; color: #0f766e; background: #f0fdf4; }
+.tab .ti { font-size: 1.25rem; }
+
+/* === LESSON CARD === */
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 1.4rem;
+  animation: fadeUp 0.3s ease;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ltitle {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #6366f1;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.3px;
+}
+.lsub {
+  color: #64748b;
+  font-size: 0.87rem;
+  margin-bottom: 1rem;
+}
+
+/* === TIP BOX === */
+.tip {
+  background: #eef2ff;
+  border-left: 4px solid #6366f1;
+  border-radius: 0 10px 10px 0;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.84rem;
+  color: #3730a3;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+/* === ACTIVITY BOX === */
+.abox {
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 1.1rem;
+  margin-bottom: 0.9rem;
+  border: 1px solid #e2e8f0;
+}
+.abox h3 {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  line-height: 1.3;
+}
+
+/* === BUTTONS === */
+.btn-primary {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  border-radius: 20px;
+  border: none;
+  background: #6366f1;
+  color: #fff;
+  font-family: 'Nunito', 'Segoe UI', Arial, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-primary:hover { background: #4f46e5; transform: scale(1.03); }
+.btn-primary:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+.btn-outline {
+  display: inline-block;
+  padding: 0.55rem 1.2rem;
+  border-radius: 20px;
+  border: 2px solid #cbd5e1;
+  background: transparent;
+  color: #475569;
+  font-family: 'Nunito', 'Segoe UI', Arial, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-outline:hover { border-color: #6366f1; color: #6366f1; }
+
+/* === RANGE SLIDER === */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #e0e7ff, #6366f1);
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #6366f1;
+  border: 3px solid #fff;
+  cursor: grab;
+  box-shadow: 0 1px 6px rgba(99,102,241,0.45);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #6366f1;
+  border: 3px solid #fff;
+  cursor: grab;
+}
+
+/* === SCENARIO GRID === */
+.scen-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 0.8rem;
+}
+.scen-btn {
+  padding: 0.7rem 0.5rem;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  background: #fff;
+  cursor: pointer;
+  font-family: 'Nunito', 'Segoe UI', Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.18s;
+  text-align: center;
+  line-height: 1.3;
+}
+.scen-btn:hover { border-color: #6366f1; transform: scale(1.02); background: #f5f3ff; }
+.scen-btn.active { background: #eef2ff; border-color: #6366f1; color: #3730a3; }
+.scen-view {
+  min-height: 155px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 9px;
+  padding: 1rem;
+  transition: background 0.4s;
+  background: #f1f5f9;
+}
+
+/* === MOVE CHIPS === */
+.move-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 0.7rem; }
+.mchip {
+  padding: 5px 13px;
+  border-radius: 20px;
+  border: 2px solid #e2e8f0;
+  background: #fff;
+  cursor: pointer;
+  font-family: 'Nunito', 'Segoe UI', Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #64748b;
+  transition: all 0.18s;
+}
+.mchip.active { background: #14b8a6; border-color: #14b8a6; color: #fff; }
+
+/* === FORM-FUNCTION CARDS === */
+.ff-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 0.9rem;
+  margin-bottom: 0.7rem;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.18s;
+}
+.ff-card:hover { transform: scale(1.01); }
+.ff-q { font-weight: 800; font-size: 0.9rem; margin-bottom: 0; display: flex; align-items: center; gap: 8px; }
+.ff-hint { font-size: 0.76rem; opacity: 0.65; margin-top: 0.3rem; }
+.ff-answer { display: none; font-size: 0.84rem; font-weight: 600; margin-top: 0.55rem; line-height: 1.55; }
+
+/* === QUIZ === */
+.quiz-q {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 0.9rem;
+  line-height: 1.45;
+}
+.qopts { display: flex; flex-direction: column; gap: 7px; }
+.qopt {
+  padding: 0.75rem 1rem;
+  border-radius: 11px;
+  border: 2px solid #e2e8f0;
+  background: #fff;
+  cursor: pointer;
+  font-family: 'Nunito', 'Segoe UI', Arial, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: left;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  line-height: 1.35;
+}
+.qopt:hover:not(:disabled) { border-color: #6366f1; background: #f5f3ff; }
+.qopt.correct { border-color: #14b8a6; background: #ccfbf1; color: #0f766e; }
+.qopt.wrong   { border-color: #f87171; background: #fee2e2; color: #991b1b; }
+.qopt:disabled { cursor: default; }
+.qfb {
+  margin-top: 0.7rem;
+  padding: 0.75rem 1rem;
+  border-radius: 11px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  display: none;
+  animation: fadeUp 0.25s;
+}
+.qfb.ok   { background: #ccfbf1; color: #0f766e; }
+.qfb.nope { background: #fee2e2; color: #991b1b; }
+.qnav { display: flex; justify-content: space-between; align-items: center; margin-top: 0.9rem; }
+
+/* === COMPLETION === */
+.completion { text-align: center; padding: 1.5rem 1rem; }
+.trophy { font-size: 3.5rem; margin-bottom: 0.8rem; }
+.completion h2 { font-size: 1.8rem; font-weight: 900; color: #6366f1; margin-bottom: 0.4rem; }
+.stars-row { display: flex; gap: 8px; justify-content: center; margin: 0.8rem 0; }
+.sbadge { font-size: 1.8rem; animation: popIn 0.3s ease both; }
+.sbadge:nth-child(2) { animation-delay: 0.15s; }
+.sbadge:nth-child(3) { animation-delay: 0.3s; }
+@keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* === GRID HELPERS === */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.mini-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 0.65rem;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+}
+.mini-icon { font-size: 1.5rem; margin-bottom: 0.2rem; }
+.mini-title { font-weight: 800; font-size: 0.82rem; color: #6366f1; margin-bottom: 0.15rem; }
+.mini-desc  { font-size: 0.74rem; color: #64748b; line-height: 1.4; }
+
+/* === CANVAS AREA === */
+.canvas-wrap {
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 0.8rem;
+  text-align: center;
+}
+canvas { border-radius: 8px; cursor: crosshair; max-width: 100%; display: block; margin: 0 auto; }
+#floorC { cursor: pointer; }
+
+/* responsive */
+@media (max-width: 500px) {
+  .tabs { gap: 4px; }
+  .tab { min-width: 75px; font-size: 0.68rem; }
+  .ltitle { font-size: 1.25rem; }
+  .grid3 { grid-template-columns: 1fr 1fr; }
+  .hero h1 { font-size: 1.6rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-stars" id="heroBg"></div>
+    <div class="hero-icon">🏛️</div>
+    <h1>Ανακάλυψε τον Χώρο!</h1>
+    <p>Κλίμακα, κίνηση, κάτοψη — μάθε πώς «ζούμε» τα κτίρια!</p>
+    <div class="pbar-wrap"><div class="pbar-fill" id="pFill"></div></div>
+    <p class="pbar-label" id="pLabel">Ξεκίνα το ταξίδι σου! 🚀</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs" id="navTabs">
+    <button class="tab active" onclick="goL(0)" id="tab0"><span class="ti">📏</span>Χώρος &amp; Κλίμακα</button>
+    <button class="tab" onclick="goL(1)" id="tab1"><span class="ti">🧍</span>Σώμα &amp; Χώρος</button>
+    <button class="tab" onclick="goL(2)" id="tab2"><span class="ti">🚶</span>Στάση &amp; Κίνηση</button>
+    <button class="tab" onclick="goL(3)" id="tab3"><span class="ti">🏠</span>Μορφή &amp; Λειτουργία</button>
+    <button class="tab" onclick="goL(4)" id="tab4"><span class="ti">🗺️</span>Κάτοψη</button>
+    <button class="tab" onclick="goL(5)" id="tab5"><span class="ti">🧠</span>Κουίζ!</button>
+  </div>
+
+  <div id="lessonArea"></div>
+</div>
+
+<script>
+/* ===================== DATA ===================== */
+var curL = 0, done = new Set(), qScore = 0, curQ = 0, qAnswered = false;
+
+var scaleItems = [
+  { emoji:'🧒', label:'Εσύ',       h:60,  color:'#6366f1', name:'1.3 μ — εσύ!',           desc:'Το σώμα σου είναι η βασική μονάδα μέτρησης — η κλίμακα ξεκινά από εμάς!' },
+  { emoji:'🚪', label:'Πόρτα',     h:95,  color:'#14b8a6', name:'2 μ — πόρτα',             desc:'Σχεδιασμένη ακριβώς για να χωράς! Αυτή είναι η ανθρώπινη κλίμακα.' },
+  { emoji:'🏠', label:'Δωμάτιο',   h:135, color:'#f59e0b', name:'3 μ — ύψος δωματίου',     desc:'Ένα τυπικό δωμάτιο είναι 2.5–3 μ ψηλό — ακριβώς άνετο για μας.' },
+  { emoji:'⛪', label:'Ναός',      h:190, color:'#ef4444', name:'15+ μ — εκκλησία',         desc:'Τόσο ψηλός χώρος σε κάνει να νιώθεις μικρός — αυτό το θέλει σκόπιμα ο αρχιτέκτονας!' },
+  { emoji:'🏢', label:'Ουρανοξ.', h:245, color:'#8b5cf6', name:'300+ μ — ουρανοξύστης',    desc:'Δεκάδες όροφοι — η μεγαλύτερη κλίμακα που χτίζει ο άνθρωπος!' }
+];
+
+var scenarios = [
+  { bg:'#fef3c7', emoji:'🛋️', title:'Μικρή, ζεστή γωνιά',   col:'#92400e',
+    feelings:['😊 Ασφάλεια','🧡 Ζεστασιά','⏸️ Στάση — εδώ ηρεμώ'],
+    desc:'Μια πολυθρόνα σε μια γωνιά μάς προσκαλεί να σταματήσουμε. Το σώμα ηρεμεί!' },
+  { bg:'#e0e7ff', emoji:'⛪', title:'Ψηλός ναός',            col:'#3730a3',
+    feelings:['😲 Δέος','✨ Μεγαλείο','🙏 Νιώθω μικρός'],
+    desc:'Ο αρχιτέκτονας το σχεδίασε ψηλό επίτηδες — σε κάνει να νιώθεις ταπεινός μπροστά στο μεγαλείο.' },
+  { bg:'#d1fae5', emoji:'🌳', title:'Πλατεία με δέντρα',     col:'#065f46',
+    feelings:['😌 Χαλάρωση','👥 Κοινωνικότητα','⏸️ Στάση — συνάντηση'],
+    desc:'Οι πλατείες είναι χώροι στάσης — ο κόσμος σταματά, συναντιέται, παίζει!' },
+  { bg:'#fce7f3', emoji:'🏟️', title:'Μεγάλο στάδιο',        col:'#831843',
+    feelings:['🎉 Ενθουσιασμός','⚡ Ενέργεια','👐 Κοινότητα'],
+    desc:'Χιλιάδες άνθρωποι μαζί — ο χώρος μεγεθύνει το συναίσθημα!' }
+];
+
+var ffExamples = [
+  { icon:'🏔️', q:'Γιατί η στέγη είναι τριγωνική;',
+    a:'Στα μέρη που χιονίζει, η κεκλιμένη στέγη αφήνει το χιόνι να γλιστράει κάτω — αλλιώς θα έσπαγε η οροφή από το βάρος!',
+    bg:'#e0e7ff', col:'#3730a3' },
+  { icon:'🚑', q:'Γιατί τα νοσοκομεία έχουν τεράστιους διαδρόμους;',
+    a:'Για να μπορούν τα κρεβάτια με ρόδες να στρίβουν γρήγορα! Η λειτουργία (ταχύτητα) καθορίζει τη μορφή.',
+    bg:'#fef3c7', col:'#92400e' },
+  { icon:'🏊', q:'Γιατί τα αθλητικά κέντρα έχουν μεγάλα παράθυρα;',
+    a:'Για φυσικό φωτισμό και αερισμό — οι αθλητές χρειάζονται καθαρό αέρα! Η ανάγκη (λειτουργία) φέρνει τα μεγάλα ανοίγματα (μορφή).',
+    bg:'#d1fae5', col:'#065f46' },
+  { icon:'📚', q:'Γιατί οι βιβλιοθήκες έχουν ψηλά ράφια και μεγάλα τζάμια;',
+    a:'Τα ράφια για να χωράνε πολλά βιβλία, τα τζάμια για φυσικό φως ώστε να διαβάζεις εύκολα. Μορφή = Λειτουργία!',
+    bg:'#f3e8ff', col:'#6b21a8' }
+];
+
+var quizQ = [
+  { q:'Φτιάχνεις ένα σπιτάκι για τα Lego σου. Αυτό είναι σε...',
+    opts:['Μεγάλη κλίμακα','Μικρή κλίμακα','Ανθρώπινη κλίμακα','Αρχιτεκτονική κλίμακα'],
+    correct:1, exp:'Ένα Lego σπίτι είναι πολύ μικρότερο από το αληθινό — άρα είναι μικρή κλίμακα!' },
+  { q:'Ποιο από τα παρακάτω είναι σημείο ΣΤΑΣΗΣ;',
+    opts:['Σκάλα','Διάδρομος','Ζεστή γωνιά με πολυθρόνα','Δρόμος'],
+    correct:2, exp:'Η γωνιά με την πολυθρόνα σε προσκαλεί να σταματήσεις και να ηρεμήσεις — αυτή είναι η στάση!' },
+  { q:'Γιατί οι στέγες σε χιονισμένες περιοχές έχουν μεγάλη κλίση;',
+    opts:['Για να φαίνονται όμορφες','Για να γλιστράει το χιόνι κάτω','Γιατί είναι φθηνότερες','Για να έχουν περισσότερο χώρο μέσα'],
+    correct:1, exp:'Η κεκλιμένη στέγη (μορφή) υπάρχει για να αποτρέπει τη συσσώρευση χιονιού (λειτουργία)!' },
+  { q:'Τι είναι η κάτοψη ενός κτιρίου;',
+    opts:['Η πρόσοψη που βλέπουμε από μπροστά','Η άποψη από ψηλά — σαν να βγάλαμε τη σκεπή','Ο τύπος υλικών που χρησιμοποιεί','Το χρώμα των τοίχων'],
+    correct:1, exp:'Η κάτοψη είναι η "ματιά του πουλιού" — βλέπουμε πού είναι τοίχοι, πόρτες και δωμάτια!' },
+  { q:'Ποιο από τα παρακάτω περιγράφει ΚΙΝΗΣΗ μέσα στον χώρο;',
+    opts:['Κάθομαι σε πεζούλι','Ανεβαίνω τη σκάλα','Διαβάζω στην κουζίνα','Κοιτώ από παράθυρο'],
+    correct:1, exp:'Η σκάλα μάς "σπρώχνει" να κινηθούμε — ο αρχιτέκτονας σχεδίασε τη διαδρομή μας!' },
+  { q:'Τι σημαίνει "η μορφή ακολουθεί τη λειτουργία";',
+    opts:['Τα κτίρια πρέπει να είναι τετράγωνα','Το σχήμα ενός κτιρίου εξυπηρετεί αυτό που κάνουμε μέσα του','Η αρχιτεκτονική αφορά μόνο την εμφάνιση','Τα σπίτια πρέπει να έχουν κήπο'],
+    correct:1, exp:'Κάθε σχήμα έχει λόγο! Φαρδύς διάδρομος = κρεβάτια νοσοκομείου. Τριγωνική στέγη = χιόνι γλιστράει. Μορφή εξυπηρετεί λειτουργία!' }
+];
+
+/* ===================== STATE MACHINE ===================== */
+function updProgress() {
+  var pct = (done.size / 6) * 100;
+  document.getElementById('pFill').style.width = pct + '%';
+  var lbs = ['Ξεκίνα το ταξίδι σου! 🚀','1/6 ολοκληρώθηκε ✅','2/6 ✅✅','3/6 ✅✅✅','4/6 ✅✅✅✅','5/6 ✅✅✅✅✅','Ολοκληρώθηκε! 🎉'];
+  document.getElementById('pLabel').textContent = lbs[done.size];
+}
+
+function updTabs() {
+  for (var i = 0; i < 6; i++) {
+    var t = document.getElementById('tab' + i);
+    if (i === curL)       t.className = 'tab active';
+    else if (done.has(i)) t.className = 'tab done';
+    else                  t.className = 'tab';
+  }
+}
+
+function goL(i) { curL = i; updTabs(); renderL(); }
+function completeL(i) { done.add(i); updProgress(); goL(i + 1); }
+
+function renderL() {
+  var a = document.getElementById('lessonArea');
+  if (curL === 0)      a.innerHTML = buildL0();
+  else if (curL === 1) a.innerHTML = buildL1();
+  else if (curL === 2) a.innerHTML = buildL2();
+  else if (curL === 3) a.innerHTML = buildL3();
+  else if (curL === 4) a.innerHTML = buildL4();
+  else                 a.innerHTML = buildQuizStart();
+  initL();
+}
+
+/* ===================== LESSON 0: SCALE ===================== */
+function buildL0() {
+  return '<div class="card">' +
+    '<div class="ltitle">📏 Χώρος &amp; Κλίμακα</div>' +
+    '<div class="lsub">Η σχέση του μεγέθους ενός κτιρίου με εμάς</div>' +
+    '<div class="tip">💡 <strong>Κλίμακα</strong> = η σχέση του μεγέθους ενός αντικειμένου με εμάς. Αν φτιάξεις ένα σπιτάκι για τα Lego σου, είναι σε <strong>μικρή κλίμακα</strong>. Αν μπεις σε ένα τεράστιο στάδιο, νιώθεις πολύ μικρός γιατί ο χώρος είναι σε <strong>μεγάλη κλίμακα</strong>!</div>' +
+    '<div class="abox">' +
+      '<h3>🔍 Συγκρίνω μεγέθη — κούνα τον ρυθμιστή!</h3>' +
+      '<input type="range" id="scSlider" min="0" max="4" step="1" value="0" style="margin-bottom:1rem">' +
+      '<div id="scDisplay" style="min-height:260px;display:flex;align-items:flex-end;gap:20px;padding:1rem;background:#fff;border-radius:12px;border:1px solid #e2e8f0;justify-content:center;flex-wrap:wrap"></div>' +
+      '<div id="scInfo" style="margin-top:0.7rem;text-align:center"></div>' +
+    '</div>' +
+    '<div class="abox">' +
+      '<h3>📐 Μονάδες μέτρησης στην αρχιτεκτονική</h3>' +
+      '<div class="grid3">' +
+        '<div class="mini-card"><div class="mini-icon">📍</div><div class="mini-title">mm</div><div class="mini-desc">Για λεπτομέρειες — πόμολο, σφήνα</div></div>' +
+        '<div class="mini-card"><div class="mini-icon">📏</div><div class="mini-title">m</div><div class="mini-desc">Για δωμάτια — ύψος, πλάτος</div></div>' +
+        '<div class="mini-card"><div class="mini-icon">🏙️</div><div class="mini-title">km</div><div class="mini-desc">Για πόλεις — μήκος δρόμου</div></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="abox">' +
+      '<h3>🗂️ Κλίμακα σχεδίου — τι σημαίνει 1:100;</h3>' +
+      '<p style="font-size:0.85rem;color:#475569;line-height:1.6">Οι αρχιτέκτονες δεν μπορούν να σχεδιάσουν ένα σπίτι σε <em>φυσικό μέγεθος</em> στο χαρτί! Χρησιμοποιούν κλίμακα: <strong style="color:#6366f1">1:100</strong> σημαίνει 1 εκατοστό στο χαρτί = 1 μέτρο στην πραγματικότητα. Σαν να «μίκρυνες» το κτίριο 100 φορές!</p>' +
+    '</div>' +
+    '<button class="btn-primary" onclick="completeL(0)">Συνέχεια ➡️</button>' +
+  '</div>';
+}
+
+function updateScale() {
+  var v = parseInt(document.getElementById('scSlider').value);
+  var d = document.getElementById('scDisplay');
+  var info = document.getElementById('scInfo');
+  var you = scaleItems[0];
+  var sel = scaleItems[v];
+  var html = '<div style="display:flex;flex-direction:column;align-items:center;gap:4px">' +
+    '<span style="font-size:' + Math.round(you.h * 0.32) + 'px;line-height:1">' + you.emoji + '</span>' +
+    '<div style="height:' + you.h + 'px;width:14px;background:' + you.color + ';border-radius:4px 4px 0 0;margin:0 auto"></div>' +
+    '<div style="font-size:0.72rem;color:#64748b;font-weight:700">Εσύ</div>' +
+  '</div>';
+  if (v > 0) {
+    html += '<div style="font-size:1.2rem;align-self:center;margin:0 10px;font-weight:800;color:#94a3b8">VS</div>' +
+    '<div style="display:flex;flex-direction:column;align-items:center;gap:4px">' +
+      '<span style="font-size:' + Math.min(Math.round(sel.h * 0.22), 52) + 'px;line-height:1">' + sel.emoji + '</span>' +
+      '<div style="height:' + sel.h + 'px;width:14px;background:' + sel.color + ';border-radius:4px 4px 0 0;margin:0 auto"></div>' +
+      '<div style="font-size:0.72rem;color:#64748b;font-weight:700">' + sel.label + '</div>' +
+    '</div>';
+  }
+  d.innerHTML = html;
+  info.innerHTML = '<div style="font-weight:800;font-size:0.9rem;color:' + sel.color + ';margin-bottom:0.2rem">' + sel.name + '</div>' +
+    '<div style="font-size:0.83rem;color:#64748b">' + sel.desc + '</div>';
+}
+
+/* ===================== LESSON 1: BODY & SPACE ===================== */
+function buildL1() {
+  return '<div class="card">' +
+    '<div class="ltitle">🧍 Σώμα &amp; Χώρος</div>' +
+    '<div class="lsub">Πώς νιώθει το σώμα μας σε διαφορετικούς χώρους;</div>' +
+    '<div class="tip">💡 Ο χώρος μιλάει στο σώμα μας! Ένα μικρό δωμάτιο με χαμηλό ταβάνι νιώθεται σαν αγκαλιά. Ένας τεράστιος ναός σε κάνει να νιώθεις μικρός — το κάνει <strong>σκόπιμα</strong> ο αρχιτέκτονας.</div>' +
+    '<div class="abox">' +
+      '<h3>🏛️ Επίλεξε χώρο — πώς νιώθεις;</h3>' +
+      '<div class="scen-grid">' +
+        scenarios.map(function(s, i) {
+          return '<button class="scen-btn" id="sc' + i + '" onclick="pickScen(' + i + ')">' +
+            '<span style="font-size:1.8rem">' + s.emoji + '</span>' +
+            '<span>' + s.title + '</span>' +
+          '</button>';
+        }).join('') +
+      '</div>' +
+      '<div class="scen-view" id="scenView">' +
+        '<span style="font-size:1.6rem">👆</span>' +
+        '<div style="color:#64748b;font-size:0.88rem;font-weight:600">Επίλεξε έναν χώρο!</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="abox">' +
+      '<h3>🧑&zwj;🎨 Ο Modulor — Λε Κορμπυζιέ</h3>' +
+      '<div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">' +
+        '<span style="font-size:2.2rem">🧑&zwj;🎨</span>' +
+        '<div style="font-size:0.83rem;color:#475569;line-height:1.6;flex:1;min-width:180px">' +
+          'Ένας διάσημος αρχιτέκτονας δημιούργησε σύστημα μέτρησης βασισμένο στο ανθρώπινο σώμα — τον <strong style="color:#6366f1">Modulor</strong>. Κάθε πόρτα, σκάλα, τραπέζι σχεδιάστηκε ώστε να «ταιριάζει» στον άνθρωπο. Το σώμα μας είναι το κλειδί!' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<button class="btn-primary" onclick="completeL(1)">Συνέχεια ➡️</button>' +
+  '</div>';
+}
+
+function pickScen(idx) {
+  for (var i = 0; i < 4; i++) {
+    document.getElementById('sc' + i).className = 'scen-btn' + (i === idx ? ' active' : '');
+  }
+  var s = scenarios[idx];
+  var sv = document.getElementById('scenView');
+  sv.style.background = s.bg;
+  sv.innerHTML = '<span style="font-size:2.5rem">' + s.emoji + '</span>' +
+    '<div style="font-weight:800;font-size:0.95rem;color:' + s.col + '">' + s.title + '</div>' +
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">' +
+      s.feelings.map(function(f) {
+        return '<span style="background:rgba(255,255,255,0.75);border-radius:20px;padding:3px 10px;font-size:0.78rem;font-weight:700;color:' + s.col + '">' + f + '</span>';
+      }).join('') +
+    '</div>' +
+    '<div style="font-size:0.82rem;color:' + s.col + ';text-align:center;max-width:310px;line-height:1.55">' + s.desc + '</div>';
+}
+
+/* ===================== LESSON 2: MOVEMENT ===================== */
+var mvColor = '#6366f1', mvType = 'walk';
+var drawing = false, paths = [], cPath = [];
+
+function buildL2() {
+  return '<div class="card">' +
+    '<div class="ltitle">🚶 Στάση &amp; Κίνηση</div>' +
+    '<div class="lsub">Πώς «ζούμε» τον χώρο όταν κινούμαστε ή σταματάμε;</div>' +
+    '<div class="tip">💡 Η αρχιτεκτονική δεν είναι μόνο τοίχοι — είναι το <strong>πώς κινούμαστε μέσα σε αυτούς</strong>. Ο αρχιτέκτονας σχεδιάζει τη διαδρομή που θα ακολουθήσεις!</div>' +
+    '<div class="abox">' +
+      '<h3>⏸️ Στάση — Εδώ σταματάω</h3>' +
+      '<div class="grid3">' +
+        '<div class="mini-card"><div class="mini-icon">🛋️</div><div class="mini-title">Πολυθρόνα</div><div class="mini-desc">Το σώμα ηρεμεί — σε προσκαλεί να κάτσεις</div></div>' +
+        '<div class="mini-card"><div class="mini-icon">🪑</div><div class="mini-title">Πεζούλι</div><div class="mini-desc">Εξωτερικό κάθισμα — συνάντηση στην αυλή</div></div>' +
+        '<div class="mini-card"><div class="mini-icon">⛲</div><div class="mini-title">Πλατεία</div><div class="mini-desc">Εστία συνάντησης — εδώ μαζευόμαστε</div></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="abox">' +
+      '<h3>▶️ Κίνηση — Εδώ προχωράω</h3>' +
+      '<div class="grid3">' +
+        '<div class="mini-card"><div class="mini-icon">🪜</div><div class="mini-title" style="color:#14b8a6">Σκάλα</div><div class="mini-desc">Σε «σπρώχνει» από όροφο σε όροφο</div></div>' +
+        '<div class="mini-card"><div class="mini-icon">🚪</div><div class="mini-title" style="color:#14b8a6">Διάδρομος</div><div class="mini-desc">Οδηγεί από δωμάτιο σε δωμάτιο</div></div>' +
+        '<div class="mini-card"><div class="mini-icon">🔄</div><div class="mini-title" style="color:#14b8a6">Ράμπα</div><div class="mini-desc">Ομαλή κίνηση — και για αναπηρικά αμαξίδια!</div></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="abox">' +
+      '<h3>✏️ Σχεδίασε τη διαδρομή σου σε κάτοψη μουσείου!</h3>' +
+      '<div class="move-chips" id="moveChips">' +
+        '<button class="mchip active" onclick="setMv(\'walk\',\'#6366f1\',this)">🚶 Περπάτημα</button>' +
+        '<button class="mchip" onclick="setMv(\'stairs\',\'#f59e0b\',this)">🪜 Σκάλα</button>' +
+        '<button class="mchip" onclick="setMv(\'pause\',\'#ef4444\',this)">⏸️ Σταμάτημα</button>' +
+      '</div>' +
+      '<div class="canvas-wrap">' +
+        '<canvas id="pathC" width="580" height="190"></canvas>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;justify-content:center;margin-top:0.6rem">' +
+        '<button class="btn-outline" onclick="clearC()">🗑️ Καθαρισμός</button>' +
+      '</div>' +
+    '</div>' +
+    '<button class="btn-primary" onclick="completeL(2)">Συνέχεια ➡️</button>' +
+  '</div>';
+}
+
+function setMv(t, c, btn) {
+  mvType = t; mvColor = c;
+  var chips = document.querySelectorAll('.mchip');
+  for (var i = 0; i < chips.length; i++) chips[i].classList.remove('active');
+  btn.classList.add('active');
+}
+
+var _cv, _ctx, _rooms2;
+
+function initCanvas() {
+  _cv = document.getElementById('pathC');
+  if (!_cv) return;
+  _ctx = _cv.getContext('2d');
+  _rooms2 = [
+    {x:15, y:15, w:120, h:75, label:'Είσοδος',        color:'#e0e7ff'},
+    {x:155,y:15, w:95,  h:75, label:'Αίθουσα Α',      color:'#fef3c7'},
+    {x:270,y:15, w:95,  h:75, label:'Αίθουσα Β',      color:'#d1fae5'},
+    {x:385,y:15, w:180, h:75, label:'Έξοδος',          color:'#fce7f3'},
+    {x:15, y:108,w:550, h:65, label:'Κεντρικός Διάδρομος (ΚΙΝΗΣΗ)', color:'#f1f5f9'}
+  ];
+  paths = []; cPath = [];
+  drawBg(_ctx, _rooms2, _cv);
+
+  function getPos(e) {
+    var r = _cv.getBoundingClientRect();
+    var sx = _cv.width / r.width, sy = _cv.height / r.height;
+    var src = e.touches ? e.touches[0] : e;
+    return { x: (src.clientX - r.left) * sx, y: (src.clientY - r.top) * sy };
+  }
+  _cv.addEventListener('mousedown', function(e) { drawing = true; cPath = [getPos(e)]; });
+  _cv.addEventListener('mousemove', function(e) {
+    if (!drawing) return;
+    cPath.push(getPos(e));
+    drawBg(_ctx, _rooms2, _cv); drawPaths(_ctx); drawCur(_ctx);
+  });
+  _cv.addEventListener('mouseup', function() { finishPath(); });
+  _cv.addEventListener('touchstart', function(e) { e.preventDefault(); drawing = true; cPath = [getPos(e)]; }, { passive: false });
+  _cv.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    if (!drawing) return;
+    cPath.push(getPos(e));
+    drawBg(_ctx, _rooms2, _cv); drawPaths(_ctx); drawCur(_ctx);
+  }, { passive: false });
+  _cv.addEventListener('touchend', function(e) { e.preventDefault(); finishPath(); }, { passive: false });
+}
+
+function finishPath() {
+  drawing = false;
+  if (cPath.length > 1) paths.push({ pts: cPath.slice(), color: mvColor, type: mvType });
+  cPath = [];
+  drawBg(_ctx, _rooms2, _cv); drawPaths(_ctx);
+}
+
+function drawBg(ctx, rms, cv) {
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, 0, cv.width, cv.height);
+  rms.forEach(function(r) {
+    ctx.fillStyle = r.color; ctx.fillRect(r.x, r.y, r.w, r.h);
+    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.5; ctx.strokeRect(r.x, r.y, r.w, r.h);
+    ctx.fillStyle = '#475569'; ctx.font = 'bold 11px Nunito,Segoe UI,Arial,sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(r.label, r.x + r.w / 2, r.y + r.h / 2 + 5);
+  });
+}
+
+function drawPaths(ctx) {
+  paths.forEach(function(p) {
+    if (p.pts.length < 2) return;
+    ctx.beginPath(); ctx.moveTo(p.pts[0].x, p.pts[0].y);
+    p.pts.forEach(function(pt) { ctx.lineTo(pt.x, pt.y); });
+    ctx.strokeStyle = p.color; ctx.lineWidth = 3;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.setLineDash(p.type === 'pause' ? [6, 4] : []);
+    ctx.stroke(); ctx.setLineDash([]);
+  });
+}
+
+function drawCur(ctx) {
+  if (cPath.length < 2) return;
+  ctx.beginPath(); ctx.moveTo(cPath[0].x, cPath[0].y);
+  cPath.forEach(function(p) { ctx.lineTo(p.x, p.y); });
+  ctx.strokeStyle = mvColor; ctx.lineWidth = 3;
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.setLineDash(mvType === 'pause' ? [6, 4] : []);
+  ctx.stroke(); ctx.setLineDash([]);
+}
+
+function clearC() {
+  paths = []; cPath = [];
+  if (_cv) drawBg(_ctx, _rooms2, _cv);
+}
+
+/* ===================== LESSON 3: FORM & FUNCTION ===================== */
+function buildL3() {
+  var html = '<div class="card">' +
+    '<div class="ltitle">🏠 Μορφή &amp; Λειτουργία</div>' +
+    '<div class="lsub">Γιατί είναι έτσι αυτό το κτίριο;</div>' +
+    '<div class="tip">💡 <strong>«Η μορφή ακολουθεί τη λειτουργία»</strong> — κάθε σχήμα σε ένα κτίριο έχει έναν λόγο! Το σχήμα (μορφή) πρέπει να βοηθάει αυτό που κάνουμε (λειτουργία).</div>';
+  ffExamples.forEach(function(ex, i) {
+    html += '<div class="ff-card" id="ffc' + i + '" style="background:' + ex.bg + ';border-color:' + ex.col + '22" onclick="toggleFF(' + i + ')">' +
+      '<div class="ff-q" style="color:' + ex.col + '">' + ex.icon + ' ' + ex.q + '</div>' +
+      '<div class="ff-hint" style="color:' + ex.col + '">👆 Πάτα για να δεις την απάντηση!</div>' +
+      '<div class="ff-answer" id="ffa' + i + '" style="color:' + ex.col + '">' + ex.a + '</div>' +
+    '</div>';
+  });
+  html += '<button class="btn-primary" onclick="completeL(3)">Συνέχεια ➡️</button></div>';
+  return html;
+}
+
+function toggleFF(i) {
+  var ans = document.getElementById('ffa' + i);
+  var hint = document.querySelector('#ffc' + i + ' .ff-hint');
+  if (ans.style.display === 'block') {
+    ans.style.display = 'none';
+    hint.style.display = 'block';
+  } else {
+    ans.style.display = 'block';
+    hint.style.display = 'none';
+  }
+}
+
+/* ===================== LESSON 4: FLOOR PLAN ===================== */
+var floorRooms = [
+  {x:20, y:20, w:155,h:105,label:'Σαλόνι',          desc:'Χώρος ΣΤΑΣΗΣ — εδώ ηρεμούμε, μιλάμε, χαλαρώνουμε', color:'#e0e7ff',tc:'#3730a3'},
+  {x:195,y:20, w:115,h:105,label:'Κουζίνα',          desc:'Χώρος ΛΕΙΤΟΥΡΓΙΑΣ — ο σχεδιασμός βολεύει τη μαγειρική', color:'#d1fae5',tc:'#065f46'},
+  {x:330,y:20, w:145,h:105,label:'Υπνοδωμάτιο',      desc:'Χώρος ΣΤΑΣΗΣ — ιδιωτικός χώρος ηρεμίας', color:'#fce7f3',tc:'#831843'},
+  {x:20, y:143,w:130,h:80, label:'Μπάνιο',            desc:'Χώρος ΛΕΙΤΟΥΡΓΙΑΣ — σχεδιασμένος για υγιεινή', color:'#fef3c7',tc:'#92400e'},
+  {x:168,y:143,w:307,h:80, label:'Διάδρομος (ΚΙΝΗΣΗ)',desc:'Χώρος ΚΙΝΗΣΗΣ — σε οδηγεί από δωμάτιο σε δωμάτιο!', color:'#f1f5f9',tc:'#334155'}
+];
+
+function buildL4() {
+  return '<div class="card">' +
+    '<div class="ltitle">🗺️ Η Κάτοψη — η ματιά του πουλιού</div>' +
+    '<div class="lsub">Πώς βλέπουν οι αρχιτέκτονες τον χώρο από ψηλά;</div>' +
+    '<div class="tip">💡 Φαντάσου ότι βγάζεις τη σκεπή από το σπίτι σου και πετάς από πάνω με ελικόπτερο! Βλέπεις πού είναι οι τοίχοι, οι πόρτες και πώς ενώνονται τα δωμάτια — σαν <strong>χάρτης θησαυρού</strong>!</div>' +
+    '<div class="abox">' +
+      '<h3>🏠 Ανακάλυψε την κάτοψη — πάτα κάθε δωμάτιο!</h3>' +
+      '<div class="canvas-wrap">' +
+        '<canvas id="floorC" width="500" height="250"></canvas>' +
+      '</div>' +
+      '<div id="roomInfo" style="margin-top:0.7rem;padding:0.75rem;border-radius:10px;background:#f1f5f9;font-size:0.85rem;color:#475569;font-weight:600;text-align:center;min-height:48px;transition:background 0.3s">' +
+        '👆 Πάτα ένα δωμάτιο για να μάθεις τι είναι!' +
+      '</div>' +
+    '</div>' +
+    '<div class="abox">' +
+      '<h3>📐 Τι βλέπουμε στην κάτοψη;</h3>' +
+      '<div class="grid2">' +
+        '<div class="mini-card"><div class="mini-icon">⬛</div><div class="mini-title">Τοίχοι</div><div class="mini-desc">Παχιές γραμμές — ο σκελετός του σπιτιού</div></div>' +
+        '<div class="mini-card"><div class="mini-icon">🔳</div><div class="mini-title">Πόρτες</div><div class="mini-desc">Κενό στον τοίχο — εδώ περνάμε</div></div>' +
+        '<div class="mini-card"><div class="mini-icon">⬜</div><div class="mini-title">Δωμάτια</div><div class="mini-desc">Εσωτερικοί χώροι με λειτουργία</div></div>' +
+        '<div class="mini-card"><div class="mini-icon">🔲</div><div class="mini-title">Παράθυρα</div><div class="mini-desc">Ανοίγματα για φως και αέρα</div></div>' +
+      '</div>' +
+    '</div>' +
+    '<button class="btn-primary" onclick="completeL(4)">Πάμε στο Κουίζ! 🧠</button>' +
+  '</div>';
+}
+
+var _fv, _fctx, _selRoom = -1;
+
+function initFloor() {
+  _fv = document.getElementById('floorC');
+  if (!_fv) return;
+  _fctx = _fv.getContext('2d');
+  drawFloor(-1);
+  _fv.addEventListener('click', function(e) {
+    var r = _fv.getBoundingClientRect();
+    var sx = _fv.width / r.width, sy = _fv.height / r.height;
+    var mx = (e.clientX - r.left) * sx, my = (e.clientY - r.top) * sy;
+    var hit = -1;
+    floorRooms.forEach(function(rm, i) {
+      if (mx >= rm.x && mx <= rm.x + rm.w && my >= rm.y && my <= rm.y + rm.h) hit = i;
+    });
+    _selRoom = hit;
+    drawFloor(hit);
+    var info = document.getElementById('roomInfo');
+    if (hit >= 0) {
+      var rm = floorRooms[hit];
+      info.style.background = rm.color;
+      info.innerHTML = '<strong style="color:' + rm.tc + '">' + rm.label + '</strong><br>' +
+        '<span style="color:' + rm.tc + ';font-size:0.78rem">' + rm.desc + '</span>';
+    } else {
+      info.style.background = '#f1f5f9';
+      info.innerHTML = '👆 Πάτα ένα δωμάτιο για να μάθεις τι είναι!';
+    }
+  });
+}
+
+function drawFloor(sel) {
+  var ctx = _fctx, cv = _fv;
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.fillStyle = '#e2e8f0'; ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.strokeStyle = '#64748b'; ctx.lineWidth = 2; ctx.strokeRect(0, 0, cv.width, cv.height);
+
+  floorRooms.forEach(function(r, i) {
+    ctx.fillStyle = i === sel ? r.color : r.color + 'bb';
+    ctx.fillRect(r.x, r.y, r.w, r.h);
+    ctx.strokeStyle = i === sel ? r.tc : '#94a3b8';
+    ctx.lineWidth = i === sel ? 2.5 : 1.5;
+    ctx.strokeRect(r.x, r.y, r.w, r.h);
+    ctx.fillStyle = r.tc;
+    ctx.textAlign = 'center';
+    var lines = r.label.split(' ');
+    var lineH = 16;
+    var startY = r.y + r.h / 2 - ((lines.length - 1) * lineH / 2);
+    lines.forEach(function(ln, li) {
+      ctx.font = (i === sel ? 'bold 12px' : 'bold 10px') + ' Nunito,Segoe UI,Arial,sans-serif';
+      ctx.fillText(ln, r.x + r.w / 2, startY + li * lineH);
+    });
+    if (i === sel) {
+      ctx.strokeStyle = r.tc; ctx.lineWidth = 3;
+      ctx.strokeRect(r.x - 2, r.y - 2, r.w + 4, r.h + 4);
+    }
+  });
+
+  ctx.fillStyle = '#64748b';
+  ctx.font = '10px Nunito,Segoe UI,Arial,sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('N ↑', cv.width - 8, 18);
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '10px Nunito,Segoe UI,Arial,sans-serif';
+  ctx.fillText('Κάτοψη Σπιτιού — ματιά πουλιού 🚁', cv.width / 2, cv.height - 6);
+}
+
+/* ===================== QUIZ ===================== */
+function buildQuizStart() {
+  qScore = 0; curQ = 0; qAnswered = false;
+  return buildQSlide();
+}
+
+function buildQSlide() {
+  if (curQ >= quizQ.length) return buildCompletion();
+  var q = quizQ[curQ];
+  var pct = Math.round((curQ / quizQ.length) * 100);
+  var html = '<div class="card">' +
+    '<div class="ltitle">🧠 Κουίζ — Ερώτηση ' + (curQ + 1) + '/' + quizQ.length + '</div>' +
+    '<div style="background:#e2e8f0;border-radius:8px;height:7px;margin-bottom:1rem;overflow:hidden">' +
+      '<div style="height:100%;background:linear-gradient(90deg,#6366f1,#14b8a6);border-radius:8px;width:' + pct + '%;transition:width 0.4s"></div>' +
+    '</div>' +
+    '<div class="quiz-q">' + q.q + '</div>' +
+    '<div class="qopts" id="qOpts">' +
+      q.opts.map(function(o, i) {
+        return '<button class="qopt" id="opt' + i + '" onclick="ansQ(' + i + ')">' +
+          ['🅐','🅑','🅒','🅓'][i] + ' ' + o +
+        '</button>';
+      }).join('') +
+    '</div>' +
+    '<div id="qFb" class="qfb"></div>' +
+    '<div class="qnav">' +
+      '<span style="font-size:0.83rem;color:#64748b;font-weight:600">Σκορ: ' + qScore + '/' + curQ + '</span>' +
+      '<button class="btn-primary" id="nxtBtn" onclick="nextQ()" disabled>Επόμενο ➡️</button>' +
+    '</div>' +
+  '</div>';
+  return html;
+}
+
+function ansQ(idx) {
+  if (qAnswered) return;
+  qAnswered = true;
+  var q = quizQ[curQ];
+  var opts = document.querySelectorAll('.qopt');
+  for (var i = 0; i < opts.length; i++) opts[i].disabled = true;
+  var fb = document.getElementById('qFb');
+  if (idx === q.correct) {
+    qScore++;
+    document.getElementById('opt' + idx).classList.add('correct');
+    fb.className = 'qfb ok';
+    fb.textContent = '✅ Σωστά! ' + q.exp;
+  } else {
+    document.getElementById('opt' + idx).classList.add('wrong');
+    document.getElementById('opt' + q.correct).classList.add('correct');
+    fb.className = 'qfb nope';
+    fb.textContent = '❌ Όχι ακριβώς. ' + q.exp;
+  }
+  fb.style.display = 'block';
+  document.getElementById('nxtBtn').disabled = false;
+}
+
+function nextQ() { qAnswered = false; curQ++; document.getElementById('lessonArea').innerHTML = buildQSlide(); }
+
+function buildCompletion() {
+  done.add(5); updProgress(); updTabs();
+  var stars = qScore >= 5 ? 3 : qScore >= 3 ? 2 : 1;
+  var msgs = ['Καλή προσπάθεια! Δοκίμασε ξανά! 💪', 'Πολύ καλά! Μαθαίνεις αρχιτεκτονική! 👏', '🎊 Άριστα! Είσαι αρχιτέκτονας!'];
+  return '<div class="card"><div class="completion">' +
+    '<div class="trophy">🏆</div>' +
+    '<h2>Συγχαρητήρια!</h2>' +
+    '<p style="color:#64748b;margin-bottom:0.4rem">Σκορ: <strong>' + qScore + '/' + quizQ.length + '</strong></p>' +
+    '<p style="color:#6366f1;font-weight:700;margin-bottom:0.8rem">' + msgs[stars - 1] + '</p>' +
+    '<div class="stars-row">' + Array(stars).fill('<span class="sbadge">⭐</span>').join('') + '</div>' +
+    '<div style="background:#f8fafc;border-radius:14px;padding:1rem;margin:1rem 0;text-align:left;border:1px solid #e2e8f0">' +
+      '<div style="font-weight:800;margin-bottom:0.6rem;color:#1e293b">📚 Τι έμαθες σήμερα:</div>' +
+      '<div style="font-size:0.87rem;color:#475569;line-height:2.2">' +
+        '✅ Χώρος, κλίμακα &amp; μονάδες μέτρησης<br>' +
+        '✅ Ανθρώπινη κλίμακα &amp; πώς νιώθει το σώμα<br>' +
+        '✅ Στάση (εδώ σταματάω) &amp; κίνηση (εδώ προχωράω)<br>' +
+        '✅ Μορφή ακολουθεί λειτουργία<br>' +
+        '✅ Κάτοψη — η ματιά του πουλιού' +
+      '</div>' +
+    '</div>' +
+    '<button class="btn-primary" onclick="restartQuiz()">🔄 Παίξε ξανά</button>' +
+  '</div></div>';
+}
+
+function restartQuiz() { curQ = 0; qScore = 0; qAnswered = false; document.getElementById('lessonArea').innerHTML = buildQSlide(); }
+
+/* ===================== INIT ===================== */
+function initL() {
+  if (curL === 0) {
+    var sl = document.getElementById('scSlider');
+    if (sl) { sl.addEventListener('input', updateScale); updateScale(); }
+  }
+  if (curL === 2) initCanvas();
+  if (curL === 4) initFloor();
+}
+
+(function initStars() {
+  var bg = document.getElementById('heroBg');
+  if (!bg) return;
+  for (var i = 0; i < 20; i++) {
+    var s = document.createElement('div');
+    s.className = 'star-dot';
+    s.style.left = (Math.random() * 100) + '%';
+    s.style.top  = (Math.random() * 100) + '%';
+    s.style.animationDelay = (Math.random() * 2) + 's';
+    s.style.opacity = (Math.random() * 0.5 + 0.2).toFixed(2);
+    bg.appendChild(s);
+  }
+})();
+
+updTabs();
+renderL();
+</script>
+</body>
+</html>
