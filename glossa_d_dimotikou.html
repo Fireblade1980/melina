@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Γλώσσα Δ΄ Δημοτικού 🌟</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #4FC3F7;
+    --sky-dark: #0288D1;
+    --mint: #81C784;
+    --mint-dark: #388E3C;
+    --peach: #FFB74D;
+    --peach-dark: #E65100;
+    --rose: #F06292;
+    --rose-dark: #AD1457;
+    --violet: #9575CD;
+    --violet-dark: #512DA8;
+    --lemon: #FFF176;
+    --lemon-dark: #F9A825;
+    --cream: #FFFDE7;
+    --bg: #F0F7FF;
+    --card: #FFFFFF;
+    --text: #2D3748;
+    --text-light: #718096;
+    --correct: #48BB78;
+    --wrong: #FC8181;
+    --neutral: #EDF2F7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    background-image: 
+      radial-gradient(circle at 20% 20%, rgba(79,195,247,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(129,199,132,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 60% 10%, rgba(240,98,146,0.1) 0%, transparent 40%);
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 24px 20px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -30px; left: -30px; right: -30px; bottom: -30px;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.4em;
+    color: white;
+    text-shadow: 2px 3px 0px rgba(0,0,0,0.2);
+    position: relative;
+  }
+  .header p {
+    color: rgba(255,255,255,0.9);
+    font-size: 1em;
+    margin-top: 6px;
+    font-weight: 600;
+    position: relative;
+  }
+  .header-stars {
+    position: relative;
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .star-icon { font-size: 1.4em; animation: twinkle 2s infinite alternate; }
+  .star-icon:nth-child(2) { animation-delay: 0.3s; }
+  .star-icon:nth-child(3) { animation-delay: 0.6s; }
+  @keyframes twinkle { from { opacity: 0.6; transform: scale(0.9); } to { opacity: 1; transform: scale(1.1); } }
+
+  /* SCOREBOARD */
+  .scoreboard {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: white;
+    border-bottom: 3px solid #EDF2F7;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  }
+  .score-pill {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 1em;
+    box-shadow: 0 3px 8px rgba(102,126,234,0.4);
+  }
+  .score-pill span { font-size: 1.2em; }
+  .progress-bar {
+    flex: 1 1 200px;
+    max-width: 300px;
+    background: #EDF2F7;
+    border-radius: 50px;
+    height: 24px;
+    overflow: hidden;
+    border: 2px solid #E2E8F0;
+    align-self: center;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #48BB78, #38A169);
+    border-radius: 50px;
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 6px;
+    font-size: 0.7em;
+    color: white;
+    font-weight: 700;
+  }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    background: white;
+    border-bottom: 3px solid #EDF2F7;
+    padding: 0 10px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-tab {
+    padding: 12px 16px;
+    border: none;
+    background: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.85em;
+    cursor: pointer;
+    color: var(--text-light);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .nav-tab:hover { color: var(--text); background: #F7FAFC; }
+  .nav-tab.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+  }
+
+  /* SECTIONS */
+  .section { display: none; padding: 20px; max-width: 800px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    border-radius: 16px;
+    color: white;
+    font-weight: 800;
+    font-size: 1.1em;
+  }
+  .section-header .emoji { font-size: 1.8em; }
+
+  /* CARDS */
+  .theory-card {
+    background: white;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    border-left: 5px solid;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .theory-card h3 { font-size: 1em; font-weight: 800; margin-bottom: 8px; }
+  .theory-card p, .theory-card li { font-size: 0.9em; line-height: 1.6; }
+  .theory-card ul { padding-left: 20px; }
+  .theory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .theory-mini {
+    background: white;
+    border-radius: 12px;
+    padding: 12px 14px;
+    border-top: 4px solid;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    font-size: 0.85em;
+  }
+  .theory-mini strong { display: block; font-size: 0.95em; margin-bottom: 4px; }
+
+  /* QUESTIONS */
+  .question-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    border: 2px solid transparent;
+    transition: all 0.3s;
+  }
+  .question-card.answered-correct { border-color: var(--correct); background: #F0FFF4; }
+  .question-card.answered-wrong { border-color: var(--wrong); background: #FFF5F5; }
+  .q-number {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 0.8em;
+    font-weight: 800;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .q-text {
+    font-weight: 700;
+    font-size: 0.95em;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .q-text .q-body { flex: 1; }
+  .q-highlight {
+    background: linear-gradient(135deg, #FFF3CD, #FFE082);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-style: italic;
+    font-weight: 800;
+  }
+  .options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 8px;
+  }
+  .option-btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 2px solid #E2E8F0;
+    background: #F7FAFC;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.88em;
+    font-weight: 700;
+    color: var(--text);
+    transition: all 0.2s;
+    text-align: left;
+  }
+  .option-btn:hover:not(:disabled) { border-color: #667eea; background: #EBF4FF; transform: translateY(-1px); }
+  .option-btn.correct { background: #C6F6D5; border-color: var(--correct); color: #22543D; }
+  .option-btn.wrong { background: #FED7D7; border-color: var(--wrong); color: #742A2A; }
+  .option-btn.reveal { background: #C6F6D5; border-color: var(--correct); color: #22543D; opacity: 0.8; }
+  .option-btn:disabled { cursor: not-allowed; }
+
+  /* FEEDBACK */
+  .feedback {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.88em;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  .feedback.correct-fb { background: #C6F6D5; color: #22543D; border-left: 4px solid var(--correct); }
+  .feedback.wrong-fb { background: #FED7D7; color: #742A2A; border-left: 4px solid var(--wrong); }
+  .feedback.show { display: block; animation: slideIn 0.3s ease; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* FILL BLANK */
+  .fill-blank {
+    background: #EEF2FF;
+    border: 2px dashed #667eea;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 0.9em;
+    line-height: 1.8;
+    font-weight: 600;
+  }
+  .blank-input {
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95em;
+    font-weight: 700;
+    width: 160px;
+    background: white;
+    margin: 0 4px;
+  }
+  .blank-input:focus { outline: none; border-color: #4C51BF; box-shadow: 0 0 0 3px rgba(102,126,234,0.2); }
+  .blank-input.correct-input { background: #C6F6D5; border-color: var(--correct); }
+  .blank-input.wrong-input { background: #FED7D7; border-color: var(--wrong); }
+  .check-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.9em;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+    box-shadow: 0 3px 8px rgba(102,126,234,0.4);
+  }
+  .check-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 12px rgba(102,126,234,0.5); }
+  .check-btn:active { transform: translateY(0); }
+  .check-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* TEXT ANALYSIS */
+  .text-box {
+    background: linear-gradient(135deg, #FFF9C4, #FFF3CD);
+    border: 2px solid #F6C90E;
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-size: 0.95em;
+    line-height: 2;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .text-box .underline { text-decoration: underline; text-decoration-color: #667eea; text-decoration-thickness: 2px; }
+
+  /* LABEL INPUT */
+  .label-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .label-row label { font-size: 0.85em; font-weight: 700; min-width: 60px; color: #4A5568; }
+  .label-select {
+    border: 2px solid #CBD5E0;
+    border-radius: 8px;
+    padding: 5px 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85em;
+    font-weight: 700;
+    background: white;
+    cursor: pointer;
+  }
+  .label-select:focus { outline: none; border-color: #667eea; }
+  .label-select.correct-input { background: #C6F6D5; border-color: var(--correct); }
+  .label-select.wrong-input { background: #FED7D7; border-color: var(--wrong); }
+
+  /* SECTION COMPLETE */
+  .section-complete {
+    text-align: center;
+    padding: 24px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 16px;
+    color: white;
+    margin-top: 16px;
+    display: none;
+  }
+  .section-complete h3 { font-size: 1.4em; margin-bottom: 8px; }
+  .section-complete p { font-size: 0.95em; opacity: 0.9; }
+
+  /* FINAL RESULTS */
+  .results-panel {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  }
+  .trophy { font-size: 5em; margin-bottom: 12px; }
+  .final-score { font-size: 3em; font-weight: 900; color: #667eea; }
+  .grade-message { font-size: 1.1em; font-weight: 700; margin: 12px 0; color: #4A5568; }
+  .reset-btn {
+    background: linear-gradient(135deg, #48BB78, #38A169);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 0 4px 12px rgba(72,187,120,0.4);
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { transform: translateY(-2px); }
+
+  /* COLOR SCHEMES */
+  .bg-sky { background: linear-gradient(135deg, #0288D1, #4FC3F7); }
+  .bg-mint { background: linear-gradient(135deg, #388E3C, #81C784); }
+  .bg-peach { background: linear-gradient(135deg, #E65100, #FFB74D); }
+  .bg-rose { background: linear-gradient(135deg, #AD1457, #F06292); }
+  .bg-violet { background: linear-gradient(135deg, #512DA8, #9575CD); }
+  .border-sky { border-left-color: var(--sky-dark); }
+  .border-mint { border-left-color: var(--mint-dark); }
+  .border-peach { border-left-color: var(--peach-dark); }
+  .border-rose { border-left-color: var(--rose-dark); }
+  .border-violet { border-left-color: var(--violet-dark); }
+  .top-sky { border-top-color: var(--sky-dark); }
+  .top-mint { border-top-color: var(--mint-dark); }
+  .top-peach { border-top-color: var(--peach-dark); }
+  .top-rose { border-top-color: var(--rose-dark); }
+  .top-violet { border-top-color: var(--violet-dark); }
+
+  .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+  .confetti-piece {
+    position: absolute;
+    width: 10px; height: 10px;
+    animation: fall 3s linear forwards;
+    border-radius: 2px;
+  }
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 50px;
+    font-size: 0.78em;
+    font-weight: 800;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .badge-sky { background: #BAE6FD; color: #0369A1; }
+  .badge-mint { background: #BBF7D0; color: #166534; }
+  .badge-peach { background: #FED7AA; color: #9A3412; }
+  .badge-rose { background: #FBCFE8; color: #9D174D; }
+  .badge-violet { background: #DDD6FE; color: #5B21B6; }
+
+  @media (max-width: 500px) {
+    .header h1 { font-size: 1.8em; }
+    .options { grid-template-columns: 1fr; }
+    .section { padding: 12px; }
+    .theory-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>✏️ Γλώσσα Δ΄ Δημοτικού</h1>
+  <p>Ασκήσεις Γραμματικής & Συντακτικού</p>
+  <div class="header-stars">
+    <span class="star-icon">⭐</span>
+    <span class="star-icon">⭐</span>
+    <span class="star-icon">⭐</span>
+    <span class="star-icon">⭐</span>
+    <span class="star-icon">⭐</span>
+  </div>
+</div>
+
+<div class="scoreboard">
+  <div class="score-pill">⭐ Σκορ: <span id="total-score">0</span> / <span id="total-possible">0</span></div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress-fill" style="width:0%">0%</div>
+  </div>
+  <div class="score-pill">✅ <span id="answered-count">0</span> απαντήθηκαν</div>
+</div>
+
+<div class="nav-tabs" id="nav-tabs">
+  <button class="nav-tab active" onclick="showSection('s1',this)">🕐 Χρόνοι Ρημάτων</button>
+  <button class="nav-tab" onclick="showSection('s2',this)">🔍 Έγκλιση/Πρόσωπο</button>
+  <button class="nav-tab" onclick="showSection('s3',this)">📍 Επιρρήματα</button>
+  <button class="nav-tab" onclick="showSection('s4',this)">👤 Αντωνυμίες</button>
+  <button class="nav-tab" onclick="showSection('s5',this)">🏆 Αποτελέσματα</button>
+</div>
+
+<!-- ========================= SECTION 1: ΧΡΟΝΟΙ ΡΗΜΑΤΩΝ ========================= -->
+<div class="section active" id="s1">
+  <div class="section-header bg-sky">
+    <span class="emoji">🕐</span>
+    <div>
+      <div style="font-size:1.1em">Χρόνοι Ρημάτων</div>
+      <div style="font-size:0.75em;opacity:0.9">Ενεστώτας • Παρατατικός • Αόριστος • Μέλλοντες • Παρακείμενος • Υπερσυντέλικος</div>
+    </div>
+  </div>
+
+  <!-- THEORY BOXES -->
+  <div class="theory-grid">
+    <div class="theory-mini top-sky">
+      <strong style="color:#0288D1">Ενεστώτας</strong>
+      Πράξη που γίνεται <em>τώρα</em><br>
+      <span style="color:#555">γράφ<b>ω</b>, τρώ<b>ω</b>, παίζ<b>ω</b></span>
+    </div>
+    <div class="theory-mini top-mint">
+      <strong style="color:#388E3C">Παρατατικός</strong>
+      Πράξη που γινόταν στο <em>παρελθόν (συνεχιζόταν)</em><br>
+      <span style="color:#555">έγραφ<b>α</b>, έτρωγ<b>α</b></span>
+    </div>
+    <div class="theory-mini top-peach">
+      <strong style="color:#E65100">Αόριστος</strong>
+      Πράξη που έγινε <em>μια φορά</em> στο παρελθόν<br>
+      <span style="color:#555">έγραψ<b>α</b>, έφαγ<b>α</b></span>
+    </div>
+    <div class="theory-mini top-rose">
+      <strong style="color:#AD1457">Μέλλ. Συνοπτικός</strong>
+      Πράξη που θα γίνει <em>μια φορά</em><br>
+      <span style="color:#555"><b>θα</b> γράψ<b>ω</b>, <b>θα</b> φάω</span>
+    </div>
+    <div class="theory-mini top-violet">
+      <strong style="color:#512DA8">Μέλλ. Εξακολ.</strong>
+      Πράξη που θα γίνεται <em>συνέχεια</em><br>
+      <span style="color:#555"><b>θα</b> γράφ<b>ω</b>, <b>θα</b> τρώ<b>ω</b></span>
+    </div>
+    <div class="theory-mini" style="border-top-color:#0891B2">
+      <strong style="color:#0891B2">Παρακείμενος</strong>
+      Πράξη που <em>έχει γίνει</em> (αποτέλεσμα τώρα)<br>
+      <span style="color:#555">ενεργ: <b>έχω</b> γράψει<br>παθ: <b>έχω</b> γραφτεί</span>
+    </div>
+    <div class="theory-mini" style="border-top-color:#7C3AED">
+      <strong style="color:#7C3AED">Υπερσυντέλικος</strong>
+      Πράξη που <em>είχε γίνει</em> πριν από άλλη<br>
+      <span style="color:#555">ενεργ: <b>είχα</b> γράψει<br>παθ: <b>είχα</b> γραφτεί</span>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="qc1">
+    <div class="q-text"><span class="q-number">1</span><span class="q-body">Ποιος χρόνος είναι το ρήμα: <span class="q-highlight">«Χθες έπαιξα»</span>;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc1','Αόριστος','✅ Σωστό! «Έπαιξα» → μία φορά στο παρελθόν = Αόριστος.')">Ενεστώτας</button>
+      <button class="option-btn" onclick="checkMC(this,'qc1','Αόριστος','✅ Σωστό! «Έπαιξα» → μία φορά στο παρελθόν = Αόριστος.')">Παρατατικός</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc1','Αόριστος','✅ Σωστό! «Έπαιξα» → μία φορά στο παρελθόν = Αόριστος.')">Αόριστος</button>
+      <button class="option-btn" onclick="checkMC(this,'qc1','Αόριστος','✅ Σωστό! «Έπαιξα» → μία φορά στο παρελθόν = Αόριστος.')">Παρακείμενος</button>
+    </div>
+    <div class="feedback" id="fb-qc1"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="qc2">
+    <div class="q-text"><span class="q-number">2</span><span class="q-body">Ποιος χρόνος είναι το ρήμα: <span class="q-highlight">«Θα τρέχω κάθε πρωί»</span>;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc2','Μέλλοντας Εξακολουθητικός','✅ Σωστό! «Θα τρέχω» = θα γίνεται συνέχεια = Μέλλοντας Εξακολουθητικός.')">Μέλλοντας Συνοπτικός</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc2','Μέλλοντας Εξακολουθητικός','✅ Σωστό! «Θα τρέχω» = θα γίνεται συνέχεια = Μέλλοντας Εξακολουθητικός.')">Μέλλοντας Εξακολουθητικός</button>
+      <button class="option-btn" onclick="checkMC(this,'qc2','Μέλλοντας Εξακολουθητικός','✅ Σωστό! «Θα τρέχω» = θα γίνεται συνέχεια = Μέλλοντας Εξακολουθητικός.')">Ενεστώτας</button>
+      <button class="option-btn" onclick="checkMC(this,'qc2','Μέλλοντας Εξακολουθητικός','✅ Σωστό! «Θα τρέχω» = θα γίνεται συνέχεια = Μέλλοντας Εξακολουθητικός.')">Αόριστος</button>
+    </div>
+    <div class="feedback" id="fb-qc2"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="qc3">
+    <div class="q-text"><span class="q-number">3</span><span class="q-body">Ποιος χρόνος είναι: <span class="q-highlight">«Έχω διαβάσει το βιβλίο»</span>;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc3','Παρακείμενος (Ενεργητική Φωνή)','✅ Σωστό! «Έχω + διαβάσει» = Παρακείμενος Ενεργητικής Φωνής.')">Αόριστος</button>
+      <button class="option-btn" onclick="checkMC(this,'qc3','Παρακείμενος (Ενεργητική Φωνή)','✅ Σωστό! «Έχω + διαβάσει» = Παρακείμενος Ενεργητικής Φωνής.')">Υπερσυντέλικος</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc3','Παρακείμενος (Ενεργητική Φωνή)','✅ Σωστό! «Έχω + διαβάσει» = Παρακείμενος Ενεργητικής Φωνής.')">Παρακείμενος (Ενεργ.)</button>
+      <button class="option-btn" onclick="checkMC(this,'qc3','Παρακείμενος (Ενεργητική Φωνή)','✅ Σωστό! «Έχω + διαβάσει» = Παρακείμενος Ενεργητικής Φωνής.')">Παρακείμενος (Παθ.)</button>
+    </div>
+    <div class="feedback" id="fb-qc3"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="qc4">
+    <div class="q-text"><span class="q-number">4</span><span class="q-body">Ποιος χρόνος είναι: <span class="q-highlight">«Είχε φαγωθεί όλο το φαγητό»</span>;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc4','Υπερσυντέλικος (Παθητική Φωνή)','✅ Σωστό! «Είχε + φαγωθεί» = Υπερσυντέλικος Παθητικής Φωνής. Η πράξη είχε γίνει πριν από άλλη.')">Παρακείμενος (Ενεργ.)</button>
+      <button class="option-btn" onclick="checkMC(this,'qc4','Υπερσυντέλικος (Παθητική Φωνή)','✅ Σωστό! «Είχε + φαγωθεί» = Υπερσυντέλικος Παθητικής Φωνής. Η πράξη είχε γίνει πριν από άλλη.')">Παρακείμενος (Παθ.)</button>
+      <button class="option-btn" onclick="checkMC(this,'qc4','Υπερσυντέλικος (Παθητική Φωνή)','✅ Σωστό! «Είχε + φαγωθεί» = Υπερσυντέλικος Παθητικής Φωνής. Η πράξη είχε γίνει πριν από άλλη.')">Υπερσυντέλικος (Ενεργ.)</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc4','Υπερσυντέλικος (Παθητική Φωνή)','✅ Σωστό! «Είχε + φαγωθεί» = Υπερσυντέλικος Παθητικής Φωνής. Η πράξη είχε γίνει πριν από άλλη.')">Υπερσυντέλικος (Παθ.)</button>
+    </div>
+    <div class="feedback" id="fb-qc4"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="qc5">
+    <div class="q-text"><span class="q-number">5</span><span class="q-body">Ποιος χρόνος είναι: <span class="q-highlight">«Κάθε μέρα έγραφε γράμματα»</span>;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc5','Παρατατικός','✅ Σωστό! «Έγραφε» + «κάθε μέρα» = πράξη που γινόταν επανειλημμένα = Παρατατικός.')">Ενεστώτας</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc5','Παρατατικός','✅ Σωστό! «Έγραφε» + «κάθε μέρα» = πράξη που γινόταν επανειλημμένα = Παρατατικός.')">Παρατατικός</button>
+      <button class="option-btn" onclick="checkMC(this,'qc5','Παρατατικός','✅ Σωστό! «Έγραφε» + «κάθε μέρα» = πράξη που γινόταν επανειλημμένα = Παρατατικός.')">Αόριστος</button>
+      <button class="option-btn" onclick="checkMC(this,'qc5','Παρατατικός','✅ Σωστό! «Έγραφε» + «κάθε μέρα» = πράξη που γινόταν επανειλημμένα = Παρατατικός.')">Μέλλοντας Συνοπτικός</button>
+    </div>
+    <div class="feedback" id="fb-qc5"></div>
+  </div>
+
+  <!-- Q6 FILL BLANK -->
+  <div class="question-card" id="qc6">
+    <div class="q-text"><span class="q-number">6</span><span class="q-body">Συμπλήρωσε με τη σωστή μορφή του ρήματος στον ζητούμενο χρόνο:</span></div>
+    <div class="fill-blank">
+      Αύριο <input class="blank-input" id="b6a" placeholder="(τρέχω — Μελλ. Συνοπτ.)" data-answer="θα τρέξω"> στον αγώνα.
+    </div>
+    <button class="check-btn" onclick="checkFill('qc6',['b6a'],['θα τρέξω'],'✅ Σωστό! Μέλλοντας Συνοπτικός του «τρέχω» = θα τρέξω (μία φορά).','❌ «θα τρέξω» — Μέλλοντας Συνοπτικός, όχι εξακολουθητικός.')">Έλεγξε ✓</button>
+    <div class="feedback" id="fb-qc6"></div>
+  </div>
+
+  <!-- Q7 FILL BLANK Παρακείμενος Παθητική -->
+  <div class="question-card" id="qc7">
+    <div class="q-text"><span class="q-number">7</span><span class="q-body">Βάλε το ρήμα στον <strong>Παρακείμενο Παθητικής Φωνής</strong>:</span></div>
+    <div class="fill-blank">
+      Το γράμμα <input class="blank-input" id="b7a" placeholder="(γράφω — Παρακ. Παθ.)" data-answer="έχει γραφτεί"> από τον δάσκαλο.
+    </div>
+    <button class="check-btn" onclick="checkFill('qc7',['b7a'],['έχει γραφτεί'],'✅ Σωστό! Παρακείμενος Παθητικής = «έχει γραφτεί».','❌ Σωστό: «έχει γραφτεί» (έχω/έχεις/έχει + παθητική μετοχή).')">Έλεγξε ✓</button>
+    <div class="feedback" id="fb-qc7"></div>
+  </div>
+
+  <!-- Q8 Matching -->
+  <div class="question-card" id="qc8">
+    <div class="q-text"><span class="q-number">8</span><span class="q-body">Αντιστοίχισε κάθε πρόταση με τον χρόνο της:</span></div>
+    <div style="display:grid;gap:8px;margin-bottom:10px">
+      <div class="label-row">
+        <label style="min-width:280px;font-weight:600;font-size:0.85em">«Είχα ήδη φύγει όταν ήρθες»</label>
+        <select class="label-select" id="m8_1" data-answer="Υπερσυντέλικος Ενεργητική">
+          <option value="">— επέλεξε —</option>
+          <option>Αόριστος</option>
+          <option>Παρακείμενος Παθητική</option>
+          <option>Υπερσυντέλικος Ενεργητική</option>
+          <option>Μέλλοντας Συνοπτικός</option>
+        </select>
+      </div>
+      <div class="label-row">
+        <label style="min-width:280px;font-weight:600;font-size:0.85em">«Θα φύγουμε αύριο»</label>
+        <select class="label-select" id="m8_2" data-answer="Μέλλοντας Συνοπτικός">
+          <option value="">— επέλεξε —</option>
+          <option>Αόριστος</option>
+          <option>Μέλλοντας Συνοπτικός</option>
+          <option>Μέλλοντας Εξακολουθητικός</option>
+          <option>Παρακείμενος Ενεργητική</option>
+        </select>
+      </div>
+      <div class="label-row">
+        <label style="min-width:280px;font-weight:600;font-size:0.85em">«Έχουν φυτευτεί πολλά δέντρα»</label>
+        <select class="label-select" id="m8_3" data-answer="Παρακείμενος Παθητική">
+          <option value="">— επέλεξε —</option>
+          <option>Ενεστώτας</option>
+          <option>Παρακείμενος Παθητική</option>
+          <option>Υπερσυντέλικος Παθητική</option>
+          <option>Αόριστος</option>
+        </select>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkSelects('qc8',['m8_1','m8_2','m8_3'],['Υπερσυντέλικος Ενεργητική','Μέλλοντας Συνοπτικός','Παρακείμενος Παθητική'],'✅ Τέλεια! Και οι τρεις σωστά!','❌ Σφάλματα: Υπερσυντέλικος Ενεργητική / Μέλλοντας Συνοπτικός / Παρακείμενος Παθητική.')">Έλεγξε ✓</button>
+    <div class="feedback" id="fb-qc8"></div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="qc9">
+    <div class="q-text"><span class="q-number">9</span><span class="q-body">Ποιος είναι ο <strong>Υπερσυντέλικος Ενεργητικής</strong> του ρήματος «διαβάζω» (α' πληθυντικό πρόσωπο);</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc9','είχαμε διαβάσει','✅ Σωστό! Υπερσυντέλικος Ενεργ. = είχα/είχες/είχε/είχαμε + α΄ συνοπτικού αορίστου.')">έχουμε διαβάσει</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc9','είχαμε διαβάσει','✅ Σωστό! Υπερσυντέλικος Ενεργ. = είχα/είχες/είχε/είχαμε + α΄ συνοπτικού αορίστου.')">είχαμε διαβάσει</button>
+      <button class="option-btn" onclick="checkMC(this,'qc9','είχαμε διαβάσει','✅ Σωστό! Υπερσυντέλικος Ενεργ. = είχα/είχες/είχε/είχαμε + α΄ συνοπτικού αορίστου.')">είχαμε διαβαστεί</button>
+      <button class="option-btn" onclick="checkMC(this,'qc9','είχαμε διαβάσει','✅ Σωστό! Υπερσυντέλικος Ενεργ. = είχα/είχες/είχε/είχαμε + α΄ συνοπτικού αορίστου.')">θα είχαμε διαβάσει</button>
+    </div>
+    <div class="feedback" id="fb-qc9"></div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card" id="qc10">
+    <div class="q-text"><span class="q-number">10</span><span class="q-body">Βρες τον <strong>ενεστώτα</strong> σε αυτή την ομάδα ρημάτων:</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc10','μαθαίνει','✅ Σωστό! «Μαθαίνει» = ενεστώτας (γ΄ ενικό). Τα άλλα είναι παρελθόν ή μέλλον.')">έμαθε</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc10','μαθαίνει','✅ Σωστό! «Μαθαίνει» = ενεστώτας (γ΄ ενικό). Τα άλλα είναι παρελθόν ή μέλλον.')">μαθαίνει</button>
+      <button class="option-btn" onclick="checkMC(this,'qc10','μαθαίνει','✅ Σωστό! «Μαθαίνει» = ενεστώτας (γ΄ ενικό). Τα άλλα είναι παρελθόν ή μέλλον.')">θα μάθει</button>
+      <button class="option-btn" onclick="checkMC(this,'qc10','μαθαίνει','✅ Σωστό! «Μαθαίνει» = ενεστώτας (γ΄ ενικό). Τα άλλα είναι παρελθόν ή μέλλον.')">είχε μάθει</button>
+    </div>
+    <div class="feedback" id="fb-qc10"></div>
+  </div>
+</div>
+
+<!-- ========================= SECTION 2: ΕΓΚΛΙΣΗ / ΠΡΟΣΩΠΟ / ΑΡΙΘΜΟΣ ========================= -->
+<div class="section" id="s2">
+  <div class="section-header bg-mint">
+    <span class="emoji">🔍</span>
+    <div>
+      <div style="font-size:1.1em">Έγκλιση · Πρόσωπο · Αριθμός</div>
+      <div style="font-size:0.75em;opacity:0.9">Οριστική • Υποτακτική • Προστακτική</div>
+    </div>
+  </div>
+
+  <div class="theory-card border-mint">
+    <h3 style="color:#388E3C">📚 Εγκλίσεις — Τι είναι;</h3>
+    <ul>
+      <li><strong>Οριστική:</strong> Λέμε κάτι σαν πραγματικό. «Ο Νίκος <u>τρέχει</u>.»</li>
+      <li><strong>Υποτακτική:</strong> Μπαίνει μετά από «να», «ας», «αν». «Θέλω <u>να τρέξω</u>.»</li>
+      <li><strong>Προστακτική:</strong> Δίνουμε εντολή ή παράκληση. «<u>Τρέξε</u>! / <u>Φέρε</u> το!»</li>
+    </ul>
+  </div>
+
+  <div class="theory-card border-mint">
+    <h3 style="color:#388E3C">👥 Πρόσωπα & Αριθμός</h3>
+    <div style="font-size:0.88em;line-height:1.8">
+      <strong>Ενικός:</strong> α΄(εγώ), β΄(εσύ), γ΄(αυτός/ή/ό) &nbsp;|&nbsp;
+      <strong>Πληθυντικός:</strong> α΄(εμείς), β΄(εσείς), γ΄(αυτοί/ές/ά)<br>
+      <em>Π.χ. «τρέχ<b>ει</b>» → γ΄ ενικό&nbsp;&nbsp;|&nbsp;&nbsp;«τρέχ<b>ουν</b>» → γ΄ πληθυντικό</em>
+    </div>
+  </div>
+
+  <div class="text-box">
+    📖 <strong>Διαβάσε το κείμενο:</strong><br>
+    «Ο Αλέξης <span class="underline" id="txt1">διαβάζει</span> ήσυχα. Η μαμά του τον <span class="underline" id="txt2">παρακαλεί</span>: "<span class="underline" id="txt3">Έλα</span> να φας!" Ο Αλέξης <span class="underline" id="txt4">απαντά</span>: "Θέλω <span class="underline" id="txt5">να τελειώσω</span> πρώτα."»
+  </div>
+
+  <!-- Q11 -->
+  <div class="question-card" id="qc11">
+    <div class="q-text"><span class="q-number">11</span><span class="q-body">Το ρήμα <span class="q-highlight">«διαβάζει»</span> (υπογραμμισμένο στο κείμενο) — ποια είναι η έγκλισή του;</span></div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc11','Οριστική','✅ Σωστό! «Διαβάζει» = δηλώνει πραγματικό γεγονός = Οριστική Έγκλιση.')">Οριστική</button>
+      <button class="option-btn" onclick="checkMC(this,'qc11','Οριστική','✅ Σωστό! «Διαβάζει» = δηλώνει πραγματικό γεγονός = Οριστική Έγκλιση.')">Υποτακτική</button>
+      <button class="option-btn" onclick="checkMC(this,'qc11','Οριστική','✅ Σωστό! «Διαβάζει» = δηλώνει πραγματικό γεγονός = Οριστική Έγκλιση.')">Προστακτική</button>
+    </div>
+    <div class="feedback" id="fb-qc11"></div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="question-card" id="qc12">
+    <div class="q-text"><span class="q-number">12</span><span class="q-body">Το ρήμα <span class="q-highlight">«Έλα»</span> — ποια έγκλιση είναι;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc12','Προστακτική','✅ Σωστό! «Έλα» = εντολή/παράκληση = Προστακτική Έγκλιση.')">Οριστική</button>
+      <button class="option-btn" onclick="checkMC(this,'qc12','Προστακτική','✅ Σωστό! «Έλα» = εντολή/παράκληση = Προστακτική Έγκλιση.')">Υποτακτική</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc12','Προστακτική','✅ Σωστό! «Έλα» = εντολή/παράκληση = Προστακτική Έγκλιση.')">Προστακτική</button>
+    </div>
+    <div class="feedback" id="fb-qc12"></div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="question-card" id="qc13">
+    <div class="q-text"><span class="q-number">13</span><span class="q-body">Το ρήμα <span class="q-highlight">«να τελειώσω»</span> — ποια έγκλιση είναι;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc13','Υποτακτική','✅ Σωστό! «Να τελειώσω» — το «να» μπροστά = Υποτακτική Έγκλιση.')">Οριστική</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc13','Υποτακτική','✅ Σωστό! «Να τελειώσω» — το «να» μπροστά = Υποτακτική Έγκλιση.')">Υποτακτική</button>
+      <button class="option-btn" onclick="checkMC(this,'qc13','Υποτακτική','✅ Σωστό! «Να τελειώσω» — το «να» μπροστά = Υποτακτική Έγκλιση.')">Προστακτική</button>
+    </div>
+    <div class="feedback" id="fb-qc13"></div>
+  </div>
+
+  <!-- Q14 Πρόσωπο & Αριθμός -->
+  <div class="question-card" id="qc14">
+    <div class="q-text"><span class="q-number">14</span><span class="q-body">Το ρήμα <span class="q-highlight">«παρακαλεί»</span> — ποιο πρόσωπο και αριθμός είναι;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc14','Γ΄ Ενικό','✅ Σωστό! «Παρακαλεί» = εκείνος/εκείνη = Γ΄ ενικό πρόσωπο.')">Α΄ ενικό</button>
+      <button class="option-btn" onclick="checkMC(this,'qc14','Γ΄ Ενικό','✅ Σωστό! «Παρακαλεί» = εκείνος/εκείνη = Γ΄ ενικό πρόσωπο.')">Β΄ ενικό</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc14','Γ΄ Ενικό','✅ Σωστό! «Παρακαλεί» = εκείνος/εκείνη = Γ΄ ενικό πρόσωπο.')">Γ΄ ενικό</button>
+      <button class="option-btn" onclick="checkMC(this,'qc14','Γ΄ Ενικό','✅ Σωστό! «Παρακαλεί» = εκείνος/εκείνη = Γ΄ ενικό πρόσωπο.')">Α΄ πληθυντικό</button>
+    </div>
+    <div class="feedback" id="fb-qc14"></div>
+  </div>
+
+  <!-- Q15 Πρόσωπο πληθυντικό -->
+  <div class="question-card" id="qc15">
+    <div class="q-text"><span class="q-number">15</span><span class="q-body">Τι πρόσωπο και αριθμό είναι το ρήμα: <span class="q-highlight">«τρέχουμε»</span>;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc15','Α΄ πληθυντικό','✅ Σωστό! «Τρέχουμε» = εμείς = Α΄ πληθυντικό πρόσωπο.')">Β΄ ενικό</button>
+      <button class="option-btn" onclick="checkMC(this,'qc15','Α΄ πληθυντικό','✅ Σωστό! «Τρέχουμε» = εμείς = Α΄ πληθυντικό πρόσωπο.')">Γ΄ πληθυντικό</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc15','Α΄ πληθυντικό','✅ Σωστό! «Τρέχουμε» = εμείς = Α΄ πληθυντικό πρόσωπο.')">Α΄ πληθυντικό</button>
+      <button class="option-btn" onclick="checkMC(this,'qc15','Α΄ πληθυντικό','✅ Σωστό! «Τρέχουμε» = εμείς = Α΄ πληθυντικό πρόσωπο.')">Β΄ πληθυντικό</button>
+    </div>
+    <div class="feedback" id="fb-qc15"></div>
+  </div>
+
+  <!-- Q16 Matching εγκλίσεις -->
+  <div class="question-card" id="qc16">
+    <div class="q-text"><span class="q-number">16</span><span class="q-body">Αναγνώρισε την έγκλιση κάθε ρήματος:</span></div>
+    <div style="display:grid;gap:8px;margin-bottom:10px">
+      <div class="label-row">
+        <label style="min-width:200px">"Ας παίξουμε!"</label>
+        <select class="label-select" id="eg1" data-answer="Υποτακτική">
+          <option value="">—</option><option>Οριστική</option><option>Υποτακτική</option><option>Προστακτική</option>
+        </select>
+      </div>
+      <div class="label-row">
+        <label style="min-width:200px">"Φέρτε τα βιβλία!"</label>
+        <select class="label-select" id="eg2" data-answer="Προστακτική">
+          <option value="">—</option><option>Οριστική</option><option>Υποτακτική</option><option>Προστακτική</option>
+        </select>
+      </div>
+      <div class="label-row">
+        <label style="min-width:200px">"Η Μαρία γράφει."</label>
+        <select class="label-select" id="eg3" data-answer="Οριστική">
+          <option value="">—</option><option>Οριστική</option><option>Υποτακτική</option><option>Προστακτική</option>
+        </select>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkSelects('qc16',['eg1','eg2','eg3'],['Υποτακτική','Προστακτική','Οριστική'],'✅ Άριστα! Και οι τρεις σωστές εγκλίσεις!','❌ Σφάλματα: «Ας» + ρήμα = Υποτακτική / εντολή = Προστακτική / πραγματικό = Οριστική.')">Έλεγξε ✓</button>
+    <div class="feedback" id="fb-qc16"></div>
+  </div>
+
+  <!-- Q17 fill πρόσωπο αριθμός -->
+  <div class="question-card" id="qc17">
+    <div class="q-text"><span class="q-number">17</span><span class="q-body">Συμπλήρωσε: Το ρήμα «τρέχεις» είναι <input class="blank-input" id="b17a" placeholder="α΄/β΄/γ΄" data-answer="β΄"> πρόσωπο, <input class="blank-input" id="b17b" placeholder="ενικό/πληθυντικό" data-answer="ενικό"> αριθμό.</span></div>
+    <button class="check-btn" onclick="checkFill('qc17',['b17a','b17b'],['β΄','ενικό'],'✅ Σωστό! «Τρέχεις» = εσύ = β΄ ενικό πρόσωπο.','❌ «Τρέχεις» = εσύ → β΄ πρόσωπο, ενικός αριθμός.')">Έλεγξε ✓</button>
+    <div class="feedback" id="fb-qc17"></div>
+  </div>
+</div>
+
+<!-- ========================= SECTION 3: ΕΠΙΡΡΗΜΑΤΑ ========================= -->
+<div class="section" id="s3">
+  <div class="section-header bg-peach">
+    <span class="emoji">📍</span>
+    <div>
+      <div style="font-size:1.1em">Χρονικά & Τοπικά Επιρρήματα</div>
+      <div style="font-size:0.75em;opacity:0.9">Πότε; — Πού; — Ποιος τρόπος;</div>
+    </div>
+  </div>
+
+  <div class="theory-card border-peach">
+    <h3 style="color:#E65100">🕐 Χρονικά Επιρρήματα — Απαντούν «Πότε;»</h3>
+    <p style="font-size:0.88em;line-height:1.8">
+      <strong>τώρα, χθες, αύριο, πριν, μετά, ύστερα, σύντομα, αμέσως, ποτέ, πάντα, συχνά, σπάνια, ήδη, ακόμα, τότε, πρώτα, κάποτε, βράδυ, πρωί, μεσημέρι, σήμερα, προχθές, μεθαύριο, μόλις</strong>
+    </p>
+  </div>
+
+  <div class="theory-card border-peach">
+    <h3 style="color:#E65100">📌 Τοπικά Επιρρήματα — Απαντούν «Πού;»</h3>
+    <p style="font-size:0.88em;line-height:1.8">
+      <strong>εδώ, εκεί, εκεί πέρα, αλλού, παντού, πουθενά, κάπου, κοντά, μακριά, μέσα, έξω, πάνω, κάτω, μπροστά, πίσω, δεξιά, αριστερά, γύρω, απέναντι, ψηλά, χαμηλά</strong>
+    </p>
+  </div>
+
+  <!-- Q18 -->
+  <div class="question-card" id="qc18">
+    <div class="q-text"><span class="q-number">18</span><span class="q-body">Ποιο από τα παρακάτω είναι <strong>χρονικό</strong> επίρρημα;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc18','αύριο','✅ Σωστό! «Αύριο» απαντά στο «Πότε;» = χρονικό επίρρημα.')">εδώ</button>
+      <button class="option-btn" onclick="checkMC(this,'qc18','αύριο','✅ Σωστό! «Αύριο» απαντά στο «Πότε;» = χρονικό επίρρημα.')">μέσα</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc18','αύριο','✅ Σωστό! «Αύριο» απαντά στο «Πότε;» = χρονικό επίρρημα.')">αύριο</button>
+      <button class="option-btn" onclick="checkMC(this,'qc18','αύριο','✅ Σωστό! «Αύριο» απαντά στο «Πότε;» = χρονικό επίρρημα.')">αριστερά</button>
+    </div>
+    <div class="feedback" id="fb-qc18"></div>
+  </div>
+
+  <!-- Q19 -->
+  <div class="question-card" id="qc19">
+    <div class="q-text"><span class="q-number">19</span><span class="q-body">Ποιο είναι το <strong>τοπικό</strong> επίρρημα στην πρόταση: «<em>Πήγα <u>εκεί</u> <u>χθες</u> <u>αργά</u></em>»;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc19','εκεί','✅ Σωστό! «Εκεί» → Πού; = τοπικό. «Χθες» = χρονικό, «αργά» = τροπικό.')">χθες</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc19','εκεί','✅ Σωστό! «Εκεί» → Πού; = τοπικό. «Χθες» = χρονικό, «αργά» = τροπικό.')">εκεί</button>
+      <button class="option-btn" onclick="checkMC(this,'qc19','εκεί','✅ Σωστό! «Εκεί» → Πού; = τοπικό. «Χθες» = χρονικό, «αργά» = τροπικό.')">αργά</button>
+      <button class="option-btn" onclick="checkMC(this,'qc19','εκεί','✅ Σωστό! «Εκεί» → Πού; = τοπικό. «Χθες» = χρονικό, «αργά» = τροπικό.')">πήγα</button>
+    </div>
+    <div class="feedback" id="fb-qc19"></div>
+  </div>
+
+  <!-- Q20 Matching τύπος -->
+  <div class="question-card" id="qc20">
+    <div class="q-text"><span class="q-number">20</span><span class="q-body">Ταξινόμησε κάθε επίρρημα σε χρονικό ή τοπικό:</span></div>
+    <div style="display:grid;gap:8px;margin-bottom:10px">
+      <div class="label-row">
+        <label style="min-width:120px">«πάντα»</label>
+        <select class="label-select" id="ep1" data-answer="Χρονικό">
+          <option value="">—</option><option>Χρονικό</option><option>Τοπικό</option>
+        </select>
+      </div>
+      <div class="label-row">
+        <label style="min-width:120px">«παντού»</label>
+        <select class="label-select" id="ep2" data-answer="Τοπικό">
+          <option value="">—</option><option>Χρονικό</option><option>Τοπικό</option>
+        </select>
+      </div>
+      <div class="label-row">
+        <label style="min-width:120px">«σήμερα»</label>
+        <select class="label-select" id="ep3" data-answer="Χρονικό">
+          <option value="">—</option><option>Χρονικό</option><option>Τοπικό</option>
+        </select>
+      </div>
+      <div class="label-row">
+        <label style="min-width:120px">«κοντά»</label>
+        <select class="label-select" id="ep4" data-answer="Τοπικό">
+          <option value="">—</option><option>Χρονικό</option><option>Τοπικό</option>
+        </select>
+      </div>
+      <div class="label-row">
+        <label style="min-width:120px">«ήδη»</label>
+        <select class="label-select" id="ep5" data-answer="Χρονικό">
+          <option value="">—</option><option>Χρονικό</option><option>Τοπικό</option>
+        </select>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkSelects('qc20',['ep1','ep2','ep3','ep4','ep5'],['Χρονικό','Τοπικό','Χρονικό','Τοπικό','Χρονικό'],'✅ Μπράβο! Όλα σωστά!','❌ Χρονικά: πάντα, σήμερα, ήδη (Πότε;) — Τοπικά: παντού, κοντά (Πού;)')">Έλεγξε ✓</button>
+    <div class="feedback" id="fb-qc20"></div>
+  </div>
+
+  <!-- Q21 -->
+  <div class="question-card" id="qc21">
+    <div class="q-text"><span class="q-number">21</span><span class="q-body">Βρες <strong>2 χρονικά</strong> επιρρήματα στην πρόταση:<br><em>«Πάντα έρχεται εδώ πρωί και μένει έξω μέχρι αργά.»</em><br>Επέλεξε 2 από τα παρακάτω:</span></div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="checkMC2(this,'qc21','πάντα+πρωί')">πάντα</button>
+      <button class="option-btn" onclick="checkMC2(this,'qc21','πάντα+πρωί')">εδώ</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC2(this,'qc21','πάντα+πρωί')">πρωί</button>
+      <button class="option-btn" onclick="checkMC2(this,'qc21','πάντα+πρωί')">έξω</button>
+    </div>
+    <div class="feedback" id="fb-qc21"></div>
+  </div>
+
+  <!-- Q22 -->
+  <div class="question-card" id="qc22">
+    <div class="q-text"><span class="q-number">22</span><span class="q-body">Συμπλήρωσε με κατάλληλο τοπικό επίρρημα:<br>«Το βιβλίο είναι ___ στο τραπέζι, όχι ___»</span></div>
+    <div class="fill-blank">
+      Το βιβλίο είναι <input class="blank-input" id="b22a" placeholder="πού;" data-answer="πάνω"> στο τραπέζι, όχι <input class="blank-input" id="b22b" placeholder="αντίθετο" data-answer="κάτω">.
+    </div>
+    <button class="check-btn" onclick="checkFill('qc22',['b22a','b22b'],['πάνω','κάτω'],'✅ Σωστό! Πάνω/κάτω = τοπικά επιρρήματα αντίθετα μεταξύ τους.','❌ Σωστή απάντηση: «πάνω» ... «κάτω» (ή «εδώ»/«εκεί»).')">Έλεγξε ✓</button>
+    <div class="feedback" id="fb-qc22"></div>
+  </div>
+
+  <!-- Q23 -->
+  <div class="question-card" id="qc23">
+    <div class="q-text"><span class="q-number">23</span><span class="q-body">Ποιο επίρρημα ΔΕΝ είναι τοπικό;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc23','σύντομα','✅ Σωστό! «Σύντομα» απαντά στο «Πότε;» = χρονικό, όχι τοπικό!')">εδώ</button>
+      <button class="option-btn" onclick="checkMC(this,'qc23','σύντομα','✅ Σωστό! «Σύντομα» απαντά στο «Πότε;» = χρονικό, όχι τοπικό!')">μακριά</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc23','σύντομα','✅ Σωστό! «Σύντομα» απαντά στο «Πότε;» = χρονικό, όχι τοπικό!')">σύντομα</button>
+      <button class="option-btn" onclick="checkMC(this,'qc23','σύντομα','✅ Σωστό! «Σύντομα» απαντά στο «Πότε;» = χρονικό, όχι τοπικό!')">απέναντι</button>
+    </div>
+    <div class="feedback" id="fb-qc23"></div>
+  </div>
+</div>
+
+<!-- ========================= SECTION 4: ΑΝΤΩΝΥΜΙΕΣ ========================= -->
+<div class="section" id="s4">
+  <div class="section-header bg-rose">
+    <span class="emoji">👤</span>
+    <div>
+      <div style="font-size:1.1em">Αντωνυμίες</div>
+      <div style="font-size:0.75em;opacity:0.9">Προσωπικές • Κτητικές • Δεικτικές • Αόριστες</div>
+    </div>
+  </div>
+
+  <div class="theory-grid">
+    <div class="theory-mini top-rose">
+      <strong style="color:#AD1457">Προσωπικές</strong>
+      Αντικαθιστούν πρόσωπο<br>
+      εγώ, εσύ, αυτός/ή/ό<br>
+      εμείς, εσείς, αυτοί/ές/ά<br>
+      <em style="font-size:0.85em">μου, σου, του/της/του, μας, σας, τους</em>
+    </div>
+    <div class="theory-mini top-violet">
+      <strong style="color:#512DA8">Κτητικές</strong>
+      Δηλώνουν κατοχή<br>
+      δικός/ή/ό μου, σου, του/της, μας, σας, τους
+    </div>
+    <div class="theory-mini top-peach">
+      <strong style="color:#E65100">Δεικτικές</strong>
+      Δείχνουν κάτι<br>
+      <em>αυτός, εκείνος, τούτος</em><br>
+      (όταν δεν συνοδεύουν ουσιαστικό)
+    </div>
+    <div class="theory-mini top-sky">
+      <strong style="color:#0288D1">Αόριστες</strong>
+      Αναφέρονται αόριστα<br>
+      κάποιος, κανείς, καθένας, άλλος, μερικοί, όλοι, τίποτα, κάτι
+    </div>
+  </div>
+
+  <div class="theory-card border-rose">
+    <h3 style="color:#AD1457">⚠️ Προσοχή!</h3>
+    <p style="font-size:0.88em;line-height:1.7">
+      Η λέξη «αυτός» μπορεί να είναι:<br>
+      • <strong>Αντωνυμία</strong> αν αντικαθιστά ονοματικό σύνολο: «<em>Αυτός ήρθε.</em>»<br>
+      • <strong>Άρθρο/Επίθετο δεικτικό</strong> αν συνοδεύει ουσιαστικό: «<em>Αυτός ο μαθητής ήρθε.</em>»
+    </p>
+  </div>
+
+  <!-- Q24 -->
+  <div class="question-card" id="qc24">
+    <div class="q-text"><span class="q-number">24</span><span class="q-body">Ποιος τύπος αντωνυμίας είναι η υπογραμμισμένη λέξη: «<em>Το τετράδιο είναι <span class="q-highlight">δικό μου</span></em>»;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc24','Κτητική','✅ Σωστό! «Δικό μου» δηλώνει κατοχή = Κτητική Αντωνυμία.')">Προσωπική</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc24','Κτητική','✅ Σωστό! «Δικό μου» δηλώνει κατοχή = Κτητική Αντωνυμία.')">Κτητική</button>
+      <button class="option-btn" onclick="checkMC(this,'qc24','Κτητική','✅ Σωστό! «Δικό μου» δηλώνει κατοχή = Κτητική Αντωνυμία.')">Δεικτική</button>
+      <button class="option-btn" onclick="checkMC(this,'qc24','Κτητική','✅ Σωστό! «Δικό μου» δηλώνει κατοχή = Κτητική Αντωνυμία.')">Αόριστη</button>
+    </div>
+    <div class="feedback" id="fb-qc24"></div>
+  </div>
+
+  <!-- Q25 -->
+  <div class="question-card" id="qc25">
+    <div class="q-text"><span class="q-number">25</span><span class="q-body">Ποιος τύπος αντωνυμίας είναι η: «<em><span class="q-highlight">Κάποιος</span> χτύπησε την πόρτα</em>»;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc25','Αόριστη','✅ Σωστό! «Κάποιος» = αναφέρεται αόριστα, δεν ξέρουμε ποιος = Αόριστη Αντωνυμία.')">Προσωπική</button>
+      <button class="option-btn" onclick="checkMC(this,'qc25','Αόριστη','✅ Σωστό! «Κάποιος» = αναφέρεται αόριστα, δεν ξέρουμε ποιος = Αόριστη Αντωνυμία.')">Κτητική</button>
+      <button class="option-btn" onclick="checkMC(this,'qc25','Αόριστη','✅ Σωστό! «Κάποιος» = αναφέρεται αόριστα, δεν ξέρουμε ποιος = Αόριστη Αντωνυμία.')">Δεικτική</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc25','Αόριστη','✅ Σωστό! «Κάποιος» = αναφέρεται αόριστα, δεν ξέρουμε ποιος = Αόριστη Αντωνυμία.')">Αόριστη</button>
+    </div>
+    <div class="feedback" id="fb-qc25"></div>
+  </div>
+
+  <!-- Q26 -->
+  <div class="question-card" id="qc26">
+    <div class="q-text"><span class="q-number">26</span><span class="q-body">«<em>Της έδωσα ένα δώρο.</em>» — Τι είδος αντωνυμίας είναι το <span class="q-highlight">«Της»</span>;</span></div>
+    <div class="options">
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc26','Προσωπική (αδύνατος τύπος)','✅ Σωστό! «Της» = αδύνατος τύπος της αντωνυμίας «αυτή» = Προσωπική Αντωνυμία.')">Προσωπική</button>
+      <button class="option-btn" onclick="checkMC(this,'qc26','Προσωπική (αδύνατος τύπος)','✅ Σωστό! «Της» = αδύνατος τύπος της αντωνυμίας «αυτή» = Προσωπική Αντωνυμία.')">Κτητική</button>
+      <button class="option-btn" onclick="checkMC(this,'qc26','Προσωπική (αδύνατος τύπος)','✅ Σωστό! «Της» = αδύνατος τύπος της αντωνυμίας «αυτή» = Προσωπική Αντωνυμία.')">Δεικτική</button>
+      <button class="option-btn" onclick="checkMC(this,'qc26','Προσωπική (αδύνατος τύπος)','✅ Σωστό! «Της» = αδύνατος τύπος της αντωνυμίας «αυτή» = Προσωπική Αντωνυμία.')">Αόριστη</button>
+    </div>
+    <div class="feedback" id="fb-qc26"></div>
+  </div>
+
+  <!-- Q27 Matching -->
+  <div class="question-card" id="qc27">
+    <div class="q-text"><span class="q-number">27</span><span class="q-body">Ταξινόμησε κάθε αντωνυμία στον σωστό τύπο:</span></div>
+    <div style="display:grid;gap:8px;margin-bottom:10px">
+      <div class="label-row">
+        <label style="min-width:160px">«εκείνος»</label>
+        <select class="label-select" id="ant1" data-answer="Δεικτική">
+          <option value="">—</option><option>Προσωπική</option><option>Κτητική</option><option>Δεικτική</option><option>Αόριστη</option>
+        </select>
+      </div>
+      <div class="label-row">
+        <label style="min-width:160px">«μας»</label>
+        <select class="label-select" id="ant2" data-answer="Προσωπική">
+          <option value="">—</option><option>Προσωπική</option><option>Κτητική</option><option>Δεικτική</option><option>Αόριστη</option>
+        </select>
+      </div>
+      <div class="label-row">
+        <label style="min-width:160px">«κανείς»</label>
+        <select class="label-select" id="ant3" data-answer="Αόριστη">
+          <option value="">—</option><option>Προσωπική</option><option>Κτητική</option><option>Δεικτική</option><option>Αόριστη</option>
+        </select>
+      </div>
+      <div class="label-row">
+        <label style="min-width:160px">«δική σου»</label>
+        <select class="label-select" id="ant4" data-answer="Κτητική">
+          <option value="">—</option><option>Προσωπική</option><option>Κτητική</option><option>Δεικτική</option><option>Αόριστη</option>
+        </select>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkSelects('qc27',['ant1','ant2','ant3','ant4'],['Δεικτική','Προσωπική','Αόριστη','Κτητική'],'✅ Τέλεια! Όλες οι αντωνυμίες σωστά!','❌ Λάθη: εκείνος=Δεικτική, μας=Προσωπική, κανείς=Αόριστη, δική σου=Κτητική.')">Έλεγξε ✓</button>
+    <div class="feedback" id="fb-qc27"></div>
+  </div>
+
+  <!-- Q28 Fill -->
+  <div class="question-card" id="qc28">
+    <div class="q-text"><span class="q-number">28</span><span class="q-body">Αντικατάστησε το υπογραμμισμένο με κατάλληλη αντωνυμία:<br>«<em><u>Ο Νίκος και η Μαρία</u> έφτασαν νωρίς.</em>»</span></div>
+    <div class="fill-blank">
+      <input class="blank-input" id="b28a" placeholder="αντωνυμία..." data-answer="Αυτοί"> έφτασαν νωρίς.
+    </div>
+    <button class="check-btn" onclick="checkFill('qc28',['b28a'],['αυτοί','Αυτοί'],'✅ Σωστό! «Αυτοί» αντικαθιστά δύο αρσενικά/μικτά πρόσωπα = γ΄ πληθυντικό.','❌ Σωστό: «Αυτοί» (γ΄ πρόσωπο, πληθυντικός, αρσενικό/μικτό).')">Έλεγξε ✓</button>
+    <div class="feedback" id="fb-qc28"></div>
+  </div>
+
+  <!-- Q29 -->
+  <div class="question-card" id="qc29">
+    <div class="q-text"><span class="q-number">29</span><span class="q-body">Ποια πρόταση χρησιμοποιεί <strong>αόριστη</strong> αντωνυμία;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc29','Μερικοί ήρθαν στο πάρτι.','✅ Σωστό! «Μερικοί» = αόριστη ποσότητα, δεν ξέρουμε ακριβώς ποιοι = αόριστη αντωνυμία.')">Εγώ ήρθα στο πάρτι.</button>
+      <button class="option-btn" onclick="checkMC(this,'qc29','Μερικοί ήρθαν στο πάρτι.','✅ Σωστό! «Μερικοί» = αόριστη ποσότητα, δεν ξέρουμε ακριβώς ποιοι = αόριστη αντωνυμία.')">Αυτός ήρθε στο πάρτι.</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc29','Μερικοί ήρθαν στο πάρτι.','✅ Σωστό! «Μερικοί» = αόριστη ποσότητα, δεν ξέρουμε ακριβώς ποιοι = αόριστη αντωνυμία.')">Μερικοί ήρθαν στο πάρτι.</button>
+      <button class="option-btn" onclick="checkMC(this,'qc29','Μερικοί ήρθαν στο πάρτι.','✅ Σωστό! «Μερικοί» = αόριστη ποσότητα, δεν ξέρουμε ακριβώς ποιοι = αόριστη αντωνυμία.')">Το βιβλίο μου είναι εδώ.</button>
+    </div>
+    <div class="feedback" id="fb-qc29"></div>
+  </div>
+
+  <!-- Q30 Final Challenge -->
+  <div class="question-card" id="qc30">
+    <div class="q-text"><span class="q-number">30</span><span class="q-body">🏆 <strong>Τελική Πρόκληση!</strong> Στην πρόταση «<em>Εκείνος μου έδωσε το δικό του βιβλίο</em>» — πόσες αντωνυμίες υπάρχουν;</span></div>
+    <div class="options">
+      <button class="option-btn" onclick="checkMC(this,'qc30','3 αντωνυμίες','✅ Σωστό! «Εκείνος» (δεικτ.) + «μου» (προσωπ.) + «δικό του» (κτητ.) = 3 αντωνυμίες!')">1</button>
+      <button class="option-btn" onclick="checkMC(this,'qc30','3 αντωνυμίες','✅ Σωστό! «Εκείνος» (δεικτ.) + «μου» (προσωπ.) + «δικό του» (κτητ.) = 3 αντωνυμίες!')">2</button>
+      <button class="option-btn" data-correct="true" onclick="checkMC(this,'qc30','3 αντωνυμίες','✅ Σωστό! «Εκείνος» (δεικτ.) + «μου» (προσωπ.) + «δικό του» (κτητ.) = 3 αντωνυμίες!')">3</button>
+      <button class="option-btn" onclick="checkMC(this,'qc30','3 αντωνυμίες','✅ Σωστό! «Εκείνος» (δεικτ.) + «μου» (προσωπ.) + «δικό του» (κτητ.) = 3 αντωνυμίες!')">4</button>
+    </div>
+    <div class="feedback" id="fb-qc30"></div>
+  </div>
+</div>
+
+<!-- ========================= SECTION 5: RESULTS ========================= -->
+<div class="section" id="s5">
+  <div class="results-panel">
+    <div class="trophy" id="trophy-emoji">🏆</div>
+    <div style="font-size:1.1em;color:#718096;margin-bottom:8px">Συνολικό Αποτέλεσμα</div>
+    <div class="final-score"><span id="final-score-num">0</span> / <span id="final-score-total">30</span></div>
+    <div class="grade-message" id="grade-msg">Απάντησε ερωτήσεις για να δεις το αποτέλεσμα!</div>
+    <div style="margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
+      <div style="background:#EBF4FF;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:0.8em;color:#2B6CB0;font-weight:700">🕐 Χρόνοι</div>
+        <div style="font-size:1.4em;font-weight:800;color:#2B6CB0"><span id="s1score">0</span>/10</div>
+      </div>
+      <div style="background:#F0FFF4;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:0.8em;color:#276749;font-weight:700">🔍 Έγκλιση</div>
+        <div style="font-size:1.4em;font-weight:800;color:#276749"><span id="s2score">0</span>/7</div>
+      </div>
+      <div style="background:#FFFAF0;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:0.8em;color:#C05621;font-weight:700">📍 Επιρρήματα</div>
+        <div style="font-size:1.4em;font-weight:800;color:#C05621"><span id="s3score">0</span>/6</div>
+      </div>
+      <div style="background:#FFF5F7;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:0.8em;color:#97266D;font-weight:700">👤 Αντωνυμίες</div>
+        <div style="font-size:1.4em;font-weight:800;color:#97266D"><span id="s4score">0</span>/7</div>
+      </div>
+    </div>
+    <button class="reset-btn" onclick="resetAll()">🔄 Ξεκίνα από την αρχή</button>
+  </div>
+</div>
+
+<div class="confetti-container" id="confetti"></div>
+
+<script>
+  const state = {
+    scores: { s1: 0, s2: 0, s3: 0, s4: 0 },
+    answered: {},
+    totalAnswered: 0
+  };
+
+  const sectionQuestions = {
+    s1: ['qc1','qc2','qc3','qc4','qc5','qc6','qc7','qc8','qc9','qc10'],
+    s2: ['qc11','qc12','qc13','qc14','qc15','qc16','qc17'],
+    s3: ['qc18','qc19','qc20','qc21','qc22','qc23'],
+    s4: ['qc24','qc25','qc26','qc27','qc28','qc29','qc30']
+  };
+
+  function getSectionForQ(qid) {
+    for (const [s, qs] of Object.entries(sectionQuestions)) {
+      if (qs.includes(qid)) return s;
+    }
+    return null;
+  }
+
+  function showSection(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    updateResultsPanel();
+  }
+
+  function addScore(qid, points) {
+    if (state.answered[qid]) return;
+    state.answered[qid] = true;
+    state.totalAnswered++;
+    const sec = getSectionForQ(qid);
+    if (sec) state.scores[sec] += points;
+    updateScoreboard();
+  }
+
+  function updateScoreboard() {
+    const total = Object.values(state.scores).reduce((a,b)=>a+b,0);
+    const possible = state.totalAnswered;
+    document.getElementById('total-score').textContent = total;
+    document.getElementById('total-possible').textContent = possible;
+    document.getElementById('answered-count').textContent = state.totalAnswered;
+    const pct = possible > 0 ? Math.round((total / possible) * 100) : 0;
+    const fill = document.getElementById('progress-fill');
+    fill.style.width = pct + '%';
+    fill.textContent = pct + '%';
+    updateResultsPanel();
+  }
+
+  function updateResultsPanel() {
+    const total = Object.values(state.scores).reduce((a,b)=>a+b,0);
+    document.getElementById('final-score-num').textContent = total;
+    document.getElementById('s1score').textContent = state.scores.s1;
+    document.getElementById('s2score').textContent = state.scores.s2;
+    document.getElementById('s3score').textContent = state.scores.s3;
+    document.getElementById('s4score').textContent = state.scores.s4;
+    const pct = state.totalAnswered > 0 ? (total / state.totalAnswered * 100) : 0;
+    const msg = document.getElementById('grade-msg');
+    const trophy = document.getElementById('trophy-emoji');
+    if (state.totalAnswered === 0) {
+      msg.textContent = 'Απάντησε ερωτήσεις για να δεις το αποτέλεσμα!';
+      trophy.textContent = '🏆';
+    } else if (pct >= 90) {
+      msg.textContent = '🌟 Εξαιρετικό! Είσαι πρωταθλητής/ρια της γλώσσας!';
+      trophy.textContent = '🥇';
+    } else if (pct >= 75) {
+      msg.textContent = '😊 Πολύ καλά! Συνέχισε έτσι!';
+      trophy.textContent = '🥈';
+    } else if (pct >= 55) {
+      msg.textContent = '📚 Καλή προσπάθεια! Λίγη ακόμα εξάσκηση!';
+      trophy.textContent = '🥉';
+    } else {
+      msg.textContent = '💪 Προσπάθησε ξανά — μπορείς!';
+      trophy.textContent = '📖';
+    }
+  }
+
+  function checkMC(btn, qid, correct, msg) {
+    if (state.answered[qid]) return;
+    const card = document.getElementById(qid);
+    const btns = card.querySelectorAll('.option-btn');
+    btns.forEach(b => { b.disabled = true; });
+    const isCorrect = btn.dataset.correct === 'true';
+    const fb = document.getElementById('fb-' + qid);
+    if (isCorrect) {
+      btn.classList.add('correct');
+      fb.className = 'feedback correct-fb show';
+      fb.textContent = msg;
+      card.classList.add('answered-correct');
+      addScore(qid, 1);
+      launchConfetti();
+    } else {
+      btn.classList.add('wrong');
+      fb.className = 'feedback wrong-fb show';
+      fb.textContent = '❌ Λάθος! Σωστό: ' + correct;
+      card.classList.add('answered-wrong');
+      btns.forEach(b => { if (b.dataset.correct === 'true') b.classList.add('reveal'); });
+      addScore(qid, 0);
+    }
+  }
+
+  const mc2State = {};
+  function checkMC2(btn, qid, correctKey) {
+    if (state.answered[qid]) return;
+    if (!mc2State[qid]) mc2State[qid] = [];
+    const card = document.getElementById(qid);
+    const btns = card.querySelectorAll('.option-btn');
+    if (btn.classList.contains('correct') || btn.classList.contains('wrong')) return;
+    const isCorrect = btn.dataset.correct === 'true';
+    if (isCorrect) {
+      btn.classList.add('correct');
+      mc2State[qid].push('correct');
+    } else {
+      btn.classList.add('wrong');
+      btn.disabled = true;
+      mc2State[qid].push('wrong');
+    }
+    const correctPicked = Array.from(btns).filter(b => b.classList.contains('correct')).length;
+    const wrongPicked = Array.from(btns).filter(b => b.classList.contains('wrong')).length;
+    const fb = document.getElementById('fb-' + qid);
+    if (wrongPicked > 0 || correctPicked === 2) {
+      btns.forEach(b => b.disabled = true);
+      if (wrongPicked === 0 && correctPicked === 2) {
+        fb.className = 'feedback correct-fb show';
+        fb.textContent = '✅ Σωστό! Και τα δύο χρονικά: «πάντα» και «πρωί».';
+        card.classList.add('answered-correct');
+        addScore(qid, 1);
+        launchConfetti();
+      } else {
+        btns.forEach(b => { if (b.dataset.correct === 'true') b.classList.add('reveal'); });
+        fb.className = 'feedback wrong-fb show';
+        fb.textContent = '❌ Τα χρονικά επιρρήματα ήταν: «πάντα» (Πότε;) και «πρωί» (Πότε;). Τα «εδώ» και «έξω» είναι τοπικά.';
+        card.classList.add('answered-wrong');
+        addScore(qid, 0);
+      }
+    }
+  }
+
+  function checkFill(qid, ids, answers, okMsg, failMsg) {
+    if (state.answered[qid]) return;
+    let allCorrect = true;
+    ids.forEach((id, i) => {
+      const inp = document.getElementById(id);
+      const val = inp.value.trim().toLowerCase();
+      const expected = (Array.isArray(answers[i]) ? answers[i] : [answers[i]]).map(a => a.toLowerCase());
+      if (expected.includes(val)) {
+        inp.classList.add('correct-input');
+        inp.classList.remove('wrong-input');
+      } else {
+        inp.classList.add('wrong-input');
+        inp.classList.remove('correct-input');
+        allCorrect = false;
+      }
+      inp.disabled = true;
+    });
+    const card = document.getElementById(qid);
+    const fb = document.getElementById('fb-' + qid);
+    const chkBtn = card.querySelector('.check-btn');
+    if (chkBtn) chkBtn.disabled = true;
+    if (allCorrect) {
+      fb.className = 'feedback correct-fb show';
+      fb.textContent = okMsg;
+      card.classList.add('answered-correct');
+      addScore(qid, 1);
+      launchConfetti();
+    } else {
+      fb.className = 'feedback wrong-fb show';
+      fb.textContent = failMsg;
+      card.classList.add('answered-wrong');
+      addScore(qid, 0);
+    }
+  }
+
+  function checkSelects(qid, ids, answers, okMsg, failMsg) {
+    if (state.answered[qid]) return;
+    let allCorrect = true;
+    ids.forEach((id, i) => {
+      const sel = document.getElementById(id);
+      if (sel.value === answers[i]) {
+        sel.classList.add('correct-input');
+        sel.classList.remove('wrong-input');
+      } else {
+        sel.classList.add('wrong-input');
+        sel.classList.remove('correct-input');
+        allCorrect = false;
+      }
+      sel.disabled = true;
+    });
+    const card = document.getElementById(qid);
+    const fb = document.getElementById('fb-' + qid);
+    const chkBtn = card.querySelector('.check-btn');
+    if (chkBtn) chkBtn.disabled = true;
+    if (allCorrect) {
+      fb.className = 'feedback correct-fb show';
+      fb.textContent = okMsg;
+      card.classList.add('answered-correct');
+      addScore(qid, 1);
+      launchConfetti();
+    } else {
+      fb.className = 'feedback wrong-fb show';
+      fb.textContent = failMsg;
+      card.classList.add('answered-wrong');
+      addScore(qid, 0);
+    }
+  }
+
+  let confettiTimeout;
+  function launchConfetti() {
+    const container = document.getElementById('confetti');
+    container.innerHTML = '';
+    const colors = ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF922B','#CC5DE8','#20C997'];
+    for (let i = 0; i < 40; i++) {
+      const p = document.createElement('div');
+      p.className = 'confetti-piece';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.top = '-20px';
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.width = (Math.random() * 8 + 6) + 'px';
+      p.style.height = (Math.random() * 8 + 6) + 'px';
+      p.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      p.style.animationDelay = Math.random() * 0.5 + 's';
+      p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      container.appendChild(p);
+    }
+    clearTimeout(confettiTimeout);
+    confettiTimeout = setTimeout(() => { container.innerHTML = ''; }, 3500);
+  }
+
+  function resetAll() {
+    state.scores = { s1: 0, s2: 0, s3: 0, s4: 0 };
+    state.answered = {};
+    state.totalAnswered = 0;
+    document.querySelectorAll('.option-btn').forEach(b => {
+      b.disabled = false;
+      b.classList.remove('correct','wrong','reveal');
+    });
+    document.querySelectorAll('.blank-input').forEach(i => {
+      i.disabled = false;
+      i.value = '';
+      i.classList.remove('correct-input','wrong-input');
+    });
+    document.querySelectorAll('.label-select').forEach(s => {
+      s.disabled = false;
+      s.value = '';
+      s.classList.remove('correct-input','wrong-input');
+    });
+    document.querySelectorAll('.feedback').forEach(f => {
+      f.className = 'feedback';
+    });
+    document.querySelectorAll('.question-card').forEach(c => {
+      c.classList.remove('answered-correct','answered-wrong');
+    });
+    document.querySelectorAll('.check-btn').forEach(b => { b.disabled = false; });
+    Object.keys(mc2State).forEach(k => { mc2State[k] = []; });
+    updateScoreboard();
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelector('.nav-tab').classList.add('active');
+    document.getElementById('s1').classList.add('active');
+  }
+
+  updateScoreboard();
+</script>
+</body>
+</html>
